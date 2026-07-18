@@ -198,7 +198,7 @@
   /*put your color if it will get reused a lot here*/
   /*define these in the @theme to use them in tailwind*/
   --ms-gray: #C1C1C1;
-  --ms-gray-darker: #868686; 
+  --ms-gray-darker: #868686;
 
   /*Main Gradient Colors*/
   --gradient-stop-1: #206DDF;
@@ -207,6 +207,16 @@
   --popup-gray: #BFBFBF;
   --popup-blue: #030087;
   --faq-line: #7F90AB;
+
+  /*Track colors, pulled from Figma node 462:557 "Tracks - on click"*/
+  --track-blue: #2F9DD9;
+  --track-green: #0C6B14;
+  --track-red: #CE2634;
+  --track-body: #D9D9D9;
+
+  /*FAQ colors, pulled from Figma node 462:678 "FAQ on-click"*/
+  --faq-highlight: #2F9DD9;
+  --faq-answer-border: #F7DD04;
 
 
 
@@ -252,6 +262,13 @@
   --color-bg-gradient-stop-2: var(--gradient-stop-2);
   --color-ms-gray: var(--ms-gray);
   --color-ms-gray-darker: var(--ms-gray-darker);
+
+  --color-track-blue: var(--track-blue);
+  --color-track-green: var(--track-green);
+  --color-track-red: var(--track-red);
+  --color-track-body: var(--track-body);
+  --color-faq-highlight: var(--faq-highlight);
+  --color-faq-answer-border: var(--faq-answer-border);
 
   --font-mssansserif: var(--ms-sans-serif-1);
 
