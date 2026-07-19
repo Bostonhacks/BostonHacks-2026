@@ -193,7 +193,9 @@
 }
 
 :root {
-  overflow-x: hidden;
+  /* No overflow-x here: overflow on the root propagates to the viewport and
+     `hidden` breaks position:sticky. Horizontal overflow is clipped by a wrapper
+     div in layout.tsx (overflow-x-clip) instead, which keeps sticky working. */
   /*Main Colors and Fonts*/
   /*put your color if it will get reused a lot here*/
   /*define these in the @theme to use them in tailwind*/
