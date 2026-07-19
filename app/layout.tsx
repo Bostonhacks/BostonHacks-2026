@@ -51,7 +51,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased overflow-x-hidden`}>{children}</body>
+      <body className="antialiased">
+        {/* relative + overflow-x-clip: becomes the containing block for absolutely-
+            positioned decorative graphics and clips their horizontal overflow, without
+            creating a scroll container on the root — so position: sticky keeps working. */}
+        <div className="relative overflow-x-clip">{children}</div>
+      </body>
     </html>
   );
 }
