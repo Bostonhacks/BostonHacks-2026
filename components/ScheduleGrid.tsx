@@ -45,16 +45,36 @@ export default function ScheduleGrid() {
         }}
       />
 
-      {/* Blue subway spine down the left, curving in at the top */}
+      {/* Blue subway spine down the left, curving in at the top.
+          Stops light up top→bottom to show the train moving stop to stop
+          (per Figma design comment). Pure CSS staggered glow — no JS needed. */}
+      <style>{`
+        @keyframes scheduleStopGlow {
+          0%, 100% { background:#fff; box-shadow:0 0 0 4px var(--track-blue); }
+          12%      { background:var(--gradient-stop-2); box-shadow:0 0 0 4px var(--track-blue), 0 0 14px 5px var(--track-blue); }
+        }
+        .schedule-stop { animation: scheduleStopGlow 2.8s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .schedule-stop { animation: none; } }
+      `}</style>
       <div className="pointer-events-none absolute inset-y-0 left-6 -z-0 hidden sm:block" aria-hidden>
+        {/* top-left curve into the line */}
         <div
           className="absolute top-10 h-24 w-16 rounded-tl-full border-l-8 border-t-8"
           style={{ borderColor: "var(--track-blue)" }}
         />
+        {/* vertical line with 4 evenly-spaced stops that pulse in sequence */}
         <div
-          className="absolute bottom-0 left-16 top-[8.5rem] w-2 rounded-full"
+          className="absolute bottom-8 left-16 top-[8.5rem] flex w-2 flex-col items-center justify-between rounded-full"
           style={{ backgroundColor: "var(--track-blue)" }}
-        />
+        >
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className="schedule-stop h-4 w-4 rounded-full bg-white"
+              style={{ boxShadow: "0 0 0 4px var(--track-blue)", animationDelay: `${i * 0.7}s` }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="relative mx-auto max-w-5xl px-6 sm:pl-28">
