@@ -1,136 +1,121 @@
 // ScheduleGrid — FE-10 layout component.
-// MBTA transit-map themed 3-day schedule grid: time axis (rows) x Day 1/2/3 (columns).
+// MBTA transit-map timetable: a blue subway line runs down the left with white
+// station stops (which light up top->bottom to show the train moving stop to stop,
+// per the Figma design comment), Day 1/2/3 blocks as a time-label + dotted-leader +
+// event list, a red cross-line near the bottom, and a faint blueprint grid.
 // Placeholder data lives in `days` — swappable for real data in FE-11.
 // ponytail: pure presentational, no state, so no "use client".
 
-type Day = {
-  label: string;
-  events: string[];
-};
+type Row = { label: string; event: string };
+type Day = { rows: Row[] };
 
-// Row time labels (left axis). Length must match each day's events array.
-const times = ["9:00 am", "10:00 am", "11:00 am", "12:00 pm", "1:00 pm"];
-
+// Each day's first row's label IS the "Day N" header (paired with the first event),
+// matching the Figma text layout.
 const days: Day[] = [
-  { label: "Day 1", events: ["Wake up", "Breakfast", "Orientation", "How 2 code", "Yay"] },
-  { label: "Day 2", events: ["Wake up", "Breakfast", "Idk", "How 2 code", "Yay"] },
-  { label: "Day 3", events: ["Wake up", "Breakfast", "Design", "How 2 code", "Yay"] },
+  {
+    rows: [
+      { label: "Day 1", event: "Wake up" },
+      { label: "10:00 am", event: "Breakfast" },
+      { label: "11:00 am", event: "Orientation" },
+      { label: "12:00 pm", event: "How 2 code" },
+      { label: "1:00 pm", event: "Yay" },
+    ],
+  },
+  {
+    rows: [
+      { label: "Day 2", event: "Wake up" },
+      { label: "10:00 am", event: "Breakfast" },
+      { label: "11:00 am", event: "Idk" },
+      { label: "12:00 pm", event: "How 2 code" },
+      { label: "1:00 pm", event: "Yay" },
+    ],
+  },
+  {
+    rows: [
+      { label: "Day 3", event: "Wake up" },
+      { label: "10:00 am", event: "Breakfast" },
+      { label: "11:00 am", event: "Design" },
+      { label: "12:00 pm", event: "How 2 code" },
+      { label: "1:00 pm", event: "Yay" },
+    ],
+  },
 ];
 
-// White station dot with a colored ring, used along the transit lines.
-function StationDot({ ring, className = "" }: { ring: string; className?: string }) {
+function ScheduleRow({ label, event }: Row) {
   return (
-    <span
-      className={`block h-4 w-4 rounded-full bg-white ${className}`}
-      style={{ boxShadow: `0 0 0 4px ${ring}` }}
-      aria-hidden
-    />
+    <div className="flex items-center gap-4 text-xl leading-[1.9] text-black sm:text-2xl">
+      <span className="w-28 shrink-0 sm:w-32">{label}</span>
+      {/* dotted leader between label and event */}
+      <span aria-hidden className="h-0 min-w-6 flex-1 border-b-[3px] border-dotted border-black/70" />
+      <span className="w-40 shrink-0 sm:w-52">{event}</span>
+    </div>
   );
 }
 
 export default function ScheduleGrid() {
   return (
-    <section className="relative isolate w-full overflow-hidden bg-white py-16 font-akshar text-black">
-      {/* Faint blueprint grid, biased to the lower-right like the wireframe */}
+    <section className="relative isolate w-full overflow-hidden bg-white py-14 font-akshar text-black">
+      {/* Stops light up top->bottom to show the train moving stop to stop (Figma comment). */}
+      <style>{`
+        @keyframes scheduleStopGlow {
+          0%, 100% { background:#fff; box-shadow:0 0 0 5px var(--track-blue); }
+          12%      { background:var(--gradient-stop-2); box-shadow:0 0 0 5px var(--track-blue), 0 0 16px 6px var(--track-blue); }
+        }
+        .schedule-stop { animation: scheduleStopGlow 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .schedule-stop { animation: none; } }
+      `}</style>
+
+      {/* Faint blue blueprint grid, biased to the lower-right */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
         aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
         style={{
           backgroundImage:
-            "linear-gradient(to right, var(--track-blue) 1px, transparent 1px)," +
-            "linear-gradient(to bottom, var(--track-blue) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage: "radial-gradient(120% 90% at 100% 100%, black 20%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(120% 90% at 100% 100%, black 20%, transparent 70%)",
+            "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
+            "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
+          backgroundSize: "72px 72px",
+          maskImage: "radial-gradient(120% 90% at 100% 100%, black 15%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(120% 90% at 100% 100%, black 15%, transparent 70%)",
         }}
       />
 
-      {/* Blue subway spine down the left, curving in at the top.
-          Stops light up top→bottom to show the train moving stop to stop
-          (per Figma design comment). Pure CSS staggered glow — no JS needed. */}
-      <style>{`
-        @keyframes scheduleStopGlow {
-          0%, 100% { background:#fff; box-shadow:0 0 0 4px var(--track-blue); }
-          12%      { background:var(--gradient-stop-2); box-shadow:0 0 0 4px var(--track-blue), 0 0 14px 5px var(--track-blue); }
-        }
-        .schedule-stop { animation: scheduleStopGlow 2.8s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .schedule-stop { animation: none; } }
-      `}</style>
-      <div className="pointer-events-none absolute inset-y-0 left-6 -z-0 hidden sm:block" aria-hidden>
-        {/* top-left curve into the line */}
-        <div
-          className="absolute top-10 h-24 w-16 rounded-tl-full border-l-8 border-t-8"
-          style={{ borderColor: "var(--track-blue)" }}
-        />
-        {/* vertical line with 4 evenly-spaced stops that pulse in sequence */}
-        <div
-          className="absolute bottom-8 left-16 top-[8.5rem] flex w-2 flex-col items-center justify-between rounded-full"
-          style={{ backgroundColor: "var(--track-blue)" }}
-        >
-          {[0, 1, 2, 3].map((i) => (
-            <span
-              key={i}
-              className="schedule-stop h-4 w-4 rounded-full bg-white"
-              style={{ boxShadow: "0 0 0 4px var(--track-blue)", animationDelay: `${i * 0.7}s` }}
-            />
+      {/* Blue subway line down the left with white stops (top, one per day, bottom) */}
+      <div className="pointer-events-none absolute inset-y-0 left-[52px] hidden w-3 flex-col items-center justify-between rounded-full sm:flex" aria-hidden>
+        <div className="absolute inset-y-6 left-1/2 w-3 -translate-x-1/2 rounded-full" style={{ backgroundColor: "var(--track-blue)" }} />
+        {[0, 1, 2, 3, 4].map((i) => (
+          <span
+            key={i}
+            className="schedule-stop relative z-10 h-5 w-5 rounded-full bg-white"
+            style={{ boxShadow: "0 0 0 5px var(--track-blue)", animationDelay: `${i * 0.6}s` }}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="relative mx-auto max-w-4xl px-6 pb-24 pl-[110px] sm:pl-[130px]">
+        <h2 className="relative mb-10 inline-block font-akshar text-4xl font-bold">
+          <span className="relative z-10">Schedule</span>
+          <span aria-hidden className="absolute inset-x-0 bottom-1 z-0 h-3.5" style={{ backgroundColor: "var(--track-blue)", opacity: 0.55 }} />
+        </h2>
+
+        <div className="space-y-9">
+          {days.map((day, di) => (
+            <div key={di} className="space-y-0.5">
+              {day.rows.map((r) => (
+                <ScheduleRow key={r.label} label={r.label} event={r.event} />
+              ))}
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-5xl px-6 sm:pl-28">
-        <h2 className="mb-10 text-4xl font-medium tracking-wide">Schedule</h2>
-
-        {/* Scrolls horizontally on narrow screens instead of breaking the page */}
-        <div className="overflow-x-auto pb-4">
-          <div
-            className="grid min-w-[640px] gap-px"
-            style={{
-              gridTemplateColumns: "minmax(6rem,auto) repeat(3, minmax(0,1fr))",
-              backgroundColor: "var(--faq-line)",
-              border: "1px solid var(--faq-line)",
-            }}
-          >
-            {/* Header row: blank corner + day labels, each with a station dot */}
-            <div className="bg-white p-4" />
-            {days.map((day) => (
-              <div key={day.label} className="flex items-center gap-3 bg-white p-4">
-                <StationDot ring="var(--track-blue)" />
-                <span className="text-2xl font-medium">{day.label}</span>
-              </div>
-            ))}
-
-            {/* Time rows */}
-            {times.map((time, row) => (
-              <FragmentRow key={time} time={time} row={row} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Red subway line crossing horizontally near the bottom */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-10 -z-0 flex h-8 items-center px-4"
-        style={{ backgroundColor: "var(--track-red)" }}
-        aria-hidden
-      >
-        <StationDot ring="var(--track-red)" className="ml-4" />
-        <StationDot ring="var(--track-red)" className="ml-[30%]" />
-        <StationDot ring="var(--track-red)" className="ml-[20%]" />
+      {/* Red subway cross-line near the bottom, with an interchange + two stops */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-16 flex h-10 items-center" style={{ backgroundColor: "var(--track-red)" }} aria-hidden>
+        {/* interchange (black-ringed) sits on the blue line */}
+        <span className="absolute left-[46px] h-6 w-6 rounded-full border-[3px] border-black bg-white" />
+        <span className="absolute left-[38%] h-4 w-4 rounded-full bg-white" />
+        <span className="absolute left-[62%] h-4 w-4 rounded-full bg-white" />
       </div>
     </section>
-  );
-}
-
-// One time-slot row: left axis label + the same slot across all three days.
-function FragmentRow({ time, row }: { time: string; row: number }) {
-  return (
-    <>
-      <div className="bg-white p-4 text-xl text-neutral-500">{time}</div>
-      {days.map((day) => (
-        <div key={day.label} className="bg-white p-4 text-xl">
-          {day.events[row]}
-        </div>
-      ))}
-    </>
   );
 }
