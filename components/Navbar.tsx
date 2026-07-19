@@ -42,6 +42,7 @@ export default function Navbar() {
             width={70}
             height={60}
             priority
+            unoptimized
           />
         </a>
 
@@ -49,26 +50,30 @@ export default function Navbar() {
         <ul className="absolute right-6 top-0 flex w-[62%] justify-between">
           {STATIONS.map((s) => (
             <li key={s.href} className="flex flex-col items-center">
-              {/* Station box straddling the track */}
+              {/* One link per station: decorative box + visible label share a single anchor */}
               <a
                 href={s.href}
-                aria-label={s.label}
-                className={`block h-[130px] w-[46px] rounded-[22px] border-2 shadow-sm transition-colors ${
-                  s.button
-                    ? "border-track-red bg-track-red hover:brightness-95"
-                    : "border-track-body bg-white hover:border-track-blue"
-                }`}
-              />
-              {/* Diagonal −45° hanging label */}
-              <a
-                href={s.href}
-                className={`mt-6 origin-top-left -rotate-45 whitespace-nowrap font-akshar text-2xl font-bold tracking-wide transition-colors ${
-                  s.button
-                    ? "text-track-red hover:text-track-red/80"
-                    : "text-black hover:text-track-blue"
-                }`}
+                className="group flex flex-col items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-track-blue"
               >
-                {s.label}
+                {/* Station box straddling the track (decorative) */}
+                <span
+                  aria-hidden
+                  className={`block h-[130px] w-[46px] rounded-[22px] border-2 shadow-sm transition-colors ${
+                    s.button
+                      ? "border-track-red bg-track-red group-hover:brightness-95"
+                      : "border-track-body bg-white group-hover:border-track-blue"
+                  }`}
+                />
+                {/* Diagonal −45° hanging label */}
+                <span
+                  className={`mt-6 origin-top-left -rotate-45 whitespace-nowrap font-akshar text-2xl font-bold tracking-wide transition-colors ${
+                    s.button
+                      ? "text-track-red group-hover:text-track-red/80"
+                      : "text-black group-hover:text-track-blue"
+                  }`}
+                >
+                  {s.label}
+                </span>
               </a>
             </li>
           ))}
@@ -84,6 +89,7 @@ export default function Navbar() {
             width={40}
             height={34}
             priority
+            unoptimized
           />
           <div className="relative h-[10px] flex-1">
             <div className="absolute inset-x-0 top-0 h-[10px] rounded bg-gray-300" />
