@@ -70,7 +70,7 @@ export default function ScheduleGrid() {
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-6 pb-24 pl-[110px] sm:pl-[130px]">
+      <div className="relative mx-auto max-w-4xl px-6 pb-24 sm:pl-[130px]">
         <h2 className="relative mb-10 inline-block font-akshar text-4xl font-bold">
           <span className="relative z-10">Schedule</span>
           <span aria-hidden className="absolute inset-x-0 bottom-1 z-0 h-3.5" style={{ backgroundColor: "var(--track-blue)", opacity: 0.55 }} />
