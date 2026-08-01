@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-// Countdown — FE-14. MBTA-thermometer motif per Figma node 462:447 ("90d 6h...",
-// "Now" / "Hackathon" stops) — simplified into a track-green line + two stops,
-// reusing the line/stop language already established in ScheduleGrid (FE-10).
+// Countdown — FE-14, rebuilt against the actual Figma artwork (node 462:447/462:449
+// "image 299") instead of a CSS approximation: a hand-drawn MBTA canister/thermometer
+// sign, with the day/hour count, line, and stop dots overlaid at the same relative
+// positions as the original (percentages computed from the node's own coordinates).
 // Placeholder date until BostonHacks 2026 dates are officially announced.
 const TARGET_DATE = "2026-10-02T09:00:00-04:00";
 
@@ -30,44 +31,51 @@ export default function Countdown() {
 
   return (
     <section aria-label="Countdown" className="w-full bg-white px-8 py-16 font-akshar text-black">
-      <div className="mx-auto flex max-w-md items-stretch gap-6 rounded-2xl border-[6px] border-black bg-white px-8 py-10 shadow-md">
-        <div className="relative flex w-6 shrink-0 flex-col items-center">
-          <span
-            aria-hidden
-            className="absolute inset-y-2 left-1/2 w-2 -translate-x-1/2 rounded-full"
-            style={{ backgroundColor: "var(--track-green)" }}
-          />
-          <span
-            aria-hidden
-            className="relative z-10 h-5 w-5 rounded-full"
-            style={{ backgroundColor: "var(--track-green)", boxShadow: "0 0 0 4px white" }}
-          />
-          <span className="flex-1" />
-          <span
-            aria-hidden
-            className="relative z-10 h-5 w-5 rounded-full bg-white"
-            style={{ boxShadow: "0 0 0 4px var(--track-body)" }}
-          />
+      <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
+        <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
+
+        {/* Vertical line + stop dots, per Rectangle 2211/2212 and Ellipse 86/87 */}
+        <span
+          aria-hidden
+          className="absolute w-[4%] rounded-full"
+          style={{ left: "18.3%", top: "22.9%", height: "43.2%", backgroundColor: "var(--track-body)" }}
+        />
+        <span
+          aria-hidden
+          className="absolute w-[4%] rounded-full"
+          style={{ left: "18.3%", top: "22.9%", height: "10%", backgroundColor: "var(--track-green)" }}
+        />
+        <span
+          aria-hidden
+          className="absolute h-[3%] w-[8.5%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{ left: "20.3%", top: "31.4%", backgroundColor: "var(--track-green)", boxShadow: "0 0 0 3px white" }}
+        />
+        <span
+          aria-hidden
+          className="absolute h-[3%] w-[8.5%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+          style={{ left: "20.3%", top: "64.6%", boxShadow: "0 0 0 3px var(--track-body)" }}
+        />
+
+        <div className="absolute flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "30.5%" }}>
+          <Image src="/images/countdown/track-icon.svg" alt="" width={12} height={12} aria-hidden />
+          Now
         </div>
 
-        <div className="flex flex-1 flex-col justify-between gap-6">
-          <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-black/60">
-            <Image src="/images/countdown/track-icon.svg" alt="" width={18} height={18} aria-hidden />
-            Now
-          </div>
+        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "30.6%", top: "19%" }} aria-live="polite">
+          {mounted ? remaining.hours : "--"}
+          <span className="text-base font-medium">h</span>
+        </p>
+        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "22.3%", top: "33.5%" }} aria-live="polite">
+          {mounted ? remaining.days : "--"}
+          <span className="text-base font-medium">d</span>
+        </p>
 
-          <p className="text-6xl font-extrabold leading-none sm:text-7xl" aria-live="polite">
-            {mounted ? remaining.days : "--"}
-            <span className="text-3xl font-medium sm:text-4xl">d</span>{" "}
-            {mounted ? remaining.hours : "--"}
-            <span className="text-3xl font-medium sm:text-4xl">h</span>
-          </p>
-
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wide text-black/60">Hackathon</p>
-            <p className="text-2xl font-bold">BostonHacks</p>
-          </div>
-        </div>
+        <p className="absolute text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "63.8%" }}>
+          Hackathon
+        </p>
+        <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "67%" }}>
+          BostonHacks
+        </p>
       </div>
     </section>
   );
