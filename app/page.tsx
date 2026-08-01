@@ -16,11 +16,11 @@ export default function Home() {
       <ThemeGraphics />
       <ThemeIntro text="This year's theme is..." />
       <TracksSection />
-      <Countdown />
       <div id="schedule">
         <ScheduleGrid />
       </div>
       <FaqSection />
+      <Countdown />
       <Footer />
     </main>
   );
