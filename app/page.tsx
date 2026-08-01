@@ -13,8 +13,10 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <ThemeGraphics />
-      <ThemeIntro text="This year's theme is..." />
+      <div id="theme">
+        <ThemeGraphics />
+        <ThemeIntro text="This year's theme is..." />
+      </div>
       <TracksSection />
       <div id="schedule">
         <ScheduleGrid />
