@@ -30,6 +30,9 @@ export default function FaqSection() {
       <div aria-hidden className="pointer-events-none absolute left-4 top-1/2 hidden h-14 w-14 -translate-y-1/2 lg:block">
         <Image src="/images/faq/arrow.svg" alt="" fill unoptimized className="object-contain" />
       </div>
+      <div aria-hidden className="pointer-events-none absolute -right-8 top-24 hidden h-24 w-64 lg:block">
+        <Image src="/images/faq/dashed-line.svg" alt="" fill unoptimized className="object-contain" />
+      </div>
 
       <h2 className="relative mx-auto mb-10 max-w-3xl text-4xl font-bold">FAQs</h2>
       <ol className="relative mx-auto max-w-3xl list-decimal space-y-8 pl-8">
