@@ -30,7 +30,7 @@ export default function Countdown() {
   const mounted = remaining !== null;
 
   return (
-    <section aria-label="Countdown" className="w-full bg-white px-8 py-16 font-akshar text-black">
+    <section aria-label="Countdown" className="w-full px-8 py-16 font-akshar text-black">
       <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
