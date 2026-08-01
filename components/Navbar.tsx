@@ -14,6 +14,7 @@ type Station = { label: string; slug: string };
 
 const STATIONS: Station[] = [
   { label: "Sign Up", slug: "signup" },
+  { label: "Theme", slug: "theme" },
   { label: "Tracks", slug: "tracks" },
   { label: "Schedule", slug: "schedule" },
   { label: "FAQs", slug: "faq" },
@@ -134,7 +135,7 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
           <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={78} height={67} priority unoptimized />
         </a>
 
-        <ul className="absolute right-8 top-[18px] grid w-[64%] grid-cols-5 justify-items-center">
+        <ul className="absolute right-8 top-[18px] grid w-[76%] grid-cols-6 justify-items-center">
           {STATIONS.map((s, i) => (
             <li key={s.slug} ref={(el) => { stationRefs.current[i] = el; }} className="flex flex-col items-center">
               <StationLink s={s} i={i} className="group flex flex-col items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-track-blue">
