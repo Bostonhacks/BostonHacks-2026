@@ -22,7 +22,7 @@ export default function TracksSection() {
           className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-0 -translate-x-1/2 border-l-[3px] border-dashed border-black/20 sm:block"
         />
         {TRACKS.map((track) => (
-          <div key={track.title} className={`w-full max-w-sm ${track.align}`}>
+          <div key={track.title} className={`w-full max-w-md ${track.align}`}>
             <TrackCard color={track.color} title={track.title} subtitle={track.subtitle} description={track.description} />
           </div>
         ))}

@@ -8,16 +8,19 @@ export default function ThemeIntro({ text }: { text: string }) {
   return (
     <section aria-label="Theme" className="w-full bg-white px-8 py-12 font-akshar text-black">
       <div className="mx-auto flex max-w-3xl justify-center">
-        <div className="relative isolate rounded-2xl bg-white px-6 py-4 text-center text-xl font-bold shadow-md sm:px-10 sm:py-6 sm:text-3xl md:text-4xl">
+        <div
+          className="relative rounded-2xl px-6 py-4 text-center text-xl font-bold shadow-md sm:px-10 sm:py-6 sm:text-3xl md:text-4xl"
+          style={{ backgroundColor: "#D6D6D6" }}
+        >
+          {text}
           <Image
             src="/images/theme/badge-border.png"
             alt=""
             fill
             unoptimized
             aria-hidden
-            className="pointer-events-none -z-10 object-fill"
+            className="pointer-events-none object-fill"
           />
-          <span className="relative">{text}</span>
         </div>
       </div>
     </section>

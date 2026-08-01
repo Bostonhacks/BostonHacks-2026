@@ -40,39 +40,38 @@ export default function TrackCard({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative w-full max-w-sm font-akshar">
+    <div className="flex w-full max-w-md items-center gap-3 font-akshar">
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
-        className="block w-full text-left transition-transform hover:-translate-y-0.5"
+        className="relative flex-1 overflow-hidden rounded-2xl text-left shadow-md transition-transform hover:-translate-y-0.5"
+        style={{ backgroundColor: "var(--track-body)" }}
       >
-        <div className="relative isolate overflow-hidden rounded-2xl shadow-md" style={{ backgroundColor: "var(--track-body)" }}>
-          <Image
-            src="/images/trackcard/sign-border.png"
-            alt=""
-            fill
-            unoptimized
-            aria-hidden
-            className="pointer-events-none -z-10 object-fill"
-          />
-          <div
-            className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
-            style={{ backgroundColor: HEADER_BG[color] }}
-          >
-            {title}
-          </div>
-          {isOpen ? (
-            <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
-          ) : (
-            <p className="px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
-              {subtitle}
-            </p>
-          )}
+        <div
+          className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
+          style={{ backgroundColor: HEADER_BG[color] }}
+        >
+          {title}
         </div>
+        {isOpen ? (
+          <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
+        ) : (
+          <p className="px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
+            {subtitle}
+          </p>
+        )}
+        <Image
+          src="/images/trackcard/sign-border.png"
+          alt=""
+          fill
+          unoptimized
+          aria-hidden
+          className="pointer-events-none object-fill"
+        />
       </button>
 
-      <div className="pointer-events-none absolute -bottom-6 -right-6 h-20 w-16" aria-hidden>
+      <div className="relative h-20 w-16 shrink-0" aria-hidden>
         <Image src={MASCOT_SRC[color]} alt="" fill unoptimized className="object-contain" />
       </div>
     </div>
