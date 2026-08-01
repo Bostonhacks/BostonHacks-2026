@@ -9,6 +9,9 @@ import Image from "next/image";
 // node 462:557 ("Tracks - on click") shows the same card expanded with a
 // description. Click toggles between them, same pattern as FaqItem's accordion.
 // Colors reuse the --track-* tokens pulled from 462:557 in app/globals.css.
+// The hand-drawn wobbly border is the actual asset from node 462:658 (stretched
+// to fit — all three tracks' borders are the same size/shape in the source file),
+// not a CSS border.
 type TrackColor = "blue" | "green" | "red";
 
 const HEADER_BG: Record<TrackColor, string> = {
@@ -44,10 +47,15 @@ export default function TrackCard({
         aria-expanded={isOpen}
         className="block w-full text-left transition-transform hover:-translate-y-0.5"
       >
-        <div
-          className="relative overflow-hidden rounded-2xl border-[6px] border-black shadow-md"
-          style={{ backgroundColor: "var(--track-body)" }}
-        >
+        <div className="relative isolate overflow-hidden rounded-2xl shadow-md" style={{ backgroundColor: "var(--track-body)" }}>
+          <Image
+            src="/images/trackcard/sign-border.png"
+            alt=""
+            fill
+            unoptimized
+            aria-hidden
+            className="pointer-events-none -z-10 object-fill"
+          />
           <div
             className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
             style={{ backgroundColor: HEADER_BG[color] }}
