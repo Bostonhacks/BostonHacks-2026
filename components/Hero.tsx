@@ -1,8 +1,11 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 
 // Hero — FE-5. Lower portion of the Figma "top" frame (node 462:125, y~530-900):
 // "2026 / BOSTONHACKS" title, Login + Sponsor Us CTAs with a marker-highlight
 // underline, and a scroll cue. Reuses app/globals.css tokens instead of hardcoded hex.
+// Decorative art (clouds, sparkle, route-line badges) pulled from the same frame's
+// hand-drawn asset set and public/images/hero/.
 
 // Marker-highlight look via a background gradient painted behind the text itself,
 // rather than an absolutely-positioned sibling (which needs its own stacking
@@ -18,6 +21,15 @@ function Chevron() {
     </svg>
   );
 }
+
+// Route-line legend badges, per the "RL"/"GL"/"BL" pills next to the Figma
+// crossing-lines illustration (nodes 462:210/215/220) — reuses --track-* tokens
+// instead of a raster export, matching how the rest of the site handles solid color.
+const LINES = [
+  { label: "RL", color: "var(--track-red)" },
+  { label: "GL", color: "var(--track-green)" },
+  { label: "BL", color: "var(--track-blue)" },
+];
 
 export default function Hero() {
   return (
@@ -37,6 +49,19 @@ export default function Hero() {
           WebkitMaskImage: "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
         }}
       />
+
+      {/* Clouds, per Figma nodes 462:128/462:129 */}
+      <div aria-hidden className="pointer-events-none absolute right-10 top-16 hidden h-[110px] w-[195px] sm:block">
+        <Image src="/images/hero/cloud-a.png" alt="" fill unoptimized className="object-contain" />
+      </div>
+      <div aria-hidden className="pointer-events-none absolute right-24 top-72 hidden h-[150px] w-[195px] lg:block">
+        <Image src="/images/hero/cloud-b.png" alt="" fill unoptimized className="object-contain" />
+      </div>
+
+      {/* Sparkle, per Figma node 462:126 */}
+      <div aria-hidden className="pointer-events-none absolute right-72 top-80 hidden h-14 w-12 lg:block">
+        <Image src="/images/hero/sparkle.png" alt="" fill unoptimized className="object-contain" />
+      </div>
 
       <div className="mx-auto max-w-4xl">
         <p className="text-2xl font-bold sm:text-3xl">2026</p>
@@ -65,6 +90,24 @@ export default function Hero() {
         className="pointer-events-none absolute left-8 top-[260px] hidden h-24 w-24 rounded-tl-[48px] border-l-[16px] border-t-[16px] sm:block"
         style={{ borderColor: "var(--faq-answer-border)" }}
       />
+
+      {/* Red/blue crossing route lines + RL/GL/BL legend, echoing the Figma
+          subway-map corner illustration (nodes 462:164/462:168, 462:210/215/220) */}
+      <div aria-hidden className="pointer-events-none absolute -left-16 -top-8 hidden h-64 w-64 lg:block">
+        <Image src="/images/hero/line-red.svg" alt="" fill unoptimized className="object-contain" />
+        <Image src="/images/hero/line-blue.svg" alt="" fill unoptimized className="object-contain" />
+      </div>
+      <div aria-hidden className="hidden flex-col items-start gap-3 lg:absolute lg:left-4 lg:top-52 lg:flex">
+        {LINES.map((line) => (
+          <span
+            key={line.label}
+            className="rounded-full px-4 py-1.5 text-sm font-bold text-white"
+            style={{ backgroundColor: line.color }}
+          >
+            {line.label}
+          </span>
+        ))}
+      </div>
     </section>
   );
 }
