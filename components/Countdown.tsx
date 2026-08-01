@@ -30,50 +30,54 @@ export default function Countdown() {
   const mounted = remaining !== null;
 
   return (
-    <section aria-label="Countdown" className="w-full bg-white px-8 py-16 font-akshar text-black">
+    <section aria-label="Countdown" className="w-full px-8 py-16 font-akshar text-black">
       <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
-        {/* Vertical line + stop dots, per Rectangle 2211/2212 and Ellipse 86/87 */}
+        {/* Vertical line + stop dots, per Rectangle 2211/2212 and Ellipse 86/87.
+            Positions measured against the sign's actual pixel content (the white
+            body starts at ~20.7% down, not the ~22.9% the Figma text-box
+            coordinates alone implied) so nothing overlaps the gray band. */}
         <span
           aria-hidden
           className="absolute w-[4%] rounded-full"
-          style={{ left: "18.3%", top: "22.9%", height: "43.2%", backgroundColor: "var(--track-body)" }}
+          style={{ left: "18.3%", top: "25%", height: "35%", backgroundColor: "var(--track-body)" }}
         />
         <span
           aria-hidden
           className="absolute w-[4%] rounded-full"
-          style={{ left: "18.3%", top: "22.9%", height: "10%", backgroundColor: "var(--track-green)" }}
+          style={{ left: "18.3%", top: "25%", height: "8%", backgroundColor: "var(--track-green)" }}
         />
         <span
           aria-hidden
           className="absolute h-[3%] w-[8.5%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ left: "20.3%", top: "31.4%", backgroundColor: "var(--track-green)", boxShadow: "0 0 0 3px white" }}
+          style={{ left: "20.3%", top: "27%", backgroundColor: "var(--track-green)", boxShadow: "0 0 0 3px white" }}
         />
         <span
           aria-hidden
           className="absolute h-[3%] w-[8.5%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
-          style={{ left: "20.3%", top: "64.6%", boxShadow: "0 0 0 3px var(--track-body)" }}
+          style={{ left: "20.3%", top: "58%", boxShadow: "0 0 0 3px var(--track-body)" }}
         />
 
-        <div className="absolute flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "30.5%" }}>
+        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
+          {mounted ? remaining.hours : "--"}
+          <span className="text-base font-medium">h</span>
+        </p>
+
+        <div className="absolute flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
           <Image src="/images/countdown/track-icon.svg" alt="" width={12} height={12} aria-hidden />
           Now
         </div>
 
-        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "30.6%", top: "19%" }} aria-live="polite">
-          {mounted ? remaining.hours : "--"}
-          <span className="text-base font-medium">h</span>
-        </p>
-        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "22.3%", top: "33.5%" }} aria-live="polite">
+        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "22.3%", top: "39%" }} aria-live="polite">
           {mounted ? remaining.days : "--"}
           <span className="text-base font-medium">d</span>
         </p>
 
-        <p className="absolute text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "63.8%" }}>
+        <p className="absolute text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>
           Hackathon
         </p>
-        <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "67%" }}>
+        <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "64.5%" }}>
           BostonHacks
         </p>
       </div>
