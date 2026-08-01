@@ -26,6 +26,20 @@ const MASCOT_SRC: Record<TrackColor, string> = {
   red: "/images/trackcard/train-red.svg",
 };
 
+// Small hand-drawn accents per track (462:661 "#", 462:674 refresh-arrow,
+// 462:676 ">>"), positioned per their source coordinates: left corner for
+// blue/green, right corner for red.
+const ACCENT_SRC: Record<TrackColor, string> = {
+  blue: "/images/trackcard/accent-blue.png",
+  green: "/images/trackcard/accent-green.png",
+  red: "/images/trackcard/accent-red.png",
+};
+const ACCENT_SIDE: Record<TrackColor, "left" | "right"> = {
+  blue: "left",
+  green: "left",
+  red: "right",
+};
+
 export default function TrackCard({
   color,
   title,
@@ -57,8 +71,13 @@ export default function TrackCard({
         {isOpen ? (
           <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
         ) : (
-          <p className="px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
+          <p className="flex items-center justify-center gap-2 px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
             {subtitle}
+            {color === "green" && (
+              <span className="relative -mt-1 h-5 w-5 shrink-0" aria-hidden>
+                <Image src="/images/trackcard/pointer.svg" alt="" fill unoptimized className="object-contain" />
+              </span>
+            )}
           </p>
         )}
         <Image
@@ -69,6 +88,12 @@ export default function TrackCard({
           aria-hidden
           className="pointer-events-none object-fill"
         />
+        <div
+          className={`pointer-events-none absolute -top-3 h-8 w-8 ${ACCENT_SIDE[color] === "left" ? "-left-3" : "-right-3"}`}
+          aria-hidden
+        >
+          <Image src={ACCENT_SRC[color]} alt="" fill unoptimized className="object-contain" />
+        </div>
       </button>
 
       <div className="relative h-20 w-16 shrink-0" aria-hidden>
