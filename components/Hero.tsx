@@ -84,12 +84,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Decorative yellow track curve, echoing the Figma "yellow" line motif */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-8 top-[260px] hidden h-24 w-24 rounded-tl-[48px] border-l-[16px] border-t-[16px] sm:block"
-        style={{ borderColor: "var(--faq-answer-border)" }}
-      />
+      {/* Yellow route line, per Figma node 462:171 */}
+      <div aria-hidden className="pointer-events-none absolute left-4 top-[320px] hidden h-[350px] w-[220px] sm:block">
+        <Image src="/images/hero/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
+      </div>
 
       {/* Red/blue crossing route lines + RL/GL/BL legend, echoing the Figma
           subway-map corner illustration (nodes 462:164/462:168, 462:210/215/220) */}

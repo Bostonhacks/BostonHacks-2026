@@ -1,3 +1,4 @@
+import Image from "next/image";
 import TrackCard from "./TrackCard";
 
 // TracksSection — FE-9. Composes 3x TrackCard (FE-8) in the stacked/offset,
@@ -14,6 +15,11 @@ const TRACKS = [
 export default function TracksSection() {
   return (
     <section id="tracks" aria-label="Tracks" className="relative w-full overflow-hidden bg-white px-8 py-20 font-akshar text-black">
+      {/* Red route-line hook, per Figma node 462:334 */}
+      <div aria-hidden className="pointer-events-none absolute -left-8 top-0 hidden h-64 w-24 lg:block">
+        <Image src="/images/tracks/line-red-hook.svg" alt="" fill unoptimized className="object-contain" />
+      </div>
+
       <h2 className="mx-auto mb-14 max-w-3xl text-center text-4xl font-bold">Tracks</h2>
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-16 sm:gap-10">

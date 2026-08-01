@@ -30,7 +30,17 @@ export default function Countdown() {
   const mounted = remaining !== null;
 
   return (
-    <section aria-label="Countdown" className="w-full px-8 py-16 font-akshar text-black">
+    <section aria-label="Countdown" className="relative w-full overflow-hidden px-8 py-16 font-akshar text-black">
+      {/* Background squiggle, per Figma node 462:438 */}
+      <div aria-hidden className="pointer-events-none absolute -right-24 bottom-0 hidden h-64 w-[500px] opacity-60 lg:block">
+        <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
+      </div>
+
+      {/* Yellow route line, per Figma node 462:439 */}
+      <div aria-hidden className="pointer-events-none absolute left-4 top-8 hidden h-[500px] w-64 lg:block">
+        <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
+      </div>
+
       <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
