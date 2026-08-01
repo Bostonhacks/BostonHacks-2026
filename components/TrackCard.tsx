@@ -1,9 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 
-// TrackCard — FE-8. Reusable card per Figma node 462:557 ("Tracks - on click"):
-// colored header bar + grey body inside a thick black border, with a train-mascot
-// icon peeking out of the bottom-right corner. Colors reuse the --track-* tokens
-// already pulled from this same Figma node in app/globals.css.
+// TrackCard — FE-8, revisited to add the second state from the wireframe. The
+// assembled Desktop/Mobile wireframes (Figma node 462:280) show a default
+// "platform sign" card — title + INBOUND/TO TRAINS/OUTBOUND subtitle — while
+// node 462:557 ("Tracks - on click") shows the same card expanded with a
+// description. Click toggles between them, same pattern as FaqItem's accordion.
+// Colors reuse the --track-* tokens pulled from 462:557 in app/globals.css.
 type TrackColor = "blue" | "green" | "red";
 
 const HEADER_BG: Record<TrackColor, string> = {
@@ -21,26 +26,43 @@ const MASCOT_SRC: Record<TrackColor, string> = {
 export default function TrackCard({
   color,
   title,
+  subtitle,
   description,
 }: {
   color: TrackColor;
   title: string;
+  subtitle: string;
   description: string;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="relative w-full max-w-sm font-akshar">
-      <div
-        className="relative overflow-hidden rounded-2xl border-[6px] border-black shadow-md"
-        style={{ backgroundColor: "var(--track-body)" }}
+      <button
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-expanded={isOpen}
+        className="block w-full text-left transition-transform hover:-translate-y-0.5"
       >
         <div
-          className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
-          style={{ backgroundColor: HEADER_BG[color] }}
+          className="relative overflow-hidden rounded-2xl border-[6px] border-black shadow-md"
+          style={{ backgroundColor: "var(--track-body)" }}
         >
-          {title}
+          <div
+            className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
+            style={{ backgroundColor: HEADER_BG[color] }}
+          >
+            {title}
+          </div>
+          {isOpen ? (
+            <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
+          ) : (
+            <p className="px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
+              {subtitle}
+            </p>
+          )}
         </div>
-        <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
-      </div>
+      </button>
 
       <div className="pointer-events-none absolute -bottom-6 -right-6 h-20 w-16" aria-hidden>
         <Image src={MASCOT_SRC[color]} alt="" fill unoptimized className="object-contain" />
