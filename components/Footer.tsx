@@ -14,7 +14,7 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-white py-10">
+    <footer className="w-full py-10">
       <div className="mx-auto flex max-w-4xl items-center justify-center gap-6">
         {SOCIALS.map(({ label, href, index }) => (
           <a
