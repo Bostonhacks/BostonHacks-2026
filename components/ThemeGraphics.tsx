@@ -1,21 +1,32 @@
 import Image from "next/image";
 
-// ThemeGraphics — FE-7, expanded to include every hand-drawn asset from the
-// Figma "theme" composition (node 462:225 plus the surrounding standalone
-// artwork between the theme badge and the train scene): CITGO (462:481), a
-// yellow wobbly-bordered box (462:479/462:480) holding the MBTA wordmark
-// (462:491) + "+ BOSTON" (462:498), the ant/crab doodle (462:506) and stacked
-// blocks (462:525) overlapping its bottom corners, two extra clouds
-// (462:460/462:461), the green route line (462:539), the "Abstract View"
-// yarn-tangle background (462:543), and the train illustration (462:225).
-// All exported PNGs live in public/images/theme/. Blueprint-grid background
-// reuses the pattern already established in Hero and ScheduleGrid.
-// Everything renders at every breakpoint (scaled down, not hidden) — an
-// earlier version hid most of this below sm/md/lg to dodge mobile overflow,
-// which made the section nearly bare on phones.
-export default function ThemeGraphics() {
+// ThemeGraphics — FE-7 (+ the FE-6 badge, folded in here for exact alignment).
+// Every element below is positioned as a percentage of a single fixed-aspect
+// canvas, computed directly from the actual Figma coordinates (node 462:124),
+// not eyeballed spacing. The canvas's native size is 2322.95 x 2769.4px,
+// anchored at Figma point (-210, 2167) — the top-left of the whole "theme"
+// composition (leftmost cloud to the bottom of the train scene). Because the
+// canvas is wider than one viewport (elements intentionally bleed off both
+// edges), it's rendered at 161.32% of the section width with a -14.58%
+// left margin so that Figma x=0..1440 (the visible viewport at desktop)
+// lines up with the section's own left/right edges — this holds at any
+// viewport width, so relative positions never drift between breakpoints.
+//
+// Element percentages (left/top/width/height, as % of the canvas):
+//   badge        20.41 /  2.53 / 25.05 /  4.30   (462:537, "This year's theme is…")
+//   cloud A       7.10 /  7.37 / 30.26 / 10.47   (462:460)
+//   cloud B      48.69 /  0.00 / 19.80 / 12.85   (462:461)
+//   yellow box   27.29 / 11.23 / 29.53 / 17.04   (462:479/462:480)
+//   MBTA         32.60 / 15.09 / 23.16 /  8.54   (462:491)
+//   + BOSTON     36.07 / 22.27 /  9.22 /  2.66   (462:498)
+//   CITGO        55.85 /  5.71 / 13.80 / 10.79   (462:481)
+//   ant          18.33 / 24.93 / 16.47 /  9.50   (462:506)
+//   blocks       48.67 / 21.96 / 18.94 / 12.64   (462:525)
+//   green line   60.10 / 34.81 / 39.90 / 38.35   (462:539)
+//   train scene   0.00 / 42.93 / 83.46 / 57.07   (462:225)
+export default function ThemeGraphics({ text }: { text: string }) {
   return (
-    <section aria-hidden className="relative isolate h-[700px] w-full overflow-hidden bg-white sm:h-[820px] lg:h-[900px]">
+    <section aria-hidden className="relative isolate w-full overflow-hidden bg-white">
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-40"
         style={{
@@ -23,65 +34,89 @@ export default function ThemeGraphics() {
             "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
             "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
           backgroundSize: "72px 72px",
-          maskImage: "radial-gradient(120% 90% at 0% 100%, black 15%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(120% 90% at 0% 100%, black 15%, transparent 70%)",
         }}
       />
 
-      {/* Abstract View yarn-tangle, per 462:543 — background accent on the right edge */}
-      <div className="pointer-events-none absolute -right-6 top-20 h-[340px] w-20 opacity-60 sm:top-24 sm:h-[420px] sm:w-24 lg:h-[520px] lg:w-32 lg:opacity-70">
-        <Image src="/images/theme/abstract-view.png" alt="" fill unoptimized className="object-cover" />
-      </div>
-
-      {/* Green route line, per 462:539 */}
-      <div className="pointer-events-none absolute right-12 top-2 h-44 w-10 sm:right-20 sm:h-56 sm:w-14 lg:right-24 lg:top-8 lg:h-72 lg:w-16">
-        <Image src="/images/theme/line-green.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-
-      {/* CITGO, per 462:481 */}
-      <div className="pointer-events-none absolute right-4 top-4 h-[54px] w-[58px] rotate-3 sm:right-16 sm:top-10 sm:h-[104px] sm:w-[112px]">
-        <Image src="/images/theme/citgo.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-
-      {/* Yellow MBTA box (462:479/462:480) with the ant (462:506) and blocks
-          (462:525) overlapping its bottom corners, per the reference composition */}
-      <div className="relative mx-auto mt-24 h-[200px] w-[260px] sm:mt-16 sm:h-[280px] sm:w-[380px]">
-        <div className="absolute inset-0 -z-10 rounded-lg" style={{ backgroundColor: "#F7DD04" }} />
-        <div className="flex h-full flex-col items-center justify-center gap-1 sm:gap-2">
-          <div className="relative h-[54px] w-[122px] -rotate-2 sm:h-[80px] sm:w-[178px]">
-            <Image src="/images/theme/mbta.png" alt="" fill unoptimized className="object-contain" />
-          </div>
-          <div className="relative h-5 w-20 sm:h-8 sm:w-32">
-            <Image src="/images/theme/plus-boston.png" alt="" fill unoptimized className="object-contain" />
-          </div>
+      {/* Fixed-aspect canvas, scaled fluidly to the section width via percentages. */}
+      <div
+        className="relative"
+        style={{ width: "161.32%", marginLeft: "-14.58%", aspectRatio: "2322.95 / 2769.4" }}
+      >
+        {/* Theme badge, per 462:537/462:536/462:538 */}
+        <div
+          className="absolute flex items-center justify-center rounded-md px-[2%] text-center font-bold shadow-md"
+          style={{
+            left: "20.41%",
+            top: "2.53%",
+            width: "25.05%",
+            height: "4.30%",
+            backgroundColor: "#D6D6D6",
+            fontSize: "clamp(9px, 1.6vw, 22px)",
+          }}
+        >
+          {text}
+          <Image
+            src="/images/theme/badge-border.png"
+            alt=""
+            fill
+            unoptimized
+            className="pointer-events-none object-fill"
+          />
         </div>
-        <Image
-          src="/images/theme/mbta-box-border.png"
-          alt=""
-          fill
-          unoptimized
-          className="pointer-events-none object-fill"
-        />
 
-        <div className="pointer-events-none absolute -bottom-8 -left-8 z-10 h-20 w-28 sm:-bottom-12 sm:-left-12 sm:h-32 sm:w-44">
+        {/* Clouds, per 462:460/462:461 */}
+        <div className="pointer-events-none absolute" style={{ left: "7.10%", top: "7.37%", width: "30.26%", height: "10.47%" }}>
+          <Image src="/images/theme/cloud-a.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+        <div className="pointer-events-none absolute" style={{ left: "48.69%", top: "0%", width: "19.80%", height: "12.85%" }}>
+          <Image src="/images/theme/cloud-b.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Green route line, per 462:539 */}
+        <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "38.35%" }}>
+          <Image src="/images/theme/line-green.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* CITGO, per 462:481 */}
+        <div className="pointer-events-none absolute" style={{ left: "55.85%", top: "5.71%", width: "13.80%", height: "10.79%" }}>
+          <Image src="/images/theme/citgo.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Yellow MBTA box, per 462:479/462:480, with MBTA (462:491) and
+            "+ BOSTON" (462:498) inside at their own exact coordinates */}
+        <div
+          className="absolute rounded-lg"
+          style={{ left: "27.29%", top: "11.23%", width: "29.53%", height: "17.04%", backgroundColor: "#F7DD04" }}
+        >
+          <Image
+            src="/images/theme/mbta-box-border.png"
+            alt=""
+            fill
+            unoptimized
+            className="pointer-events-none object-fill"
+          />
+        </div>
+        <div className="pointer-events-none absolute -rotate-2" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "8.54%" }}>
+          <Image src="/images/theme/mbta.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "2.66%" }}>
+          <Image src="/images/theme/plus-boston.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Ant/crab doodle, per 462:506 */}
+        <div className="pointer-events-none absolute z-10" style={{ left: "18.33%", top: "24.93%", width: "16.47%", height: "9.50%" }}>
           <Image src="/images/theme/ant.png" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="pointer-events-none absolute -bottom-7 -right-5 z-10 h-20 w-16 sm:-bottom-10 sm:-right-8 sm:h-36 sm:w-32">
+
+        {/* Stacked blocks, per 462:525 */}
+        <div className="pointer-events-none absolute z-10" style={{ left: "48.67%", top: "21.96%", width: "18.94%", height: "12.64%" }}>
           <Image src="/images/theme/blocks.png" alt="" fill unoptimized className="object-contain" />
         </div>
-      </div>
 
-      {/* Two extra clouds, per 462:460/462:461 */}
-      <div className="pointer-events-none absolute left-4 top-6 h-12 w-28 sm:left-8 sm:top-10 sm:h-16 sm:w-36">
-        <Image src="/images/theme/cloud-a.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-      <div className="pointer-events-none absolute right-16 top-44 h-14 w-16 sm:top-48 lg:right-1/3 lg:top-56 lg:h-20 lg:w-24">
-        <Image src="/images/theme/cloud-b.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-
-      {/* Train illustration, per 462:225 */}
-      <div className="pointer-events-none absolute bottom-0 -left-12 h-[260px] w-[280px] sm:-left-16 sm:h-[440px] sm:w-[460px]">
-        <Image src="/images/theme/train.png" alt="" fill unoptimized className="object-contain" />
+        {/* Train illustration, per 462:225 */}
+        <div className="pointer-events-none absolute" style={{ left: "0%", top: "42.93%", width: "83.46%", height: "57.07%" }}>
+          <Image src="/images/theme/train.png" alt="" fill unoptimized className="object-contain object-left-bottom" />
+        </div>
       </div>
     </section>
   );
