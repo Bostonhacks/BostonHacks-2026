@@ -19,7 +19,7 @@ export default function FaqItem({
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="block text-left text-xl font-bold transition-colors sm:text-2xl"
+        className="block text-left text-2xl font-bold transition-colors sm:text-3xl md:text-4xl"
         style={{ color: isOpen ? "var(--track-blue)" : "black" }}
       >
         {question}

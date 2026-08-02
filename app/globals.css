@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -278,6 +279,7 @@
   --font-neuropol: "Neuropol X Free", sans-serif;
   --font-presicav: "Presicav", sans-serif;
   --font-daysoftype: "DaysOfType", sans-serif;
+  --font-inter: "Inter", sans-serif;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-bubble-float: bubble-float 8s ease-in-out infinite;
