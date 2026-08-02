@@ -69,9 +69,9 @@ export default function Countdown() {
           style={{ left: "20.3%", top: "58%", boxShadow: "0 0 0 3px var(--track-body)" }}
         />
 
-        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
+        <p className="absolute font-inter text-[64px] font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
           {mounted ? remaining.hours : "--"}
-          <span className="text-base font-medium">h</span>
+          <span className="font-medium">h</span>
         </p>
 
         <div className="absolute flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
@@ -79,9 +79,9 @@ export default function Countdown() {
           Now
         </div>
 
-        <p className="absolute text-3xl font-extrabold leading-none" style={{ left: "22.3%", top: "39%" }} aria-live="polite">
+        <p className="absolute font-inter text-[64px] font-extrabold leading-none" style={{ left: "22.3%", top: "39%" }} aria-live="polite">
           {mounted ? remaining.days : "--"}
-          <span className="text-base font-medium">d</span>
+          <span className="font-medium">d</span>
         </p>
 
         <p className="absolute text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>

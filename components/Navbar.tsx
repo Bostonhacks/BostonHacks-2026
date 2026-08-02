@@ -146,7 +146,7 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
                   }`}
                 />
                 <span
-                  className={`mt-8 -rotate-45 whitespace-nowrap font-akshar text-xl font-bold tracking-wide transition-colors group-hover:text-track-blue ${
+                  className={`mt-8 -rotate-45 whitespace-nowrap font-akshar text-2xl font-bold tracking-wide transition-colors group-hover:text-track-blue ${
                     active === i ? "text-track-blue" : "text-black"
                   }`}
                 >
