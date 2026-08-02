@@ -103,7 +103,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-4xl">
-        <p className="text-2xl font-bold sm:text-3xl">2026</p>
+        <p className="text-2xl font-bold sm:text-3xl md:text-4xl">2026</p>
         <h1 className="font-presicav text-4xl font-bold leading-[0.9] tracking-tight sm:text-6xl md:text-8xl">
           BOSTONHACKS
         </h1>

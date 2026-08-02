@@ -51,7 +51,9 @@ export default function ThemeGraphics({ text }: { text: string }) {
             width: "25.05%",
             height: "4.30%",
             backgroundColor: "#D6D6D6",
-            fontSize: "clamp(9px, 1.6vw, 22px)",
+            // 36px in Figma (462:538) / 2322.95px canvas width, scaled by the canvas's
+            // own 161.32vw render width — reaches exactly 36px at a 1440px viewport.
+            fontSize: "clamp(12px, 2.5vw, 36px)",
           }}
         >
           {text}

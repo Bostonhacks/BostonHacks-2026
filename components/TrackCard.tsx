@@ -63,7 +63,7 @@ export default function TrackCard({
         style={{ backgroundColor: "var(--track-body)" }}
       >
         <div
-          className="px-6 py-4 text-center text-2xl font-bold uppercase tracking-wide text-white"
+          className="whitespace-nowrap px-6 py-4 text-center font-presicav text-2xl font-bold uppercase text-white sm:text-3xl md:text-4xl"
           style={{ backgroundColor: HEADER_BG[color] }}
         >
           {title}
@@ -71,7 +71,7 @@ export default function TrackCard({
         {isOpen ? (
           <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
         ) : (
-          <p className="flex items-center justify-center gap-2 px-6 py-8 text-center text-lg font-bold uppercase tracking-wide text-black">
+          <p className="flex items-center justify-center gap-2 px-6 py-8 text-center font-presicav text-2xl font-bold uppercase tracking-wide text-black sm:text-3xl">
             {subtitle}
             {color === "green" && (
               <span className="relative -mt-1 h-5 w-5 shrink-0" aria-hidden>
