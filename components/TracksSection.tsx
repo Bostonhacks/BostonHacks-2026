@@ -15,9 +15,15 @@ const TRACKS = [
 export default function TracksSection() {
   return (
     <section id="tracks" aria-label="Tracks" className="relative w-full overflow-hidden bg-white px-8 py-20 font-akshar text-black">
-      {/* Red route-line hook, per Figma node 462:334 */}
-      <div aria-hidden className="pointer-events-none absolute -left-8 top-0 hidden h-64 w-24 lg:block">
-        <Image src="/images/tracks/line-red-hook.svg" alt="" fill unoptimized className="object-contain" />
+      {/* Red route-line hook, per Figma node 462:334 — a large, prominent hook running
+          down the left side past Track One, not a small corner accent. The source asset
+          is a straight-ish diagonal that Figma's own reference code rotates/flips into
+          the hook shape (-rotate-120 -scale-y-100), so that transform is required here
+          too — dropping the raw asset in flat renders a plain diagonal line. */}
+      <div aria-hidden className="pointer-events-none absolute -left-16 top-0 hidden h-[30rem] w-[25rem] items-center justify-center xl:flex">
+        <div className="relative -rotate-120 -scale-y-100" style={{ width: "17rem", height: "19.8rem" }}>
+          <Image src="/images/tracks/line-red-hook.svg" alt="" fill unoptimized className="object-contain" />
+        </div>
       </div>
 
       <h2 className="mx-auto mb-14 max-w-3xl text-center text-4xl font-bold">Tracks</h2>

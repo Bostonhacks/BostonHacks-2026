@@ -40,6 +40,15 @@ const ACCENT_SIDE: Record<TrackColor, "left" | "right"> = {
   red: "right",
 };
 
+// Mascot train icon sits on the opposite side from Track Two vs. One/Three in the
+// source (462:282 blue mascot is right-of-sign, 462:298 green is left-of-sign,
+// 462:317 red is right-of-sign) — not a fixed side.
+const MASCOT_SIDE: Record<TrackColor, "left" | "right"> = {
+  blue: "right",
+  green: "left",
+  red: "right",
+};
+
 export default function TrackCard({
   color,
   title,
@@ -54,7 +63,7 @@ export default function TrackCard({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex w-full max-w-md items-center gap-3 font-akshar">
+    <div className={`flex w-full max-w-md items-center gap-3 font-akshar ${MASCOT_SIDE[color] === "left" ? "flex-row-reverse" : ""}`}>
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
