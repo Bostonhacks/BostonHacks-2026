@@ -5,8 +5,28 @@ import Image from "next/image";
 import FaqItem from "./FaqItem";
 
 // FaqSection — FE-13. Holds which question is open and maps FAQS over FaqItem.
-// Placeholder Q&A content — real copy isn't wired up yet. Decorative clouds and
-// arrow icon pulled from Figma node 462:367 ("bottom") into public/images/faq/.
+// Placeholder Q&A content — real copy isn't wired up yet.
+//
+// Decorative layer rebuilt against actual Figma coordinates (node 462:367 "bottom"),
+// not eyeballed spacing. The header cluster — cloud behind "FAQs", the title text
+// itself, and the big corner arrow — has fixed content (nothing there changes
+// height), so it uses the same exact-percentage-canvas technique as Hero/
+// ThemeGraphics: every element's left/top/width/height is a direct percentage of
+// real Figma pixel coordinates. Canvas native size 1484 x 490.77px, anchored at
+// Figma point (-64, 8378).
+//
+//   cloud-a (behind "FAQs")  37.87 /  0.00 / 62.13 / 77.44   (462:416)
+//   "FAQs" text              61.72 / 32.40 / 20.28 / 17.53   (462:417)
+//   arrow/pointer             0.00 / 44.44 / 18.19 / 55.58   (462:413)
+//
+// The second cloud (462:437) and the horizontal dashed line (462:411) sit lower,
+// visually overlapping the question list — but the list's real height varies with
+// which FAQ is open (an accordion, unlike anything in the static Figma mock), so
+// they can't share that same rigid canvas without either clipping or floating in
+// dead space depending on which question is expanded. They're sized from Figma's
+// exact aspect ratio and given viewport-width-relative sizing (same principle as
+// TracksSection's red hook line), just anchored near the list rather than
+// percentage-locked to it.
 const FAQS = [
   { question: "What is BostonHacks?", answer: "BostonHacks is Boston University's largest student-run hackathon." },
   { question: "Who can attend?", answer: "Any student, of any skill level, is welcome to attend." },
@@ -20,21 +40,47 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-white px-8 py-16 font-akshar text-black">
-      <div aria-hidden className="pointer-events-none absolute right-8 top-8 hidden h-24 w-52 sm:block">
-        <Image src="/images/faq/cloud-a.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-      <div aria-hidden className="pointer-events-none absolute -left-6 bottom-8 hidden h-24 w-24 lg:block">
-        <Image src="/images/faq/cloud-b.png" alt="" fill unoptimized className="object-contain" />
-      </div>
-      <div aria-hidden className="pointer-events-none absolute left-4 top-1/2 hidden h-14 w-14 -translate-y-1/2 lg:block">
-        <Image src="/images/faq/arrow.svg" alt="" fill unoptimized className="object-contain" />
-      </div>
-      <div aria-hidden className="pointer-events-none absolute -right-8 top-24 hidden h-24 w-64 lg:block">
-        <Image src="/images/faq/dashed-line.svg" alt="" fill unoptimized className="object-contain" />
+    <section id="faq" className="relative overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black">
+      {/* Header cluster: cloud + "FAQs" + arrow, per the exact-percentage canvas above */}
+      <div className="relative mx-auto mb-8 max-w-3xl" style={{ aspectRatio: "1484 / 490.77" }}>
+        <div className="pointer-events-none absolute" style={{ left: "37.87%", top: "0%", width: "62.13%", height: "77.44%" }} aria-hidden>
+          <Image src="/images/faq/cloud-a.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+        <h2
+          className="absolute flex items-center justify-center text-center font-bold"
+          style={{ left: "61.72%", top: "32.40%", width: "20.28%", height: "17.53%", fontSize: "clamp(20px, 3.2vw, 40px)" }}
+        >
+          FAQs
+        </h2>
+        <div className="pointer-events-none absolute" style={{ left: "0%", top: "44.44%", width: "18.19%", height: "55.58%" }} aria-hidden>
+          <Image src="/images/faq/arrow.svg" alt="" fill unoptimized className="object-contain" />
+        </div>
       </div>
 
-      <h2 className="relative mx-auto mb-10 max-w-3xl text-5xl font-bold sm:text-6xl md:text-[64px]">FAQs</h2>
+      {/* Second cloud + horizontal dashed line, anchored near the question list —
+          see file header for why these aren't part of the canvas above */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-10 bottom-8 w-[26vw] max-w-64"
+        style={{ aspectRatio: "513 / 397" }}
+      >
+        <Image src="/images/faq/cloud-b.png" alt="" fill unoptimized className="object-contain" />
+      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-[38%] w-[19vw] max-w-48 -translate-y-1/2"
+        style={{ aspectRatio: "367.667 / 53.333" }}
+      >
+        <Image src="/images/faq/dashed-h.svg" alt="" fill unoptimized className="object-contain object-left" />
+      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-10 top-16 w-[24vw] max-w-72"
+        style={{ aspectRatio: "184 / 569" }}
+      >
+        <Image src="/images/faq/dashed-line.svg" alt="" fill unoptimized className="object-contain object-right-top" />
+      </div>
+
       <ol className="relative mx-auto max-w-3xl list-decimal space-y-8 pl-8">
         {FAQS.map((faq, i) => (
           <FaqItem
