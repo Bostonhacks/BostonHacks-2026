@@ -68,35 +68,39 @@ export default function TrackCard({
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
-        className="relative flex-1 overflow-hidden rounded-2xl text-left shadow-md transition-transform hover:-translate-y-0.5"
-        style={{ backgroundColor: "var(--track-body)" }}
+        className="relative flex-1 text-left shadow-md transition-transform hover:-translate-y-0.5"
       >
-        <div
-          className="whitespace-nowrap px-6 py-4 text-center font-presicav text-2xl font-bold uppercase text-white sm:text-3xl md:text-4xl"
-          style={{ backgroundColor: HEADER_BG[color] }}
-        >
-          {title}
+        {/* overflow-hidden lives on this inner wrapper, not the button itself, so the
+            corner accent below (which intentionally sits outside the sign's bounds,
+            per Figma) doesn't get clipped along with the sign's own rounded corners. */}
+        <div className="relative overflow-hidden rounded-2xl" style={{ backgroundColor: "var(--track-body)" }}>
+          <div
+            className="whitespace-nowrap px-6 py-4 text-center font-presicav text-2xl font-bold uppercase text-white sm:text-3xl md:text-4xl"
+            style={{ backgroundColor: HEADER_BG[color] }}
+          >
+            {title}
+          </div>
+          {isOpen ? (
+            <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
+          ) : (
+            <p className="flex items-center justify-center gap-2 px-6 py-8 text-center font-presicav text-2xl font-bold uppercase tracking-wide text-black sm:text-3xl">
+              {subtitle}
+              {color === "green" && (
+                <span className="relative -mt-1 h-5 w-5 shrink-0" aria-hidden>
+                  <Image src="/images/trackcard/pointer.svg" alt="" fill unoptimized className="object-contain" />
+                </span>
+              )}
+            </p>
+          )}
+          <Image
+            src="/images/trackcard/sign-border.png"
+            alt=""
+            fill
+            unoptimized
+            aria-hidden
+            className="pointer-events-none object-fill"
+          />
         </div>
-        {isOpen ? (
-          <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
-        ) : (
-          <p className="flex items-center justify-center gap-2 px-6 py-8 text-center font-presicav text-2xl font-bold uppercase tracking-wide text-black sm:text-3xl">
-            {subtitle}
-            {color === "green" && (
-              <span className="relative -mt-1 h-5 w-5 shrink-0" aria-hidden>
-                <Image src="/images/trackcard/pointer.svg" alt="" fill unoptimized className="object-contain" />
-              </span>
-            )}
-          </p>
-        )}
-        <Image
-          src="/images/trackcard/sign-border.png"
-          alt=""
-          fill
-          unoptimized
-          aria-hidden
-          className="pointer-events-none object-fill"
-        />
         <div
           className={`pointer-events-none absolute -top-3 h-8 w-8 ${ACCENT_SIDE[color] === "left" ? "-left-3" : "-right-3"}`}
           aria-hidden

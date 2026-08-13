@@ -40,18 +40,13 @@ const HIGHLIGHT: CSSProperties = {
   backgroundImage: "linear-gradient(transparent 60%, var(--faq-answer-border) 60%)",
 };
 
-function Chevron() {
-  return (
-    <svg width="28" height="16" viewBox="0 0 28 16" fill="none" aria-hidden>
-      <path d="M2 2L14 14L26 2" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
+// RL/GL/BL are pre-drawn Figma image assets (462:210/215/220), not CSS pills + text —
+// downloaded via download_assets so the hand-lettered "RL"/"GL"/"BL" glyphs render
+// exactly as designed instead of an approximated small CSS label.
 const LINES = [
-  { label: "RL", color: "var(--track-red)" },
-  { label: "GL", color: "var(--track-green)" },
-  { label: "BL", color: "var(--track-blue)" },
+  { label: "RL", src: "/images/hero/badge-red.svg" },
+  { label: "GL", src: "/images/hero/badge-green.svg" },
+  { label: "BL", src: "/images/hero/badge-blue.svg" },
 ];
 
 export default function Hero() {
@@ -114,19 +109,18 @@ export default function Hero() {
           <Image src="/images/hero/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
         </div>
         {LINES.map((line, i) => (
-          <span
+          <div
             key={line.label}
-            className="absolute flex items-center justify-center rounded-full text-[9px] font-bold text-white sm:text-xs"
+            className="absolute"
             style={{
               left: "27.78%",
               top: `${[74.18, 83.98, 89.73][i]}%`,
               width: "7.28%",
               height: "3.57%",
-              backgroundColor: line.color,
             }}
           >
-            {line.label}
-          </span>
+            <Image src={line.src} alt={line.label} fill unoptimized className="object-contain" />
+          </div>
         ))}
       </div>
 
@@ -145,9 +139,11 @@ export default function Hero() {
           </a>
         </div>
 
-        <div aria-hidden className="mt-16 flex flex-col items-start gap-1 text-black/70">
-          <Chevron />
-          <Chevron />
+        {/* Scroll cue, per 462:127 — the actual hand-drawn double-chevron asset
+            (rotate-90 in Figma's own source, already baked into the exported bitmap),
+            not a hand-authored SVG path. */}
+        <div aria-hidden className="relative mt-16 h-10 w-7">
+          <Image src="/images/hero/scroll-chevron.png" alt="" fill unoptimized className="object-contain" />
         </div>
       </div>
     </section>
