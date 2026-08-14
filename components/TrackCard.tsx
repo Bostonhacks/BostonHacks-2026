@@ -26,18 +26,21 @@ const MASCOT_SRC: Record<TrackColor, string> = {
   red: "/images/trackcard/train-red.svg",
 };
 
-// Small hand-drawn accents per track (462:661 "#", 462:674 refresh-arrow,
-// 462:676 ">>"), positioned per their source coordinates: left corner for
-// blue/green, right corner for red.
+// Small hand-drawn accents per track (462:661 "#", 462:674 curved arrow, 462:676
+// ">>"), positioned as an exact percentage of the sign's own box — computed
+// directly from each accent's real Figma coordinates relative to its sign frame,
+// not a generic "hover above one corner" treatment (each one sits differently:
+// the "#" pokes out past the left edge vertically upper-mid, the arrow and ">>"
+// sit mostly INSIDE the sign near its left/right edge, vertically centered).
 const ACCENT_SRC: Record<TrackColor, string> = {
   blue: "/images/trackcard/accent-blue.png",
   green: "/images/trackcard/accent-green.png",
   red: "/images/trackcard/accent-red.png",
 };
-const ACCENT_SIDE: Record<TrackColor, "left" | "right"> = {
-  blue: "left",
-  green: "left",
-  red: "right",
+const ACCENT_RECT: Record<TrackColor, { left: string; top: string; width: string; height: string }> = {
+  blue: { left: "-4.20%", top: "10.55%", width: "16.32%", height: "73.81%" },
+  green: { left: "0.32%", top: "27.81%", width: "19.55%", height: "63.10%" },
+  red: { left: "78.80%", top: "27.21%", width: "23.46%", height: "56.55%" },
 };
 
 // Mascot train icon sits on the opposite side from Track Two vs. One/Three in the
@@ -101,15 +104,13 @@ export default function TrackCard({
             className="pointer-events-none object-fill"
           />
         </div>
-        <div
-          className={`pointer-events-none absolute -top-3 h-8 w-8 ${ACCENT_SIDE[color] === "left" ? "-left-3" : "-right-3"}`}
-          aria-hidden
-        >
+        <div className="pointer-events-none absolute" style={ACCENT_RECT[color]} aria-hidden>
           <Image src={ACCENT_SRC[color]} alt="" fill unoptimized className="object-contain" />
         </div>
       </button>
 
-      <div className="relative h-20 w-16 shrink-0" aria-hidden>
+      {/* Mascot — Figma's own aspect ratio (175:250) for all three, per 462:282/298/317 */}
+      <div className="relative w-16 shrink-0" style={{ aspectRatio: "175 / 250" }} aria-hidden>
         <Image src={MASCOT_SRC[color]} alt="" fill unoptimized className="object-contain" />
       </div>
     </div>
