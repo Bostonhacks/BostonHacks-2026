@@ -30,15 +30,52 @@ export default function Countdown() {
   const mounted = remaining !== null;
 
   return (
-    <section aria-label="Countdown" className="relative w-full overflow-hidden px-8 py-16 font-akshar text-black">
-      {/* Background squiggle, per Figma node 462:438 */}
-      <div aria-hidden className="pointer-events-none absolute -right-24 bottom-0 hidden h-64 w-[500px] opacity-60 lg:block">
-        <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
+    <section
+      aria-label="Countdown"
+      className="relative isolate w-full overflow-hidden bg-white px-8 py-16 font-akshar text-black"
+    >
+      {/* Blueprint grid, per Figma nodes 462:396/462:420 — present throughout this
+          area in the source but previously missing here entirely. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
+            "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
+
+      {/* Yellow route line, per Figma node 462:439 — exact-percentage-canvas
+          technique, see Hero.tsx for the full rationale. Sized from the SVG's
+          own true rendered dimensions (1305.21 x 1808.59), not the nominal
+          Figma frame box (1286.35 x 1807.84) — the frame's own reference code
+          insets the image slightly beyond its frame (rounded line-cap
+          overflow), so sizing to the frame alone shrinks the rendered line a
+          few percent thinner than Figma actually draws it. Anchored at Figma
+          point (414.38, 9845.03), adjusted from the frame's (420.81, 9845.03)
+          for the same left-inset reason. Previously hidden below the `lg`
+          breakpoint entirely (shown on desktop only) — now visible at every
+          viewport width, consistent with the rest of the site. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0"
+        style={{ width: "90.64%", marginLeft: "28.78%", aspectRatio: "1305.21 / 1808.59" }}
+      >
+        <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
       </div>
 
-      {/* Yellow route line, per Figma node 462:439 */}
-      <div aria-hidden className="pointer-events-none absolute left-4 top-8 hidden h-[500px] w-64 lg:block">
-        <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
+      {/* Background squiggle, per Figma node 462:438 — get_metadata reports a
+          layout box (2033x1393 at x=1769, i.e. mostly off the right edge of the
+          viewport) that doesn't match what get_screenshot actually renders for
+          this vector (1440x597, i.e. clearly meant to span close to full
+          viewport width) — trusting the rendered aspect ratio over the
+          transform-space metadata here. Positioned independently (viewport-
+          width-relative, own aspect ratio) rather than folded into the
+          yellow-line canvas above, same principle as TracksSection's hook line. */}
+      <div aria-hidden className="pointer-events-none absolute left-0 top-16 w-full opacity-70" style={{ aspectRatio: "1440 / 597" }}>
+        <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
       </div>
 
       <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>

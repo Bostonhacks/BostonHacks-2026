@@ -74,9 +74,30 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/cloud-b.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Green route line, per 462:539 */}
-        <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "38.35%" }}>
-          <Image src="/images/theme/line-green.png" alt="" fill unoptimized className="object-contain" />
+        {/* Squiggle line cluster (red/blue/yellow/green zigzags + thin hand-drawn
+            horizontal lines), per 462:543 "Abstract View V 1" — previously missing
+            entirely. Figma's own reference renders this via object-cover from a raw
+            source image whose aspect ratio already matches this box (0.7077 either
+            way), so it's a plain uniform-scale fill, not a crop. */}
+        <div className="pointer-events-none absolute" style={{ left: "55.53%", top: "44.24%", width: "46.22%", height: "54.78%" }}>
+          <Image src="/images/theme/squiggle-lines.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Small pen-flourish doodles, per 462:523/462:524 — previously missing. */}
+        <div className="pointer-events-none absolute" style={{ left: "48.90%", top: "4.84%", width: "10.85%", height: "5.06%" }}>
+          <Image src="/images/theme/doodle-a.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+        <div className="pointer-events-none absolute" style={{ left: "14.42%", top: "22.60%", width: "10.94%", height: "5.09%" }}>
+          <Image src="/images/theme/doodle-b.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Green route line, per 462:539 — was using a badly-cropped 254x1112 PNG
+            (a stray/incorrect export, similar to the countdown-squiggle bug) that
+            only showed a sliver of the actual line with a single station dot,
+            reading as "missing" at a glance. The correct asset is the node's own
+            source SVG, 926.948 x 1111.49, with two station dots. */}
+        <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "40.13%" }}>
+          <Image src="/images/theme/line-green.svg" alt="" fill unoptimized className="object-contain" />
         </div>
 
         {/* CITGO, per 462:481 */}
@@ -98,11 +119,21 @@ export default function ThemeGraphics({ text }: { text: string }) {
             className="pointer-events-none object-fill"
           />
         </div>
-        <div className="pointer-events-none absolute -rotate-2" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "8.54%" }}>
-          <Image src="/images/theme/mbta.png" alt="" fill unoptimized className="object-contain" />
+        {/* MBTA/+BOSTON now use the actual source SVGs (with proper compound-path
+            letter holes — B's two counters, A's triangle, BOSTON's O's) instead of
+            flattened PNG exports. The PNG-then-flood-fill-from-edges approach used
+            everywhere else in this file correctly clears the *outer* background but
+            can never reach fully enclosed holes like these (they're not connected to
+            the image border), so they stayed solid white/black instead of letting
+            the yellow box show through — confirmed by rendering the raw SVGs over a
+            yellow test background and comparing to Figma's reference. Height
+            percentages recomputed from each SVG's own true aspect ratio rather than
+            the frame's nominal box, same reasoning as the route-line fixes above. */}
+        <div className="pointer-events-none absolute -rotate-2" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "6.24%" }}>
+          <Image src="/images/theme/mbta.svg" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "2.66%" }}>
-          <Image src="/images/theme/plus-boston.png" alt="" fill unoptimized className="object-contain" />
+        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "1.30%" }}>
+          <Image src="/images/theme/plus-boston.svg" alt="" fill unoptimized className="object-contain" />
         </div>
 
         {/* Ant/crab doodle, per 462:506 */}
