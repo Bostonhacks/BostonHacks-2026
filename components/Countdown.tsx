@@ -32,16 +32,7 @@ export default function Countdown() {
   return (
     <section
       aria-label="Countdown"
-      className="relative isolate w-full overflow-hidden px-8 py-16 font-akshar text-black"
-      style={{
-        // Soft blue wash, per Figma node 462:419 (Rectangle 2208) — its own exact
-        // gradient stops, not a guess: white(20%) -> blue(20%) at ~49.5% -> white(20%).
-        // The section previously showed a stray, fully-opaque page-wide blue gradient
-        // (a leftover `body` background rule from before this redesign) instead of
-        // this much softer, locally-scoped wash — that's what "too blue" was.
-        backgroundImage:
-          "linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(0,170,225,0.2) 49.5%, rgba(255,255,255,0.2) 100%)",
-      }}
+      className="relative isolate w-full overflow-hidden bg-white px-8 py-16 font-akshar text-black"
     >
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — present throughout this
           area in the source but previously missing here entirely. */}
@@ -57,15 +48,20 @@ export default function Countdown() {
       />
 
       {/* Yellow route line, per Figma node 462:439 — exact-percentage-canvas
-          technique, see Hero.tsx for the full rationale. Canvas native size
-          1286.35 x 1807.84px, anchored at Figma point (420.81, 9845.03).
-          Previously hidden below the `lg` breakpoint entirely (shown on desktop
-          only) and undersized/mispositioned even there — now visible and sized
-          at every viewport width, consistent with the rest of the site. */}
+          technique, see Hero.tsx for the full rationale. Sized from the SVG's
+          own true rendered dimensions (1305.21 x 1808.59), not the nominal
+          Figma frame box (1286.35 x 1807.84) — the frame's own reference code
+          insets the image slightly beyond its frame (rounded line-cap
+          overflow), so sizing to the frame alone shrinks the rendered line a
+          few percent thinner than Figma actually draws it. Anchored at Figma
+          point (414.38, 9845.03), adjusted from the frame's (420.81, 9845.03)
+          for the same left-inset reason. Previously hidden below the `lg`
+          breakpoint entirely (shown on desktop only) — now visible at every
+          viewport width, consistent with the rest of the site. */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-0 top-0"
-        style={{ width: "89.33%", marginLeft: "29.22%", aspectRatio: "1286.35 / 1807.84" }}
+        style={{ width: "90.64%", marginLeft: "28.78%", aspectRatio: "1305.21 / 1808.59" }}
       >
         <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
       </div>

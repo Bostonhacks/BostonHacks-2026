@@ -21,7 +21,7 @@ export default function TracksSection() {
           the hook shape (-rotate-120 -scale-y-100), so that transform is required here
           too — dropping the raw asset in flat renders a plain diagonal line. */}
       <div aria-hidden className="pointer-events-none absolute -left-16 top-0 hidden h-[30rem] w-[25rem] items-center justify-center xl:flex">
-        <div className="relative -rotate-120 -scale-y-100" style={{ width: "17rem", height: "19.8rem" }}>
+        <div className="relative -rotate-120 -scale-y-100" style={{ width: "17rem", height: "20.38rem" }}>
           <Image src="/images/tracks/line-red-hook.svg" alt="" fill unoptimized className="object-contain" />
         </div>
       </div>

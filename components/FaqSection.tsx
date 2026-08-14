@@ -85,12 +85,16 @@ export default function FaqSection() {
       >
         <Image src="/images/faq/dashed-h.svg" alt="" fill unoptimized className="object-contain object-left" />
       </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-10 top-16 w-[24vw] max-w-72"
-        style={{ aspectRatio: "184 / 569" }}
-      >
-        <Image src="/images/faq/dashed-line.svg" alt="" fill unoptimized className="object-contain object-right-top" />
+      {/* This one is rotated -90deg in Figma's own source (a landscape line frame
+          spun to read as a near-vertical diagonal) — the previous version sized
+          the container to the already-rotated portrait footprint (184x569) but
+          never applied the rotation itself, so the landscape asset (600x213
+          native) got squashed flat into a portrait box instead of rotated into
+          it. That's what was rendering as a barely-visible sliver. */}
+      <div aria-hidden className="pointer-events-none absolute -right-10 top-16 w-[42vw] max-w-[26rem]" style={{ aspectRatio: "600.232 / 212.706" }}>
+        <div className="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 -rotate-90">
+          <Image src="/images/faq/dashed-line.svg" alt="" fill unoptimized className="object-contain" />
+        </div>
       </div>
 
       <ol className="relative mx-auto max-w-3xl list-decimal space-y-8 pl-8">
