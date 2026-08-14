@@ -53,7 +53,7 @@ export default function Hero() {
   return (
     <section
       aria-label="Hero"
-      className="relative w-full overflow-hidden bg-white px-8 pb-20 pt-10 font-akshar text-black"
+      className="relative isolate w-full overflow-hidden bg-white px-8 pb-20 pt-10 font-akshar text-black"
       style={{ aspectRatio: "1440 / 2103" }}
     >
       <div

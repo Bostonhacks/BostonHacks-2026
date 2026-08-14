@@ -74,6 +74,23 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/cloud-b.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
+        {/* Squiggle line cluster (red/blue/yellow/green zigzags + thin hand-drawn
+            horizontal lines), per 462:543 "Abstract View V 1" — previously missing
+            entirely. Figma's own reference renders this via object-cover from a raw
+            source image whose aspect ratio already matches this box (0.7077 either
+            way), so it's a plain uniform-scale fill, not a crop. */}
+        <div className="pointer-events-none absolute" style={{ left: "55.53%", top: "44.24%", width: "46.22%", height: "54.78%" }}>
+          <Image src="/images/theme/squiggle-lines.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {/* Small pen-flourish doodles, per 462:523/462:524 — previously missing. */}
+        <div className="pointer-events-none absolute" style={{ left: "48.90%", top: "4.84%", width: "10.85%", height: "5.06%" }}>
+          <Image src="/images/theme/doodle-a.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+        <div className="pointer-events-none absolute" style={{ left: "14.42%", top: "22.60%", width: "10.94%", height: "5.09%" }}>
+          <Image src="/images/theme/doodle-b.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
         {/* Green route line, per 462:539 */}
         <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "38.35%" }}>
           <Image src="/images/theme/line-green.png" alt="" fill unoptimized className="object-contain" />

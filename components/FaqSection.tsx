@@ -40,7 +40,19 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black">
+    <section id="faq" className="relative isolate overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black">
+      {/* Blueprint grid, per Figma nodes 462:396/462:420 — was missing entirely. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
+            "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
+
       {/* Header cluster: cloud + "FAQs" + arrow, per the exact-percentage canvas above */}
       <div className="relative mx-auto mb-8 max-w-3xl" style={{ aspectRatio: "1484 / 490.77" }}>
         <div className="pointer-events-none absolute" style={{ left: "37.87%", top: "0%", width: "62.13%", height: "77.44%" }} aria-hidden>

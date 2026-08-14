@@ -30,15 +30,56 @@ export default function Countdown() {
   const mounted = remaining !== null;
 
   return (
-    <section aria-label="Countdown" className="relative w-full overflow-hidden px-8 py-16 font-akshar text-black">
-      {/* Background squiggle, per Figma node 462:438 */}
-      <div aria-hidden className="pointer-events-none absolute -right-24 bottom-0 hidden h-64 w-[500px] opacity-60 lg:block">
-        <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
+    <section
+      aria-label="Countdown"
+      className="relative isolate w-full overflow-hidden px-8 py-16 font-akshar text-black"
+      style={{
+        // Soft blue wash, per Figma node 462:419 (Rectangle 2208) — its own exact
+        // gradient stops, not a guess: white(20%) -> blue(20%) at ~49.5% -> white(20%).
+        // The section previously showed a stray, fully-opaque page-wide blue gradient
+        // (a leftover `body` background rule from before this redesign) instead of
+        // this much softer, locally-scoped wash — that's what "too blue" was.
+        backgroundImage:
+          "linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(0,170,225,0.2) 49.5%, rgba(255,255,255,0.2) 100%)",
+      }}
+    >
+      {/* Blueprint grid, per Figma nodes 462:396/462:420 — present throughout this
+          area in the source but previously missing here entirely. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
+            "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
+
+      {/* Yellow route line, per Figma node 462:439 — exact-percentage-canvas
+          technique, see Hero.tsx for the full rationale. Canvas native size
+          1286.35 x 1807.84px, anchored at Figma point (420.81, 9845.03).
+          Previously hidden below the `lg` breakpoint entirely (shown on desktop
+          only) and undersized/mispositioned even there — now visible and sized
+          at every viewport width, consistent with the rest of the site. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0"
+        style={{ width: "89.33%", marginLeft: "29.22%", aspectRatio: "1286.35 / 1807.84" }}
+      >
+        <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
       </div>
 
-      {/* Yellow route line, per Figma node 462:439 */}
-      <div aria-hidden className="pointer-events-none absolute left-4 top-8 hidden h-[500px] w-64 lg:block">
-        <Image src="/images/countdown/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
+      {/* Background squiggle, per Figma node 462:438 — get_metadata reports a
+          layout box (2033x1393 at x=1769, i.e. mostly off the right edge of the
+          viewport) that doesn't match what get_screenshot actually renders for
+          this vector (1440x597, i.e. clearly meant to span close to full
+          viewport width) — trusting the rendered aspect ratio over the
+          transform-space metadata here. Positioned independently (viewport-
+          width-relative, own aspect ratio) rather than folded into the
+          yellow-line canvas above, same principle as TracksSection's hook line. */}
+      <div aria-hidden className="pointer-events-none absolute left-0 top-16 w-full opacity-70" style={{ aspectRatio: "1440 / 597" }}>
+        <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
       </div>
 
       <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
