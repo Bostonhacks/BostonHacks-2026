@@ -91,9 +91,13 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/doodle-b.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Green route line, per 462:539 */}
-        <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "38.35%" }}>
-          <Image src="/images/theme/line-green.png" alt="" fill unoptimized className="object-contain" />
+        {/* Green route line, per 462:539 — was using a badly-cropped 254x1112 PNG
+            (a stray/incorrect export, similar to the countdown-squiggle bug) that
+            only showed a sliver of the actual line with a single station dot,
+            reading as "missing" at a glance. The correct asset is the node's own
+            source SVG, 926.948 x 1111.49, with two station dots. */}
+        <div className="pointer-events-none absolute" style={{ left: "60.10%", top: "34.81%", width: "39.90%", height: "40.13%" }}>
+          <Image src="/images/theme/line-green.svg" alt="" fill unoptimized className="object-contain" />
         </div>
 
         {/* CITGO, per 462:481 */}

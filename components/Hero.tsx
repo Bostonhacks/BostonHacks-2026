@@ -26,12 +26,23 @@ import Image from "next/image";
 //   cloud A      70.75 / 48.64 / 29.25 / 11.75   (462:128)
 //   cloud B      40.62 / 13.79 / 16.55 / 12.46   (462:129)
 //   sparkle      80.22 / 75.13 /  7.57 /  8.13   (462:126)
-//   blue line     1.01 / 11.22 / 40.43 / 39.37   (462:164)
-//   red line      0.00 /-10.41 / 42.48 / 41.37   (462:168)
-//   yellow line  49.12 / 33.62 / 48.24 / 66.38   (462:171)
+//   blue line     1.01 / 10.42 / 40.43 / 40.95   (462:164)
+//   red line      0.00 /-11.63 / 42.48 / 43.79   (462:168)
+//   yellow line  48.83 / 33.29 / 49.81 / 66.99   (462:171)
 //   RL badge     27.78 / 74.18 /  7.28 /  3.57   (462:210)
 //   GL badge     27.78 / 83.98 /  7.28 /  3.57   (462:215)
 //   BL badge     27.78 / 89.73 /  7.28 /  3.57   (462:220)
+//
+// The three route lines each get a small extra size/position correction beyond
+// their nominal Figma frame box: get_design_context reports these frames with
+// an "inset" (e.g. `inset-[-2.03%_0_-1.97%_0]`) meaning the actual SVG content
+// intentionally overflows its own frame by a couple percent — the frame's
+// rounded line-end caps extend past its mathematical bounding box. Sizing the
+// container to only the nominal (smaller) frame and letting object-contain
+// shrink the true asset to fit was making every line render a few percent
+// thinner than Figma actually draws it. Fixed by using each SVG's true
+// rendered width/height (confirmed against the downloaded source files, not
+// just the frame metadata) instead of the nominal frame box.
 
 // Marker-highlight look via a background gradient painted behind the text itself,
 // rather than an absolutely-positioned sibling (which needs its own stacking
@@ -99,13 +110,13 @@ export default function Hero() {
         <div className="absolute" style={{ left: "80.22%", top: "75.13%", width: "7.57%", height: "8.13%" }}>
           <Image src="/images/hero/sparkle.png" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="absolute" style={{ left: "1.01%", top: "11.22%", width: "40.43%", height: "39.37%" }}>
+        <div className="absolute" style={{ left: "1.01%", top: "10.42%", width: "40.43%", height: "40.95%" }}>
           <Image src="/images/hero/line-blue.svg" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="absolute" style={{ left: "0%", top: "-10.41%", width: "42.48%", height: "41.37%" }}>
+        <div className="absolute" style={{ left: "0%", top: "-11.63%", width: "42.48%", height: "43.79%" }}>
           <Image src="/images/hero/line-red.svg" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="absolute" style={{ left: "49.12%", top: "33.62%", width: "48.24%", height: "66.38%" }}>
+        <div className="absolute" style={{ left: "48.83%", top: "33.29%", width: "49.81%", height: "66.99%" }}>
           <Image src="/images/hero/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
         </div>
         {LINES.map((line, i) => (
