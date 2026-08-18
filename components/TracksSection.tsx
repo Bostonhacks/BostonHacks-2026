@@ -19,8 +19,11 @@ export default function TracksSection() {
           down the left side past Track One, not a small corner accent. The source asset
           is a straight-ish diagonal that Figma's own reference code rotates/flips into
           the hook shape (-rotate-120 -scale-y-100), so that transform is required here
-          too — dropping the raw asset in flat renders a plain diagonal line. */}
-      <div aria-hidden className="pointer-events-none absolute -left-16 top-0 hidden h-[30rem] w-[25rem] items-center justify-center xl:flex">
+          too — dropping the raw asset in flat renders a plain diagonal line. Figma has
+          the hook's bend align with Track One's own top edge; the old centered-in-a-tall-
+          box approach put the bend down near the gap between Track One and Two instead —
+          positioned directly against the section top now instead of centered. */}
+      <div aria-hidden className="pointer-events-none absolute -left-16 top-8 hidden xl:block">
         <div className="relative -rotate-120 -scale-y-100" style={{ width: "17rem", height: "20.38rem" }}>
           <Image src="/images/tracks/line-red-hook.svg" alt="" fill unoptimized className="object-contain" />
         </div>
