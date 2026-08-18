@@ -112,7 +112,7 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
   };
 
   return (
-    <nav aria-label="Primary" className="relative w-full overflow-hidden bg-white">
+    <nav aria-label="Primary" className="sticky top-0 z-50 w-full overflow-hidden bg-white shadow-sm">
       {/* ---------- Desktop ---------- */}
       <div ref={navRef} className="relative mx-auto hidden h-[210px] max-w-[1440px] px-8 md:block">
         {/* Thick grey track band with dark rails — rounded ends */}
