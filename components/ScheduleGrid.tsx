@@ -62,15 +62,18 @@ export default function ScheduleGrid() {
         }}
       />
 
-      {/* Blue line + animated stops */}
-      <div className="pointer-events-none absolute inset-y-0 left-[52px] hidden w-3 flex-col items-center justify-between sm:flex" aria-hidden>
-        <div className="absolute inset-y-6 left-1/2 w-3 -translate-x-1/2 rounded-full" style={{ backgroundColor: "var(--track-blue)" }} />
+      {/* Blue line + animated stops — was hidden entirely below the `sm` breakpoint,
+          so mobile showed only the red cross-line with nothing passing through it.
+          Visible at every viewport width now (smaller on mobile), consistent with
+          the rest of the site's decorations. */}
+      <div className="pointer-events-none absolute inset-y-0 left-4 flex w-2 flex-col items-center justify-between sm:left-[52px] sm:w-3" aria-hidden>
+        <div className="absolute inset-y-6 left-1/2 w-2 -translate-x-1/2 rounded-full sm:w-3" style={{ backgroundColor: "var(--track-blue)" }} />
         {[0, 1, 2, 3, 4].map((i) => (
-          <span key={i} className="schedule-stop-a relative z-10 h-5 w-5 rounded-full bg-white" style={{ boxShadow: "0 0 0 5px var(--track-blue)", animationDelay: `${i * 0.6}s` }} />
+          <span key={i} className="schedule-stop-a relative z-10 h-4 w-4 rounded-full bg-white sm:h-5 sm:w-5" style={{ animationDelay: `${i * 0.6}s` }} />
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-6 pb-24 sm:pl-[130px]">
+      <div className="relative mx-auto max-w-4xl pb-24 pl-12 pr-6 sm:pl-[130px] sm:pr-6">
         <h2 className="relative mb-10 inline-block font-akshar text-5xl font-bold sm:text-6xl md:text-[64px]">
           <span className="relative z-10">Schedule</span>
           <span aria-hidden className="absolute inset-x-0 bottom-1 z-0 h-3.5" style={{ backgroundColor: "var(--track-blue)", opacity: 0.55 }} />
