@@ -105,14 +105,18 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/citgo.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Yellow MBTA box, per 462:479/462:480, with MBTA (462:491) and
-            "+ BOSTON" (462:498) inside at their own exact coordinates */}
-        <div
-          className="absolute rounded-lg"
-          style={{ left: "27.29%", top: "11.23%", width: "29.53%", height: "17.04%", backgroundColor: "#F7DD04" }}
-        >
+        {/* Yellow MBTA box, per 462:479/462:480. A flat CSS rect can never cleanly fill a
+            hand-drawn wavy outline — no matter how the rect is sized/positioned, the wave
+            dips inside the rect's straight edge in some spots (yellow overshoots past the
+            border) and bulges outside it in others (a white gap shows), and that's exactly
+            what earlier attempts here showed. Fixed at the asset level instead: the border
+            PNG's own transparent interior was flood-filled with the fill color (after first
+            stripping a baked-in gray anti-aliasing halo the source export had — a straight
+            alpha-based fill left a visible light ring around the stroke), producing one
+            combined image where the fill and outline are pixel-identical to the same shape. */}
+        <div className="pointer-events-none absolute" style={{ left: "27.29%", top: "11.23%", width: "29.53%", height: "17.04%" }}>
           <Image
-            src="/images/theme/mbta-box-border.png"
+            src="/images/theme/mbta-box-filled.png"
             alt=""
             fill
             unoptimized
@@ -128,11 +132,16 @@ export default function ThemeGraphics({ text }: { text: string }) {
             the yellow box show through — confirmed by rendering the raw SVGs over a
             yellow test background and comparing to Figma's reference. Height
             percentages recomputed from each SVG's own true aspect ratio rather than
-            the frame's nominal box, same reasoning as the route-line fixes above. */}
-        <div className="pointer-events-none absolute -rotate-2" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "6.24%" }}>
+            the frame's nominal box, same reasoning as the route-line fixes above.
+            Rotation: measured directly off a Figma reference screenshot (candidate
+            angle lines overlaid and compared against the letters' top edge) since
+            the Figma MCP session dropped mid-audit — MBTA tilts ~14deg clockwise
+            (previous -rotate-2 was both the wrong direction and far too subtle) and
+            +BOSTON carries its own, shallower ~9deg tilt rather than sitting flat. */}
+        <div className="pointer-events-none absolute" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "8.54%", transform: "rotate(14deg)" }}>
           <Image src="/images/theme/mbta.svg" alt="" fill unoptimized className="object-contain" />
         </div>
-        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "1.30%" }}>
+        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "2.66%", transform: "rotate(9deg)" }}>
           <Image src="/images/theme/plus-boston.svg" alt="" fill unoptimized className="object-contain" />
         </div>
 
@@ -146,10 +155,28 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/blocks.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Train illustration, per 462:225 */}
-        <div className="pointer-events-none absolute" style={{ left: "0%", top: "42.93%", width: "83.46%", height: "57.07%" }}>
+        {/* Train illustration, per 462:225 — given a gentle idle "chug" bob (bounce +
+            slight rock) instead of sitting perfectly still, since it's a train that's
+            visually mid-track. Kept small/subtle: this is a single flattened raster
+            (the source vectors aren't exported as separate wheel/body layers), so a
+            bounce is the honest amount of motion this asset can carry without faking
+            detail Figma doesn't provide. */}
+        <div
+          className="theme-train pointer-events-none absolute"
+          style={{ left: "0%", top: "42.93%", width: "83.46%", height: "57.07%" }}
+        >
           <Image src="/images/theme/train.png" alt="" fill unoptimized className="object-contain object-left-bottom" />
         </div>
+        <style>{`
+          @keyframes themeTrainChug {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25%      { transform: translateY(-1%) rotate(-0.3deg); }
+            50%      { transform: translateY(0) rotate(0deg); }
+            75%      { transform: translateY(-0.5%) rotate(0.25deg); }
+          }
+          .theme-train { animation: themeTrainChug 3.2s ease-in-out infinite; transform-origin: left bottom; }
+          @media (prefers-reduced-motion: reduce) { .theme-train { animation: none; } }
+        `}</style>
       </div>
     </section>
   );
