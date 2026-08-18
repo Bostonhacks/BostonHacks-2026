@@ -78,7 +78,20 @@ export default function Countdown() {
         <Image src="/images/countdown/squiggle.svg" alt="" fill unoptimized className="object-contain" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[290px]" style={{ aspectRatio: "868 / 2557" }}>
+      {/* Sign position/size, per Figma node 462:447/462:449 — measured both from
+          the node's raw coordinates (x=827, width=579 in the 1440-wide frame)
+          and directly off the rendered reference screenshot (pixel bbox
+          579-939 of a 978px-wide full-page capture, i.e. the same ~77.6%
+          center / ~36.8% width once scaled to 1440) — two independent methods
+          agreeing confirms it: the sign sits right-of-center and noticeably
+          larger than a small centered card, not centered like the previous
+          mx-auto/max-w-[290px] had it. Kept centered+capped below `sm` only,
+          since pinning a 530px-equivalent sign at 77% across would overflow a
+          phone-width viewport and blow up the countdown digits inside it. */}
+      <div
+        className="relative mx-auto w-full max-w-[290px] sm:mx-0 sm:ml-[59.17%] sm:w-[36.81%] sm:max-w-none"
+        style={{ aspectRatio: "868 / 2557" }}
+      >
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
         {/* Vertical line + stop dots, per Rectangle 2211/2212 and Ellipse 86/87.
