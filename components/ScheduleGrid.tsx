@@ -86,9 +86,13 @@ export default function ScheduleGrid() {
       </div>
 
       <div className="relative mx-auto max-w-4xl pb-24 pl-12 pr-6 sm:pl-[130px] sm:pr-6">
-        <h2 className="relative mb-10 inline-block font-akshar text-5xl font-bold sm:text-6xl md:text-[64px]">
-          <span className="relative z-10">Schedule</span>
-          <span aria-hidden className="absolute inset-x-0 bottom-1 z-0 h-3.5" style={{ backgroundColor: "var(--track-blue)", opacity: 0.55 }} />
+        {/* Marker-highlight, per Figma: a solid #206DDF band cutting through the
+            lower half of the letters (same schedule-specific blue as the route
+            line, not --track-blue) — was a thin translucent strip below the
+            baseline instead. Same background-gradient-behind-text technique as
+            Hero's Login/Sponsor Us highlight. */}
+        <h2 className="relative mb-10 inline-block font-akshar text-5xl font-bold sm:text-6xl md:text-[64px]" style={{ backgroundImage: "linear-gradient(transparent 55%, #206DDF 55%)" }}>
+          Schedule
         </h2>
 
         <div className="space-y-8">
