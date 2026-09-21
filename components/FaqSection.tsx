@@ -37,10 +37,13 @@ const FAQS = [
 ];
 
 export default function FaqSection() {
+  // -1 = none open. Was a plain `useState(0)` with `onToggle={() => setOpenIndex(i)}`
+  // below — clicking an already-open question just set its own index again, a no-op,
+  // so there was no way to close one once opened.
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="faq" className="relative isolate overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black">
+    <section id="faq" className="relative isolate scroll-mt-[140px] overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black md:scroll-mt-[215px]">
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — was missing entirely. */}
       <div
         aria-hidden
@@ -104,7 +107,7 @@ export default function FaqSection() {
             question={faq.question}
             answer={faq.answer}
             isOpen={openIndex === i}
-            onToggle={() => setOpenIndex(i)}
+            onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
           />
         ))}
       </ol>

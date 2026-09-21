@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 // "image 299") instead of a CSS approximation: a hand-drawn MBTA canister/thermometer
 // sign, with the day/hour count, line, and stop dots overlaid at the same relative
 // positions as the original (percentages computed from the node's own coordinates).
-// Placeholder date until BostonHacks 2026 dates are officially announced.
-const TARGET_DATE = "2026-10-02T09:00:00-04:00";
+// BostonHacks 2026 start date, officially announced: November 21, 2026, 9:00 AM ET.
+// -05:00 (EST, not EDT) — DST ends Nov 1, 2026, so Boston is on standard time by then.
+const TARGET_DATE = "2026-11-21T09:00:00-05:00";
 
 function getRemaining(target: Date) {
   const totalHours = Math.max(0, Math.floor((target.getTime() - Date.now()) / (1000 * 60 * 60)));
@@ -119,25 +120,30 @@ export default function Countdown() {
           style={{ left: "20.3%", top: "58%", boxShadow: "0 0 0 3px var(--track-body)" }}
         />
 
-        <p className="absolute font-inter text-[64px] font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
+        {/* Number size trimmed 64px→56px, and "Now"/"Hackathon" bumped up to match
+            that same 56px, per request — they were a tiny 10px caption before.
+            Icon/gap scaled up to stay paired with "Now" at its new size, and the
+            day number / "BostonHacks" line nudged down to give the now much-taller
+            labels room without overlapping. */}
+        <p className="absolute font-inter text-[56px] font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
           {mounted ? remaining.hours : "--"}
           <span className="font-medium">h</span>
         </p>
 
-        <div className="absolute flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
-          <Image src="/images/countdown/track-icon.svg" alt="" width={12} height={12} aria-hidden />
+        <div className="absolute flex items-center gap-2 text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
+          <Image src="/images/countdown/track-icon.svg" alt="" width={40} height={40} aria-hidden />
           Now
         </div>
 
-        <p className="absolute font-inter text-[64px] font-extrabold leading-none" style={{ left: "22.3%", top: "39%" }} aria-live="polite">
+        <p className="absolute font-inter text-[56px] font-extrabold leading-none" style={{ left: "22.3%", top: "43%" }} aria-live="polite">
           {mounted ? remaining.days : "--"}
           <span className="font-medium">d</span>
         </p>
 
-        <p className="absolute text-[10px] font-bold uppercase tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>
+        <p className="absolute text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>
           Hackathon
         </p>
-        <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "64.5%" }}>
+        <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "69%" }}>
           BostonHacks
         </p>
       </div>

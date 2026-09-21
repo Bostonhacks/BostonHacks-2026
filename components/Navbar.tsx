@@ -135,6 +135,20 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
           <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={78} height={67} priority unoptimized />
         </a>
 
+        {/* MLH official trust badge (public/images/navbar/mlh-badge.svg), natural
+            aspect ratio 392.79:688 — no Figma frame for this exists in the
+            wireframe file, so it's positioned/sized by eye next to the logo
+            rather than against a spec. */}
+        <a
+          href="https://mlh.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Major League Hacking"
+          className="absolute left-[210px] top-[100px] transition-transform hover:-translate-y-0.5"
+        >
+          <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={51} height={90} unoptimized />
+        </a>
+
         <ul className="absolute right-8 top-[18px] grid w-[76%] grid-cols-6 justify-items-center">
           {STATIONS.map((s, i) => (
             <li key={s.slug} ref={(el) => { stationRefs.current[i] = el; }} className="flex flex-col items-center">
@@ -162,6 +176,9 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
       <div className="md:hidden">
         <div className="flex items-center gap-3 border-b-4 border-ms-gray px-4 py-3">
           <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={44} height={38} priority unoptimized />
+          <a href="https://mlh.io" target="_blank" rel="noopener noreferrer" aria-label="Major League Hacking" className="shrink-0">
+            <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={22} height={39} unoptimized />
+          </a>
           <div className="relative h-[14px] flex-1" aria-hidden>
             <div className="absolute inset-x-0 top-0 h-[14px] rounded bg-ms-gray" />
             <div className="absolute inset-x-0 top-[5px] h-[4px] bg-ms-gray-darker" />
