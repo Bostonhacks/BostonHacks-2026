@@ -1,10 +1,12 @@
 // ScheduleGrid — FE-10 layout component.
 // MBTA transit-timetable: a blue subway line down the left with white station stops
 // that light up top->bottom to show the train moving stop to stop (Figma design comment),
-// Day 1/2/3 blocks as time-label + dotted-leader + event rows with color-coded day stops
-// (Red / Green / Blue), a "happening now" row, a red cross-line, and a faint blueprint grid.
-// Event data lives in scheduleData.ts (FE-11) — this component only groups/renders it,
-// so adding an event there requires no changes here.
+// Day 1/2 blocks (a real heading now, not a fake data row — see scheduleData.ts) as
+// time-label + dotted-leader + event rows with color-coded day stops (Red / Green),
+// a red cross-line, and a faint blueprint grid. Event data lives in scheduleData.ts
+// (FE-11) — this component only groups/renders it, so adding an event there requires
+// no changes here. Two real days, not three (the event doesn't run a third day) —
+// was Red/Green/Blue for a 3rd day that no longer exists.
 // ponytail: pure presentational, no state, so no "use client".
 
 import { SCHEDULE_EVENTS, type ScheduleEvent } from "./scheduleData";
@@ -12,10 +14,14 @@ import { SCHEDULE_EVENTS, type ScheduleEvent } from "./scheduleData";
 const DAY_COLOR: Record<ScheduleEvent["day"], string> = {
   1: "var(--track-red)",
   2: "var(--track-green)",
-  3: "var(--track-blue)",
 };
 
-const DAYS: ScheduleEvent["day"][] = [1, 2, 3];
+const DAY_LABEL: Record<ScheduleEvent["day"], string> = {
+  1: "Day 1 — Sat, Nov 21",
+  2: "Day 2 — Sun, Nov 22",
+};
+
+const DAYS: ScheduleEvent["day"][] = [1, 2];
 
 function ScheduleRow({ row, color }: { row: ScheduleEvent; color: string }) {
   return (
@@ -25,9 +31,13 @@ function ScheduleRow({ row, color }: { row: ScheduleEvent; color: string }) {
       }`}
       style={row.now ? { backgroundColor: "var(--faq-highlight)", color: "white" } : undefined}
     >
-      <span className="w-28 shrink-0 sm:w-32">{row.time}</span>
+      <span className="w-28 shrink-0 whitespace-nowrap sm:w-32">{row.time}</span>
       <span aria-hidden className="h-0 min-w-6 flex-1 border-b-[3px] border-dotted" style={{ borderColor: row.now ? "rgba(255,255,255,.6)" : "rgba(0,0,0,.35)" }} />
-      <span className="flex w-40 shrink-0 items-center gap-2 sm:w-52">
+      {/* Was a fixed w-40/w-52 — fine for the old short placeholder titles
+          ("Breakfast", "Yay"), too narrow for real ones ("Find Your Dream
+          Team", "Submissions Due, Judging Begins"), wrapping them onto a
+          second line. Sizes to content + whitespace-nowrap instead. */}
+      <span className="flex shrink-0 items-center gap-2 whitespace-nowrap">
         <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: row.now ? "#fff" : color }} />
         {row.title}
         {row.now && <span className="ml-auto text-xs font-bold uppercase tracking-wider">now</span>}
@@ -98,6 +108,7 @@ export default function ScheduleGrid() {
         <div className="space-y-8">
           {DAYS.map((day) => (
             <div key={day} className="space-y-0.5">
+              <h3 className="mb-2 pl-3 text-sm font-bold uppercase tracking-wide text-black/50">{DAY_LABEL[day]}</h3>
               {SCHEDULE_EVENTS.filter((e) => e.day === day).map((e) => (
                 <ScheduleRow key={`${e.day}-${e.time}-${e.title}`} row={e} color={DAY_COLOR[day]} />
               ))}
