@@ -119,6 +119,14 @@ export default function Hero() {
         <div className="absolute" style={{ left: "48.83%", top: "33.29%", width: "49.81%", height: "66.99%" }}>
           <Image src="/images/hero/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
         </div>
+
+        {/* Anchor for the Navbar's "Sign Up" station — previously had no matching
+            element on the page at all, so the link/scroll-spy did nothing. Positioned
+            at the blue/yellow route-line corner + cloud, per request. scroll-mt
+            (mobile nav height / Navbar's own desktop NAV_OFFSET) keeps the sticky
+            nav from covering this art once scrolled into place — same value used
+            on every other section anchor, see Navbar.tsx's NAV_OFFSET. */}
+        <div id="signup" aria-hidden className="absolute inset-x-0 scroll-mt-[140px] md:scroll-mt-[215px]" style={{ top: "30%" }} />
         {LINES.map((line, i) => (
           <div
             key={line.label}

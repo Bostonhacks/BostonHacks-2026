@@ -52,6 +52,42 @@ const MASCOT_SIDE: Record<TrackColor, "left" | "right"> = {
   red: "right",
 };
 
+// On-click-only extras, per Figma nodes 462:557/648:1677 ("Tracks - on click"):
+// the mascot train tilts, and a small hand-drawn crayon/marker appears — neither
+// exists in the default/closed card. Rotation angles are Figma's own transform
+// on the mascot wrapper; the crayon PNGs were exported already-rotated as
+// rendered on canvas (get_screenshot bakes transforms into the raster), so they
+// need no CSS rotation of their own, just placement.
+const MASCOT_ROTATE: Record<TrackColor, number> = {
+  blue: 9.75,
+  green: -9.74,
+  red: 9.37,
+};
+const CRAYON_SRC: Record<TrackColor, string> = {
+  blue: "/images/trackcard/crayon-blue.png",
+  green: "/images/trackcard/crayon-green.png",
+  red: "/images/trackcard/crayon-red.png",
+};
+// Native aspect ratio of each exported crayon PNG (34x37 / 43x42 / 39x40).
+const CRAYON_ASPECT: Record<TrackColor, string> = {
+  blue: "34 / 37",
+  green: "43 / 42",
+  red: "39 / 40",
+};
+// The crayon hangs off the SIGN's own bottom corner (not the mascot) — bottom-
+// right for tracks one/two, bottom-left for track three, per Figma's real
+// per-track coordinates (each artwork sits at the sign's own right/left edge,
+// not a side determined by which side the mascot happens to be on — track two's
+// mascot is on the left but its crayon is still bottom-right, same as track
+// one). Positioned as a sibling of ACCENT_RECT below, in the same button-
+// relative coordinate space so it isn't clipped by the sign's own
+// overflow-hidden, same reasoning as that accent.
+const CRAYON_RECT: Record<TrackColor, { left?: string; right?: string; bottom: string; width: string }> = {
+  blue: { right: "-6%", bottom: "-8%", width: "13%" },
+  green: { right: "-6%", bottom: "-8%", width: "13%" },
+  red: { left: "-6%", bottom: "-8%", width: "13%" },
+};
+
 export default function TrackCard({
   color,
   title,
@@ -76,7 +112,10 @@ export default function TrackCard({
         {/* overflow-hidden lives on this inner wrapper, not the button itself, so the
             corner accent below (which intentionally sits outside the sign's bounds,
             per Figma) doesn't get clipped along with the sign's own rounded corners. */}
-        <div className="relative overflow-hidden rounded-2xl" style={{ backgroundColor: "var(--track-body)" }}>
+        <div
+          className={`relative overflow-hidden rounded-2xl ${isOpen ? "animate-track-pop" : ""}`}
+          style={{ backgroundColor: "var(--track-body)" }}
+        >
           <div
             className="whitespace-nowrap px-6 py-4 text-center font-presicav text-2xl font-bold uppercase text-white sm:text-3xl md:text-4xl"
             style={{ backgroundColor: HEADER_BG[color] }}
@@ -84,7 +123,16 @@ export default function TrackCard({
             {title}
           </div>
           {isOpen ? (
-            <p className="px-6 py-8 text-center text-lg font-bold text-black">{description}</p>
+            // Per Figma's on-click reference (462:557): the sign itself grows
+            // dramatically taller (body ~5x its default height) to fit plain,
+            // large description text directly — no separate bordered box, no
+            // same-size text swap. Font size follows the same 48px-of-64px
+            // (0.75x the header's) scaling used for the header title below.
+            // The zoom-in pop (animate-track-pop, above) plays on the whole
+            // card, not just this text, each time it opens.
+            <div className="px-6 py-10 sm:py-14">
+              <p className="text-center text-lg font-bold leading-snug text-black sm:text-xl md:text-2xl">{description}</p>
+            </div>
           ) : (
             <p className="flex items-center justify-center gap-2 px-6 py-8 text-center font-presicav text-2xl font-bold uppercase tracking-wide text-black sm:text-3xl">
               {subtitle}
@@ -107,11 +155,26 @@ export default function TrackCard({
         <div className="pointer-events-none absolute" style={ACCENT_RECT[color]} aria-hidden>
           <Image src={ACCENT_SRC[color]} alt="" fill unoptimized className="object-contain" />
         </div>
+        {isOpen && (
+          <div
+            className="pointer-events-none absolute animate-track-pop"
+            style={{ ...CRAYON_RECT[color], aspectRatio: CRAYON_ASPECT[color] }}
+            aria-hidden
+          >
+            <Image src={CRAYON_SRC[color]} alt="" fill unoptimized className="object-contain" />
+          </div>
+        )}
       </button>
 
-      {/* Mascot — Figma's own aspect ratio (175:250) for all three, per 462:282/298/317 */}
+      {/* Mascot — Figma's own aspect ratio (175:250) for all three, per 462:282/298/317.
+          Tilts (MASCOT_ROTATE) only once opened, per the on-click reference. */}
       <div className="relative w-16 shrink-0" style={{ aspectRatio: "175 / 250" }} aria-hidden>
-        <Image src={MASCOT_SRC[color]} alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute inset-0 transition-transform duration-300"
+          style={{ transform: isOpen ? `rotate(${MASCOT_ROTATE[color]}deg)` : undefined }}
+        >
+          <Image src={MASCOT_SRC[color]} alt="" fill unoptimized className="object-contain" />
+        </div>
       </div>
     </div>
   );
