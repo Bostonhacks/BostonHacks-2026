@@ -2,12 +2,17 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 
 // Hero — FE-5. "2026 / BOSTONHACKS" title, Login + Sponsor Us CTAs with a
-// marker-highlight underline, and a scroll cue, in normal document flow
-// (independently responsive — Tailwind text sizes, not part of the canvas
-// below). All decorative art (clouds, sparkle, route lines, RL/GL/BL badges)
-// is positioned as a percentage of a fixed-aspect canvas computed directly
-// from the actual Figma coordinates of node 462:125 ("top"), the same
-// technique used in ThemeGraphics — see that file for the full rationale.
+// marker-highlight underline, and a scroll cue. All of it — decorative art
+// (clouds, sparkle, route lines, RL/GL/BL badges) AND the title/CTA/chevron
+// content — is positioned as a percentage of a fixed-aspect canvas computed
+// directly from the actual Figma coordinates of node 462:125 ("top"), the
+// same technique used in ThemeGraphics — see that file for the full
+// rationale. (An earlier version left the title/CTAs in normal document flow
+// as "independently responsive" — that drifted out of alignment with the
+// yellow line/clouds around it, since flow position doesn't track the
+// canvas's own percentage-based scaling. Content lives in its own sibling
+// canvas, sized identically to the decorative one below but without
+// aria-hidden/pointer-events-none, so it stays interactive/accessible.)
 //
 // Figma's "top" frame starts at y=-219 (219px above the visible viewport),
 // because in the source file the navbar logo shares one frame with all the
@@ -32,6 +37,11 @@ import Image from "next/image";
 //   RL badge     27.78 / 74.18 /  7.28 /  3.57   (462:210)
 //   GL badge     27.78 / 83.98 /  7.28 /  3.57   (462:215)
 //   BL badge     27.78 / 89.73 /  7.28 /  3.57   (462:220)
+//   2026         52.15 / 25.35 / 37.94 /  1.95   (462:200)
+//   BOSTONHACKS  51.86 / 27.29 / 38.53 /  6.66   (462:199)
+//   Login        60.01 / 37.95 /  4.83 /  1.95   (462:206)
+//   Sponsor Us   71.14 / 37.95 /  9.91 /  1.95   (462:208)
+//   chevron      60.89 / 44.55 /  4.64 /  6.89   (462:127)
 //
 // The three route lines each get a small extra size/position correction beyond
 // their nominal Figma frame box: get_design_context reports these frames with
@@ -143,25 +153,69 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-4xl">
-        <p className="text-2xl font-bold sm:text-3xl md:text-4xl">2026</p>
-        <h1 className="font-presicav text-4xl font-bold leading-[0.9] tracking-tight sm:text-6xl md:text-8xl">
-          BOSTONHACKS
+      {/* Content canvas — same size/position AND positioning scheme as the
+          decorative one above (absolute, left-0 top-0 — not just the same
+          width/aspect-ratio) so both stay pixel-aligned to one coordinate
+          space; interactive/accessible, so not aria-hidden. An earlier
+          version left this as position:relative — same size, but still in
+          normal document flow, which let its 142%-wide box contribute real
+          layout height to the section and misaligned/clipped the text it
+          contains. Text boxes below use only left/top + whitespace-nowrap,
+          no explicit width — Figma's own text-box widths were sized for HVD
+          Poster Clean/Helvetica's specific glyph metrics, which don't match
+          the substitute fonts used here (see below), so constraining to
+          that width risked clipping; sizing to content is safe since these
+          are single unbreakable words/short phrases. Font sizes use clamp()
+          rather than Tailwind's breakpoint classes because this now scales
+          continuously with the canvas's own percentage-based width, same as
+          FaqSection's "FAQs" heading and ThemeGraphics' badge text — a
+          breakpoint jump would drift out of size-sync with the canvas
+          between breakpoints. "2026"/Login/Sponsor Us ranges preserve the
+          same min/max this content used before (text-2xl/4xl, text-3xl/4xl).
+          Fonts, per Figma: those three are plain Helvetica:Bold
+          (font-helvetica overrides the section's inherited font-akshar) —
+          not Akshar/Presicav. BOSTONHACKS is set in "HVD Poster Clean", a
+          commercial font (HVD Fonts) — not something that can be downloaded
+          or embedded without a license, and not already in public/fonts.
+          A live-text substitute (font-presicav) risked clipping regardless
+          of size: Figma's own layout has BOSTONHACKS ending only ~5% of the
+          1440px reference viewport from its right edge (x=582..1371 of
+          1440), a margin that only works with HVD Poster Clean's actual
+          (narrower) letterforms. Provided directly as a pre-rendered image
+          (public/images/hero/bostonhacks-title.png, actually set in HVD
+          Poster Clean) instead — sidesteps the font-licensing problem
+          entirely and matches Figma exactly, pixel-for-pixel, rather than
+          approximating it. */}
+      <div className="absolute left-0 top-0" style={{ width: "142.22%", marginLeft: "-33.33%", aspectRatio: "2048 / 2103" }}>
+        <p
+          className="absolute whitespace-nowrap font-helvetica font-bold"
+          style={{ left: "52.15%", top: "25.35%", fontSize: "clamp(24px, 2.5vw, 36px)" }}
+        >
+          2026
+        </p>
+        <h1 className="absolute" style={{ left: "51.86%", top: "28%", width: "38.53%", aspectRatio: "569 / 70" }}>
+          <Image src="/images/hero/bostonhacks-title.png" alt="BOSTONHACKS" fill unoptimized className="object-contain object-left" />
         </h1>
 
-        <div className="mt-10 flex flex-wrap items-baseline gap-x-10 gap-y-4">
-          <a href="#login" className="inline-block text-3xl font-bold sm:text-4xl" style={HIGHLIGHT}>
-            Login
-          </a>
-          <a href="#sponsors" className="inline-block text-3xl font-bold sm:text-4xl" style={HIGHLIGHT}>
-            Sponsor Us
-          </a>
-        </div>
+        <a
+          href="#login"
+          className="absolute inline-block whitespace-nowrap font-helvetica font-bold"
+          style={{ left: "60.01%", top: "37.95%", fontSize: "clamp(24px, 2.5vw, 36px)", ...HIGHLIGHT }}
+        >
+          Login
+        </a>
+        <a
+          href="#sponsors"
+          className="absolute inline-block whitespace-nowrap font-helvetica font-bold"
+          style={{ left: "71.14%", top: "37.95%", fontSize: "clamp(24px, 2.5vw, 36px)", ...HIGHLIGHT }}
+        >
+          Sponsor Us
+        </a>
 
         {/* Scroll cue, per 462:127 — the actual hand-drawn double-chevron asset
             (rotate-90 in Figma's own source, already baked into the exported bitmap),
             not a hand-authored SVG path. */}
-        <div aria-hidden className="relative mt-16 h-10 w-7">
+        <div aria-hidden className="absolute" style={{ left: "60.89%", top: "44.55%", width: "4.64%", height: "6.89%" }}>
           <Image src="/images/hero/scroll-chevron.png" alt="" fill unoptimized className="object-contain" />
         </div>
       </div>

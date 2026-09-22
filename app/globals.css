@@ -280,6 +280,12 @@
   --font-presicav: "Presicav", sans-serif;
   --font-daysoftype: "DaysOfType", sans-serif;
   --font-inter: "Inter", sans-serif;
+  /* Figma specs plain Helvetica:Bold for the nav station labels and Hero's
+     "2026"/"Login"/"Sponsor Us" (462:198/200/201/202/203/204/206/208) — not
+     Akshar/Presicav. Helvetica itself isn't freely redistributable for web
+     embedding, so this is the standard system-font stack substitute (no font
+     file needed, always available). */
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-bubble-float: bubble-float 8s ease-in-out infinite;
