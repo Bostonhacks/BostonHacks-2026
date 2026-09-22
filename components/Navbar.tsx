@@ -194,7 +194,7 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
                   }`}
                 />
                 <span
-                  className={`mt-8 -rotate-45 whitespace-nowrap font-akshar text-2xl font-bold tracking-wide transition-colors group-hover:text-track-blue ${
+                  className={`mt-8 -rotate-45 whitespace-nowrap font-helvetica text-2xl font-bold tracking-wide transition-colors group-hover:text-track-blue ${
                     active === i ? "text-track-blue" : "text-black"
                   }`}
                 >
@@ -225,15 +225,9 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
         <ul className="flex flex-wrap items-center gap-2 px-4 py-3">
           {STATIONS.map((s, i) => (
             <li key={s.slug}>
-              <StationLink
-                s={s}
-                i={i}
-                className={`inline-block rounded-full border-[3px] bg-white px-4 py-1.5 font-akshar text-lg font-bold transition-colors ${
-                  active === i
-                    ? "border-track-blue text-track-blue"
-                    : "border-ms-gray text-black"
-                }`}
-              >
+              <StationLink s={s} i={i} className={`inline-block rounded-full border-[3px] bg-white px-4 py-1.5 font-helvetica text-lg font-bold transition-colors ${
+                active === i ? "border-track-blue text-track-blue" : "border-ms-gray text-black"
+              }`}>
                 {s.label}
               </StationLink>
             </li>
