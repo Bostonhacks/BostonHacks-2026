@@ -68,39 +68,94 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
     return () => window.removeEventListener("resize", onResize);
   }, [active, moveTrain]);
 
-  // Hash mode: scroll-spy — active station = last section whose top passed under the nav.
-  // (Route mode needs none of this; `active` is derived from the pathname above.)
+  // Hash mode: scroll-spy — active station = last section whose top has
+  // scrolled up past NAV_OFFSET. (Route mode needs none of this; `active` is
+  // derived from the pathname above.)
+  //
+  // REBUILT FROM SCRATCH after repeated "snaps back to the previous station"
+  // reports on click-driven navigation, through several increasingly complex
+  // attempts (IntersectionObserver with a thin percentage-based detection
+  // band, then with a Set of intersecting ids, then suppression keyed off the
+  // `scrollend` event). The detection rule itself — scan every section's live
+  // getBoundingClientRect().top, take the one with the largest value that's
+  // still <= NAV_OFFSET — was correct in the very first version and never
+  // the actual problem.
+  //
+  // The real, persistent bug: clicking a station sets the correct index
+  // immediately, but the resulting smooth scroll (a plain `<a href="#slug">`
+  // plus CSS `scroll-behavior: smooth` — not a JS-driven scroll) takes real,
+  // *variable* time to finish. Every prior fix tried to guess when that
+  // animation ends (a fixed timer, or the `scrollend` event) so it would
+  // know when it's safe to let live scroll-position detection take over
+  // again — and `scrollend`'s support/reliability for CSS-driven smooth
+  // scroll turned out too inconsistent to trust, so scroll-spy kept
+  // re-enabling itself mid-animation and stomping the click's answer with
+  // whatever section the animation was still passing over.
+  //
+  // Fixed by not guessing at all: suppress scroll-spy from the moment a
+  // station is clicked, and resume only once the user provides a genuine,
+  // unambiguous manual-scroll input (wheel, touch, or a scroll-relevant key)
+  // — never on a timer, never on an animation-completion event.
+  const manualScrolling = useRef(false);
+
   useEffect(() => {
     if (routed) return;
-    const secs = STATIONS.map((s, i) => ({ i, el: document.getElementById(s.slug) })).filter(
-      (x): x is { i: number; el: HTMLElement } => x.el !== null,
+    const sections = STATIONS.map((s) => document.getElementById(s.slug)).filter(
+      (el): el is HTMLElement => el !== null,
     );
-    if (secs.length === 0) return; // isolated preview with no sections — click-driven only
-    let raf = 0;
-    const compute = () => {
-      raf = 0;
-      let cur = 0;
-      secs.forEach(({ i, el }) => {
-        if (el.getBoundingClientRect().top <= NAV_OFFSET) cur = i;
+    if (sections.length === 0) return; // isolated preview with no sections — click-driven only
+
+    const pickActive = () => {
+      if (manualScrolling.current) return; // a click-scroll may still be animating — don't fight it
+      let bestIdx = -1;
+      let bestTop = -Infinity;
+      sections.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top <= NAV_OFFSET && top > bestTop) {
+          bestTop = top;
+          bestIdx = STATIONS.findIndex((s) => s.slug === el.id);
+        }
       });
-      setScrollActive(cur);
+      if (bestIdx >= 0) setScrollActive(bestIdx);
     };
+
+    let raf = 0;
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(compute);
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; pickActive(); });
     };
-    onScroll(); // defer the first compute to a frame (avoids setState-in-effect)
+
+    const SCROLL_KEYS = new Set([" ", "PageDown", "PageUp", "Home", "End", "ArrowDown", "ArrowUp"]);
+    const resume = () => {
+      if (!manualScrolling.current) return;
+      manualScrolling.current = false;
+      pickActive();
+    };
+    const resumeOnKey = (e: KeyboardEvent) => {
+      if (SCROLL_KEYS.has(e.key)) resume();
+    };
+
+    onScroll(); // initial read
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    window.addEventListener("wheel", resume, { passive: true });
+    window.addEventListener("touchstart", resume, { passive: true });
+    window.addEventListener("keydown", resumeOnKey);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("wheel", resume);
+      window.removeEventListener("touchstart", resume);
+      window.removeEventListener("keydown", resumeOnKey);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [routed]);
 
   const StationLink = ({ s, i, children, className }: { s: Station; i: number; children: React.ReactNode; className: string }) => {
     const props = {
-      onClick: () => setScrollActive(i),
+      onClick: () => {
+        manualScrolling.current = true;
+        setScrollActive(i);
+      },
       "aria-current": active === i ? ("true" as const) : undefined,
       className,
     };
