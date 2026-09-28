@@ -42,6 +42,17 @@ import Image from "next/image";
 //   Login        60.01 / 37.95 /  4.83 /  1.95   (462:206)
 //   Sponsor Us   71.14 / 37.95 /  9.91 /  1.95   (462:208)
 //   chevron      60.89 / 44.55 /  4.64 /  6.89   (462:127)
+//   Apply        53.52 / 60.01 / 14.01 /  3.99   (see below)
+//   Directions   53.52 / 68.43 / 14.01 /  3.99
+//   "!"          62.74 / 60.20 /  4.88 /  7.66
+//
+// Apply/Directions/"!" aren't in the Figma frame — they came as a separate
+// wireframe mockup + exported assets. Their boxes were measured off that
+// mockup against the yellow line's station dots (which fix both the scale,
+// 333 Figma px between dots, and the origin), then converted to canvas
+// percentages like everything else. Each button is the hand-drawn outline
+// box (287x84) with a flat fill (283x65) deliberately offset down/right
+// beneath it for the misregistered-print look.
 //
 // The three route lines each get a small extra size/position correction beyond
 // their nominal Figma frame box: get_design_context reports these frames with
@@ -68,6 +79,21 @@ const LINES = [
   { label: "RL", src: "/images/hero/badge-red.svg" },
   { label: "GL", src: "/images/hero/badge-green.svg" },
   { label: "BL", src: "/images/hero/badge-blue.svg" },
+];
+
+// TODO: real application URL once it exists.
+const APPLY_URL = "#apply";
+// Venue: George Sherman Union (GSU), BU.
+const DIRECTIONS_URL =
+  "https://www.google.com/maps/search/?api=1&query=George+Sherman+Union%2C+775+Commonwealth+Ave%2C+Boston%2C+MA+02215";
+
+// Text is centered at textX% of the box — Apply sits a bit left of center in
+// the mockup to leave room for the "!". Font size is 36px at Figma's 1440
+// width, scaled with the canvas via plain vw (no clamp floor like Login's):
+// the text has to stay inside a box that itself shrinks with the viewport.
+const BUTTONS = [
+  { label: "Apply", href: APPLY_URL, top: "60.01%", fill: "/images/hero/button-fill-yellow.png", text: "text-black", textX: 46, external: false },
+  { label: "Directions", href: DIRECTIONS_URL, top: "68.43%", fill: "/images/hero/button-fill-green.png", text: "text-white", textX: 50, external: true },
 ];
 
 export default function Hero() {
@@ -217,6 +243,31 @@ export default function Hero() {
             not a hand-authored SVG path. */}
         <div aria-hidden className="absolute" style={{ left: "60.89%", top: "44.55%", width: "4.64%", height: "6.89%" }}>
           <Image src="/images/hero/scroll-chevron.png" alt="" fill unoptimized className="object-contain" />
+        </div>
+
+        {BUTTONS.map((b) => (
+          <a
+            key={b.label}
+            href={b.href}
+            {...(b.external && { target: "_blank", rel: "noopener noreferrer" })}
+            className="absolute block"
+            style={{ left: "53.52%", top: b.top, width: "14.01%", height: "3.99%" }}
+          >
+            <span aria-hidden className="absolute" style={{ left: "3.14%", top: "22.62%", width: "98.61%", height: "77.38%" }}>
+              <Image src={b.fill} alt="" fill unoptimized />
+            </span>
+            <Image src="/images/hero/button-outline.png" alt="" fill unoptimized />
+            <span
+              className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${b.text}`}
+              style={{ left: `${b.textX}%`, fontSize: "2.5vw" }}
+            >
+              {b.label}
+            </span>
+          </a>
+        ))}
+        {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline */}
+        <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "60.2%", width: "4.88%", height: "7.66%" }}>
+          <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
         </div>
       </div>
     </section>
