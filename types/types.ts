@@ -14,6 +14,7 @@ export enum Role {
 
 export enum AuthProvider {
     EMAIL = 'EMAIL',
+    FACEBOOK = 'FACEBOOK',
     GOOGLE = 'GOOGLE',
 }
 

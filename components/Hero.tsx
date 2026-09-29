@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
-
+import GridBackground from "@/components/GridBackground";
+import Link from "next/link";
+import ApplyButton from "@/components/ApplyButton";
 // Hero — FE-5. "2026 / BOSTONHACKS" title, Login + Sponsor Us CTAs with a
 // marker-highlight underline, and a scroll cue. All of it — decorative art
 // (clouds, sparkle, route lines, RL/GL/BL badges) AND the title/CTA/chevron
@@ -46,14 +48,6 @@ import Image from "next/image";
 //   Directions   53.52 / 68.43 / 14.01 /  3.99
 //   "!"          62.74 / 60.20 /  4.88 /  7.66
 //
-// Apply/Directions/"!" aren't in the Figma frame — they came as a separate
-// wireframe mockup + exported assets. Their boxes were measured off that
-// mockup against the yellow line's station dots (which fix both the scale,
-// 333 Figma px between dots, and the origin), then converted to canvas
-// percentages like everything else. Each button is the hand-drawn outline
-// box (287x84) with a flat fill (283x65) deliberately offset down/right
-// beneath it for the misregistered-print look.
-//
 // The three route lines each get a small extra size/position correction beyond
 // their nominal Figma frame box: get_design_context reports these frames with
 // an "inset" (e.g. `inset-[-2.03%_0_-1.97%_0]`) meaning the actual SVG content
@@ -69,7 +63,8 @@ import Image from "next/image";
 // rather than an absolutely-positioned sibling (which needs its own stacking
 // context to avoid rendering behind the page — background-image sidesteps that).
 const HIGHLIGHT: CSSProperties = {
-  backgroundImage: "linear-gradient(transparent 60%, var(--faq-answer-border) 60%)",
+  backgroundImage:
+    "linear-gradient(transparent 60%, var(--faq-answer-border) 60%)",
 };
 
 // RL/GL/BL are pre-drawn Figma image assets (462:210/215/220), not CSS pills + text —
@@ -92,8 +87,24 @@ const DIRECTIONS_URL =
 // width, scaled with the canvas via plain vw (no clamp floor like Login's):
 // the text has to stay inside a box that itself shrinks with the viewport.
 const BUTTONS = [
-  { label: "Apply", href: APPLY_URL, top: "60.01%", fill: "/images/hero/button-fill-yellow.png", text: "text-black", textX: 46, external: false },
-  { label: "Directions", href: DIRECTIONS_URL, top: "68.43%", fill: "/images/hero/button-fill-green.png", text: "text-white", textX: 50, external: true },
+  {
+    label: "Apply",
+    href: APPLY_URL,
+    top: "60.01%",
+    fill: "/images/hero/button-fill-yellow.png",
+    text: "text-black",
+    textX: 46,
+    external: false,
+  },
+  {
+    label: "Directions",
+    href: DIRECTIONS_URL,
+    top: "68.43%",
+    fill: "/images/hero/button-fill-green.png",
+    text: "text-white",
+    textX: 50,
+    external: true,
+  },
 ];
 
 export default function Hero() {
@@ -111,8 +122,10 @@ export default function Hero() {
             "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
             "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
           backgroundSize: "72px 72px",
-          maskImage: "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
+          maskImage:
+            "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
+          WebkitMaskImage:
+            "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
         }}
       />
 
@@ -120,7 +133,11 @@ export default function Hero() {
       <div
         aria-hidden
         className="pointer-events-none absolute left-0 top-0"
-        style={{ width: "142.22%", marginLeft: "-33.33%", aspectRatio: "2048 / 2103" }}
+        style={{
+          width: "142.22%",
+          marginLeft: "-33.33%",
+          aspectRatio: "2048 / 2103",
+        }}
       >
         {/* Soft gradient blob, per 462:160 (bottom-left ambient wash, sits behind everything else) */}
         <div
@@ -130,30 +147,130 @@ export default function Hero() {
             top: "33.67%",
             width: "25.78%",
             height: "36.95%",
-            backgroundImage: "linear-gradient(to top, rgba(199,238,255,0.73), rgba(255,255,255,0.73))",
+            backgroundImage:
+              "linear-gradient(to top, rgba(199,238,255,0.73), rgba(255,255,255,0.73))",
           }}
         />
         {/* Dashed line + dot, per 462:209 */}
-        <div className="absolute" style={{ left: "23.32%", top: "59.39%", width: "16.68%", height: "2.54%", transform: "translateY(-50%)" }}>
-          <Image src="/images/hero/dashed-dot.svg" alt="" fill unoptimized className="object-contain object-left" />
+        <div
+          className="absolute"
+          style={{
+            left: "23.32%",
+            top: "59.39%",
+            width: "16.68%",
+            height: "2.54%",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <Image
+            src="/images/hero/dashed-dot.svg"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain object-left"
+          />
         </div>
-        <div className="absolute" style={{ left: "70.75%", top: "48.64%", width: "29.25%", height: "11.75%" }}>
-          <Image src="/images/hero/cloud-a.png" alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute"
+          style={{
+            left: "70.75%",
+            top: "48.64%",
+            width: "29.25%",
+            height: "11.75%",
+          }}
+        >
+          <Image
+            src="/images/hero/cloud-a.png"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-        <div className="absolute" style={{ left: "40.62%", top: "13.79%", width: "16.55%", height: "12.46%" }}>
-          <Image src="/images/hero/cloud-b.png" alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute"
+          style={{
+            left: "40.62%",
+            top: "13.79%",
+            width: "16.55%",
+            height: "12.46%",
+          }}
+        >
+          <Image
+            src="/images/hero/cloud-b.png"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-        <div className="absolute" style={{ left: "80.22%", top: "75.13%", width: "7.57%", height: "8.13%" }}>
-          <Image src="/images/hero/sparkle.png" alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute"
+          style={{
+            left: "80.22%",
+            top: "75.13%",
+            width: "7.57%",
+            height: "8.13%",
+          }}
+        >
+          <Image
+            src="/images/hero/sparkle.png"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-        <div className="absolute" style={{ left: "1.01%", top: "10.42%", width: "40.43%", height: "40.95%" }}>
-          <Image src="/images/hero/line-blue.svg" alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute"
+          style={{
+            left: "1.01%",
+            top: "10.42%",
+            width: "40.43%",
+            height: "40.95%",
+          }}
+        >
+          <Image
+            src="/images/hero/line-blue.svg"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-        <div className="absolute" style={{ left: "0%", top: "-11.63%", width: "42.48%", height: "43.79%" }}>
-          <Image src="/images/hero/line-red.svg" alt="" fill unoptimized className="object-contain" />
+        <div
+          className="absolute"
+          style={{
+            left: "0%",
+            top: "-11.63%",
+            width: "42.48%",
+            height: "43.79%",
+          }}
+        >
+          <Image
+            src="/images/hero/line-red.svg"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-        <div className="absolute" style={{ left: "48.83%", top: "33.29%", width: "49.81%", height: "66.99%" }}>
-          <Image src="/images/hero/line-yellow.svg" alt="" fill unoptimized className="object-contain object-left-top" />
+        <div
+          className="absolute"
+          style={{
+            left: "48.83%",
+            top: "33.29%",
+            width: "49.81%",
+            height: "66.99%",
+          }}
+        >
+          <Image
+            src="/images/hero/line-yellow.svg"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain object-left-top"
+          />
         </div>
 
         {/* Anchor for the Navbar's "Sign Up" station — previously had no matching
@@ -162,7 +279,12 @@ export default function Hero() {
             (mobile nav height / Navbar's own desktop NAV_OFFSET) keeps the sticky
             nav from covering this art once scrolled into place — same value used
             on every other section anchor, see Navbar.tsx's NAV_OFFSET. */}
-        <div id="signup" aria-hidden className="absolute inset-x-0 scroll-mt-[140px] md:scroll-mt-[215px]" style={{ top: "30%" }} />
+        <div
+          id="signup"
+          aria-hidden
+          className="absolute inset-x-0 scroll-mt-[140px] md:scroll-mt-[215px]"
+          style={{ top: "30%" }}
+        />
         {LINES.map((line, i) => (
           <div
             key={line.label}
@@ -174,7 +296,13 @@ export default function Hero() {
               height: "3.57%",
             }}
           >
-            <Image src={line.src} alt={line.label} fill unoptimized className="object-contain" />
+            <Image
+              src={line.src}
+              alt={line.label}
+              fill
+              unoptimized
+              className="object-contain"
+            />
           </div>
         ))}
       </div>
@@ -212,28 +340,63 @@ export default function Hero() {
           Poster Clean) instead — sidesteps the font-licensing problem
           entirely and matches Figma exactly, pixel-for-pixel, rather than
           approximating it. */}
-      <div className="absolute left-0 top-0" style={{ width: "142.22%", marginLeft: "-33.33%", aspectRatio: "2048 / 2103" }}>
+      <div
+        className="absolute left-0 top-0"
+        style={{
+          width: "142.22%",
+          marginLeft: "-33.33%",
+          aspectRatio: "2048 / 2103",
+        }}
+      >
         <p
           className="absolute whitespace-nowrap font-helvetica font-bold"
-          style={{ left: "52.15%", top: "25.35%", fontSize: "clamp(24px, 2.5vw, 36px)" }}
+          style={{
+            left: "52.15%",
+            top: "25.35%",
+            fontSize: "clamp(24px, 2.5vw, 36px)",
+          }}
         >
           2026
         </p>
-        <h1 className="absolute" style={{ left: "51.86%", top: "28%", width: "38.53%", aspectRatio: "569 / 70" }}>
-          <Image src="/images/hero/bostonhacks-title.png" alt="BOSTONHACKS" fill unoptimized className="object-contain object-left" />
+        <h1
+          className="absolute"
+          style={{
+            left: "51.86%",
+            top: "28%",
+            width: "38.53%",
+            aspectRatio: "569 / 70",
+          }}
+        >
+          <Image
+            src="/images/hero/bostonhacks-title.png"
+            alt="BOSTONHACKS"
+            fill
+            unoptimized
+            className="object-contain object-left"
+          />
         </h1>
 
-        <a
-          href="#login"
+        <Link
+          href="/login"
           className="absolute inline-block whitespace-nowrap font-helvetica font-bold"
-          style={{ left: "60.01%", top: "37.95%", fontSize: "clamp(24px, 2.5vw, 36px)", ...HIGHLIGHT }}
+          style={{
+            left: "60.01%",
+            top: "37.95%",
+            fontSize: "clamp(24px, 2.5vw, 36px)",
+            ...HIGHLIGHT,
+          }}
         >
           Login
-        </a>
+        </Link>
         <a
           href="#sponsors"
           className="absolute inline-block whitespace-nowrap font-helvetica font-bold"
-          style={{ left: "71.14%", top: "37.95%", fontSize: "clamp(24px, 2.5vw, 36px)", ...HIGHLIGHT }}
+          style={{
+            left: "71.14%",
+            top: "37.95%",
+            fontSize: "clamp(24px, 2.5vw, 36px)",
+            ...HIGHLIGHT,
+          }}
         >
           Sponsor Us
         </a>
@@ -241,34 +404,79 @@ export default function Hero() {
         {/* Scroll cue, per 462:127 — the actual hand-drawn double-chevron asset
             (rotate-90 in Figma's own source, already baked into the exported bitmap),
             not a hand-authored SVG path. */}
-        <div aria-hidden className="absolute" style={{ left: "60.89%", top: "44.55%", width: "4.64%", height: "6.89%" }}>
-          <Image src="/images/hero/scroll-chevron.png" alt="" fill unoptimized className="object-contain" />
+        <div
+          aria-hidden
+          className="absolute"
+          style={{
+            left: "60.89%",
+            top: "44.55%",
+            width: "4.64%",
+            height: "6.89%",
+          }}
+        >
+          <Image
+            src="/images/hero/scroll-chevron.png"
+            alt=""
+            fill
+            unoptimized
+            className="object-contain"
+          />
         </div>
-
-        {BUTTONS.map((b) => (
-          <a
-            key={b.label}
-            href={b.href}
-            {...(b.external && { target: "_blank", rel: "noopener noreferrer" })}
-            className="absolute block"
-            style={{ left: "53.52%", top: b.top, width: "14.01%", height: "3.99%" }}
-          >
-            <span aria-hidden className="absolute" style={{ left: "3.14%", top: "22.62%", width: "98.61%", height: "77.38%" }}>
-              <Image src={b.fill} alt="" fill unoptimized />
-            </span>
-            <Image src="/images/hero/button-outline.png" alt="" fill unoptimized />
-            <span
-              className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${b.text}`}
-              style={{ left: `${b.textX}%`, fontSize: "2.5vw" }}
+        {BUTTONS.map((b) =>
+          b.label === "Apply" ? (
+            <ApplyButton
+              key={b.label}
+              top={b.top}
+              fill={b.fill}
+              text={b.text}
+              textX={b.textX}
+            />
+          ) : (
+            <a
+              key={b.label}
+              href={b.href}
+              {...(b.external && {
+                target: "_blank",
+                rel: "noopener noreferrer",
+              })}
+              className="absolute block"
+              style={{
+                left: "53.52%",
+                top: b.top,
+                width: "14.01%",
+                height: "3.99%",
+              }}
             >
-              {b.label}
-            </span>
-          </a>
-        ))}
+              <span
+                aria-hidden
+                className="absolute"
+                style={{
+                  left: "3.14%",
+                  top: "22.62%",
+                  width: "98.61%",
+                  height: "77.38%",
+                }}
+              >
+                <Image src={b.fill} alt="" fill unoptimized />
+              </span>
+              <Image
+                src="/images/hero/button-outline.png"
+                alt=""
+                fill
+                unoptimized
+              />
+              <span
+                className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${b.text}`}
+                style={{ left: `${b.textX}%`, fontSize: "2.5vw" }}
+              >
+                {b.label}
+              </span>
+            </a>
+          ),
+        )}
+
         {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline */}
-        <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "60.2%", width: "4.88%", height: "7.66%" }}>
-          <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
-        </div>
+        <GridBackground />
       </div>
     </section>
   );
