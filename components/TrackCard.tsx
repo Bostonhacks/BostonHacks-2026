@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 // TrackCard — FE-8, revisited to add the second state from the wireframe. The
@@ -13,6 +13,12 @@ import Image from "next/image";
 // to fit — all three tracks' borders are the same size/shape in the source file),
 // not a CSS border.
 type TrackColor = "blue" | "green" | "red";
+
+export type TrackDescription = {
+  paragraphs: string[];
+  prompt?: string;
+  questions: string[];
+};
 
 const HEADER_BG: Record<TrackColor, string> = {
   blue: "var(--track-blue)",
@@ -97,13 +103,22 @@ export default function TrackCard({
   color: TrackColor;
   title: string;
   subtitle: string;
-  description: string;
+  description: TrackDescription;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  // The closed sign's height, so the corner accent stays where Figma puts it on
+  // the closed sign instead of drifting down into the description once the card
+  // grows (its ACCENT_RECT percentages are relative to the closed sign).
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [closedHeight, setClosedHeight] = useState<number>();
+  useLayoutEffect(() => {
+    if (!isOpen && buttonRef.current) setClosedHeight(buttonRef.current.offsetHeight);
+  }, [isOpen]);
 
   return (
     <div className={`flex w-full max-w-md items-center gap-3 font-akshar ${MASCOT_SIDE[color] === "left" ? "flex-row-reverse" : ""}`}>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
@@ -117,22 +132,33 @@ export default function TrackCard({
           style={{ backgroundColor: "var(--track-body)" }}
         >
           <div
-            className="whitespace-nowrap px-6 py-4 text-center font-presicav text-2xl font-bold uppercase text-white sm:text-3xl md:text-4xl"
+            className="px-6 py-4 text-center font-presicav text-xl font-bold uppercase leading-tight text-balance text-white sm:text-2xl md:text-[1.75rem]"
             style={{ backgroundColor: HEADER_BG[color] }}
           >
             {title}
           </div>
           {isOpen ? (
             // Per Figma's on-click reference (462:557): the sign itself grows
-            // dramatically taller (body ~5x its default height) to fit plain,
-            // large description text directly — no separate bordered box, no
-            // same-size text swap. Font size follows the same 48px-of-64px
-            // (0.75x the header's) scaling used for the header title below.
-            // The zoom-in pop (animate-track-pop, above) plays on the whole
-            // card, not just this text, each time it opens.
-            <div className="px-6 py-10 sm:py-14">
-              <p className="text-center text-lg font-bold leading-snug text-black sm:text-xl md:text-2xl">{description}</p>
-            </div>
+            // taller to hold the description directly — no separate bordered box.
+            // The real briefs are a few paragraphs plus a guiding-questions list,
+            // far too long for the mock's single line of large bold text, so they
+            // get a readable body size instead. The zoom-in pop (animate-track-pop,
+            // above) plays on the whole card, not just this text, each time it opens.
+            <span className="block space-y-4 px-6 py-8 text-left text-base leading-relaxed text-black sm:px-8 sm:py-10">
+              {description.paragraphs.map((para) => (
+                <span key={para} className="block">{para}</span>
+              ))}
+              {description.prompt && <span className="block font-bold">{description.prompt}</span>}
+              <span className="block pt-2 font-presicav text-lg font-bold uppercase">Guiding Questions</span>
+              <span className="block space-y-2">
+                {description.questions.map((q) => (
+                  <span key={q} className="flex gap-2">
+                    <span aria-hidden style={{ color: HEADER_BG[color] }}>●</span>
+                    <span>{q}</span>
+                  </span>
+                ))}
+              </span>
+            </span>
           ) : (
             <p className="flex items-center justify-center gap-2 px-6 py-8 text-center font-presicav text-2xl font-bold uppercase tracking-wide text-black sm:text-3xl">
               {subtitle}
@@ -143,18 +169,32 @@ export default function TrackCard({
               )}
             </p>
           )}
-          <Image
-            src="/images/trackcard/sign-border.png"
-            alt=""
-            fill
-            unoptimized
+          {/* Hand-drawn border (633x178 native) as a 9-slice border-image, not a
+              stretched <Image>: the open card is several times taller than the
+              asset, and stretching the whole raster smeared the top/bottom edges
+              into thick blobs over the header and last lines of text. Slicing keeps
+              the corners at native shape and repeats the wavy sides instead. */}
+          <span
             aria-hidden
-            className="pointer-events-none object-fill"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              borderStyle: "solid",
+              borderWidth: 18,
+              borderImageSource: "url(/images/trackcard/sign-border.png)",
+              borderImageSlice: 30,
+              borderImageRepeat: "stretch round",
+            }}
           />
         </div>
-        <div className="pointer-events-none absolute" style={ACCENT_RECT[color]} aria-hidden>
-          <Image src={ACCENT_SRC[color]} alt="" fill unoptimized className="object-contain" />
-        </div>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0"
+          style={{ height: isOpen && closedHeight ? closedHeight : "100%" }}
+        >
+          <span className="absolute" style={ACCENT_RECT[color]}>
+            <Image src={ACCENT_SRC[color]} alt="" fill unoptimized className="object-contain" />
+          </span>
+        </span>
         {isOpen && (
           <div
             className="pointer-events-none absolute animate-track-pop"
