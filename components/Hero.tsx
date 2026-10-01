@@ -276,9 +276,9 @@ export default function Hero() {
         {/* Anchor for the Navbar's "Sign Up" station — previously had no matching
             element on the page at all, so the link/scroll-spy did nothing. Positioned
             at the blue/yellow route-line corner + cloud, per request. scroll-mt
-            (mobile nav height / Navbar's own desktop NAV_OFFSET) keeps the sticky
-            nav from covering this art once scrolled into place — same value used
-            on every other section anchor, see Navbar.tsx's NAV_OFFSET. */}
+            (mobile / desktop sticky-nav height) keeps the sticky nav from covering
+            this art once scrolled into place — same value used on every other
+            section anchor; Navbar.tsx reads it for both click-scroll and scroll-spy. */}
         <div
           id="signup"
           aria-hidden
