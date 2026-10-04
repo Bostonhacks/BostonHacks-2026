@@ -107,7 +107,7 @@ export default function Countdown() {
           phone-width viewport and blow up the countdown digits inside it. */}
       <div
         className="relative mx-auto w-full max-w-[290px] sm:mx-0 sm:ml-[59.17%] sm:w-[36.81%] sm:max-w-none"
-        style={{ aspectRatio: "868 / 2557" }}
+        style={{ aspectRatio: "868 / 2557", containerType: "inline-size" }}
       >
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
@@ -140,14 +140,16 @@ export default function Countdown() {
             that same 56px, per request — they were a tiny 10px caption before.
             Icon/gap scaled up to stay paired with "Now" at its new size, and the
             day number / "BostonHacks" line nudged down to give the now much-taller
-            labels room without overlapping. */}
+            labels room without overlapping. "Now"/"Hackathon" later scaled back down
+            to 7cqw (of the sign's width — ~35px on desktop, ~20px on the 290px mobile
+            sign), per request: at a fixed 56px, "HACKATHON" ran off the mobile sign. */}
         <p className="absolute font-inter text-[56px] font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
           {mounted ? remaining.hours : "--"}
           <span className="font-medium">h</span>
         </p>
 
-        <div className="absolute flex items-center gap-2 text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
-          <Image src="/images/countdown/track-icon.svg" alt="" width={40} height={40} aria-hidden />
+        <div className="absolute flex items-center gap-[0.2em] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "34%", fontSize: "7cqw" }}>
+          <Image src="/images/countdown/track-icon.svg" alt="" width={40} height={40} aria-hidden className="h-[0.75em] w-[0.75em]" />
           Now
         </div>
 
@@ -156,7 +158,7 @@ export default function Countdown() {
           <span className="font-medium">d</span>
         </p>
 
-        <p className="absolute text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>
+        <p className="absolute font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "61%", fontSize: "7cqw" }}>
           Hackathon
         </p>
         <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "69%" }}>
