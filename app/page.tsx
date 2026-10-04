@@ -5,6 +5,7 @@ import TracksSection from "@/components/TracksSection";
 import Countdown from "@/components/Countdown";
 import ScheduleGrid from "@/components/ScheduleGrid";
 import FaqSection from "@/components/FaqSection";
+import PrizesSection from "@/components/PrizesSection";
 import SponsorsSection from "@/components/SponsorsSection";
 import Footer from "@/components/Footer";
 
@@ -21,6 +22,7 @@ export default function Home() {
         <ScheduleGrid />
       </div>
       <FaqSection />
+      <PrizesSection />
       <Countdown />
       <SponsorsSection />
       <Footer />

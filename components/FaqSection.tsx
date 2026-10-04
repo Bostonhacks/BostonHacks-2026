@@ -37,7 +37,7 @@ const FAQS = [
   {
     question: "When and where is BostonHacks?",
     answer:
-      "BostonHacks is an in-person 24-hour hackathon on October 11-12th, 2025. It takes place in the Boston University George Sherman Union (GSU)",
+      "BostonHacks is an in-person 24-hour hackathon on November 21st-22nd, 2026. It takes place in the Boston University George Sherman Union (GSU).",
   },
   {
     question: "Who can attend?",
@@ -101,7 +101,18 @@ const FAQS = [
       </div>
     ),
   },
-  { question: "What do I get if I win?", answer: "PRIZES" },
+  {
+    question: "What do I get if I win?",
+    answer: (
+      <div>
+        Check out the{" "}
+        <a href="#prizes" className="underline">
+          prizes
+        </a>{" "}
+        below!
+      </div>
+    ),
+  },
   {
     question: "Where can I ask more questions?",
     answer: "Reach out to us on our social pages, linked in the footer.",

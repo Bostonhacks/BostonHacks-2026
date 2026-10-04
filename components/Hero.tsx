@@ -114,20 +114,7 @@ export default function Hero() {
       className="relative isolate w-full overflow-hidden bg-white px-8 pb-20 pt-10 font-akshar text-black"
       style={{ aspectRatio: "1440 / 2103" }}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--track-blue) 1.5px, transparent 1.5px)," +
-            "linear-gradient(to bottom, var(--track-blue) 1.5px, transparent 1.5px)",
-          backgroundSize: "72px 72px",
-          maskImage:
-            "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
-          WebkitMaskImage:
-            "radial-gradient(120% 90% at 0% 0%, black 15%, transparent 70%)",
-        }}
-      />
+      <GridBackground />
 
       {/* Decorative canvas — see file header for how these percentages were derived */}
       <div
@@ -276,9 +263,9 @@ export default function Hero() {
         {/* Anchor for the Navbar's "Sign Up" station — previously had no matching
             element on the page at all, so the link/scroll-spy did nothing. Positioned
             at the blue/yellow route-line corner + cloud, per request. scroll-mt
-            (mobile nav height / Navbar's own desktop NAV_OFFSET) keeps the sticky
-            nav from covering this art once scrolled into place — same value used
-            on every other section anchor, see Navbar.tsx's NAV_OFFSET. */}
+            (mobile / desktop sticky-nav height) keeps the sticky nav from covering
+            this art once scrolled into place — same value used on every other
+            section anchor; Navbar.tsx reads it for both click-scroll and scroll-spy. */}
         <div
           id="signup"
           aria-hidden
@@ -475,8 +462,13 @@ export default function Hero() {
           ),
         )}
 
-        {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline */}
-        <GridBackground />
+        {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline.
+            (Was accidentally swapped for a second <GridBackground /> in e3e5a4f; that duplicate
+            sat inside this wider, offset canvas so its lines didn't align with the section's
+            grid. The single grid is now the section's first child, above.) */}
+        <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "60.2%", width: "4.88%", height: "7.66%" }}>
+          <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
+        </div>
       </div>
     </section>
   );
