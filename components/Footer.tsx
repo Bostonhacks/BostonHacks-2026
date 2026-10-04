@@ -18,7 +18,14 @@ const ICON_WIDTH = SPRITE_WIDTH / 3;
 
 function XIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" width={SPRITE_HEIGHT} height={SPRITE_HEIGHT} className={className} fill="currentColor" aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      width={SPRITE_HEIGHT}
+      height={SPRITE_HEIGHT}
+      className={className}
+      fill="currentColor"
+      aria-hidden
+    >
       <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.22-6.82-5.97 6.82H1.66l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z" />
     </svg>
   );
@@ -38,14 +45,27 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 function EmailIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" width={SPRITE_HEIGHT} height={SPRITE_HEIGHT} className={className} fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      width={SPRITE_HEIGHT}
+      height={SPRITE_HEIGHT}
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden
+    >
       <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
       <path d="m3 6 9 6.5L21 6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-const EXTERNAL_LINKS: { label: string; href: string; render: (props: { className: string }) => React.ReactNode }[] = [
+const EXTERNAL_LINKS: {
+  label: string;
+  href: string;
+  render: (props: { className: string }) => React.ReactNode;
+}[] = [
   {
     label: "Instagram",
     href: "https://www.instagram.com/bostonhacks",
@@ -94,7 +114,7 @@ const EXTERNAL_LINKS: { label: string; href: string; render: (props: { className
   },
 ];
 
-const EMAIL = "contact@bostonhacks.org";
+const EMAIL = "contact.bostonhacks@gmail.com";
 
 export default function Footer() {
   return (
