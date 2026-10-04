@@ -35,6 +35,22 @@ export default function Countdown() {
       aria-label="Countdown"
       className="relative isolate w-full overflow-hidden bg-white px-8 py-16 font-akshar text-black"
     >
+      {/* Soft blue wash behind the grid, per the 2026 wireframe export "Rectangle 2208"
+          (1440 x 1868): a pure vertical linear gradient, #05AAE1 at 0% -> 20% -> 0%
+          opacity, starting at the top of this section. Drawn in CSS rather than shipping
+          the 1440x1868 PNG, and stretched to this section's own height instead of the
+          export's aspect ratio: the section is shorter (~1620px at 1440 wide, far shorter
+          on mobile), so a fixed-ratio wash got clipped mid-fade, leaving a visible seam
+          against Sponsors. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(5,170,225,0), rgba(5,170,225,0.2) 50%, rgba(5,170,225,0))",
+        }}
+      />
+
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — present throughout this
           area in the source but previously missing here entirely. */}
       <div
