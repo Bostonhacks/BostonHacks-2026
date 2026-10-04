@@ -3,40 +3,49 @@ import Image from "next/image";
 // PrizesSection — sits directly under FAQs, per the updated wireframe. Fixed content
 // (nothing here changes height), so it uses the same exact-percentage-canvas
 // technique as Hero/ThemeGraphics/FaqSection's header: every element's
-// left/top/width/height is a direct percentage of the mockup's pixel coordinates.
-// Canvas native size 588 x 560, measured from the design export (no Figma node ID
-// available for this frame yet).
+// left/top/width/height is a direct percentage of the design export's pixel
+// coordinates. Canvas native size 1430 x 1352 = the "Prizes.png" export from the
+// 2026 Wireframes folder.
 //
-// The illustrations in public/images/prizes are PLACEHOLDER crops of that export —
-// swap them for the real high-res assets from Figma (same filenames) once exported.
+// Art in public/images/prizes is cut from that export. The prize captions were
+// baked into the export on top of each item's color glow, so they were painted
+// out of the art (glow filled back in) and are rendered here as real text at
+// their exported positions; likewise the "Prizes" title box is the hand-drawn
+// frame with its lettering removed, with the heading as live text over it.
 type Placed = { left: string; top: string; width: string; height: string };
 
-const PRIZES: { name: string; src: string; img: Placed; label: Placed }[] = [
+const PRIZES: { name: string; lines: [string, string]; src: string; img: Placed; captionX: string; captionTop: string }[] = [
   {
     name: "Fujifilm Mini 99 Instax Film Camera",
+    lines: ["Fujifilm Mini 99 Instax", "Film Camera"],
     src: "/images/prizes/camera.png",
-    img: { left: "30.95%", top: "8.93%", width: "33.33%", height: "27.68%" },
-    label: { left: "37.07%", top: "36.96%", width: "28.91%", height: "6%" },
+    img: { left: "30.21%", top: "7.54%", width: "32.59%", height: "34.10%" },
+    captionX: "51.08%",
+    captionTop: "35.72%",
   },
   {
     name: "Syitren Paron Vinyl Record Player",
+    lines: ["Syitren Paron Vinyl", "Record Player"],
     src: "/images/prizes/vinyl.png",
-    img: { left: "6.12%", top: "47.32%", width: "34.69%", height: "30.89%" },
-    label: { left: "9.86%", top: "78.57%", width: "28.91%", height: "6%" },
+    img: { left: "5.73%", top: "46.75%", width: "34.48%", height: "37.43%" },
+    captionX: "22.73%",
+    captionTop: "77.96%",
   },
   {
     name: "Deco Gear 34” Curved Gaming Monitor",
+    lines: ["Deco Gear 34” Curved", "Gaming Monitor"],
     src: "/images/prizes/monitor.png",
-    img: { left: "57.48%", top: "51.43%", width: "37.76%", height: "39.29%" },
-    label: { left: "63.61%", top: "91.61%", width: "28.91%", height: "6%" },
+    img: { left: "58.18%", top: "50.30%", width: "35.66%", height: "42.09%" },
+    captionX: "78.04%",
+    captionTop: "91.05%",
   },
 ];
 
 const DOODLES: { src: string; pos: Placed }[] = [
-  { src: "/images/prizes/leaf-yellow.png", pos: { left: "8.50%", top: "27.14%", width: "13.27%", height: "15.36%" } },
-  { src: "/images/prizes/leaf-green.png", pos: { left: "73.64%", top: "21.07%", width: "17.01%", height: "14.29%" } },
-  { src: "/images/prizes/leaf-red.png", pos: { left: "34.69%", top: "87.50%", width: "11.22%", height: "12.14%" } },
-  { src: "/images/prizes/squiggle.png", pos: { left: "46.60%", top: "77.50%", width: "9.18%", height: "13.21%" } },
+  { src: "/images/prizes/leaf-yellow.png", pos: { left: "8.74%", top: "25.96%", width: "11.61%", height: "14.35%" } },
+  { src: "/images/prizes/leaf-green.png", pos: { left: "74.27%", top: "19.67%", width: "15.66%", height: "13.54%" } },
+  { src: "/images/prizes/leaf-red.png", pos: { left: "35.10%", top: "87.20%", width: "10.14%", height: "10.72%" } },
+  { src: "/images/prizes/squiggle.png", pos: { left: "44.76%", top: "77.29%", width: "9.86%", height: "13.68%" } },
 ];
 
 export default function PrizesSection() {
@@ -48,15 +57,18 @@ export default function PrizesSection() {
     >
       <div
         className="relative mx-auto max-w-3xl"
-        style={{ aspectRatio: "588 / 560", containerType: "inline-size" }}
+        style={{ aspectRatio: "1430 / 1352", containerType: "inline-size" }}
       >
-        <h2
-          id="prizes-heading"
-          className="absolute flex items-center justify-center rounded-[4px] border-[3px] border-black font-bold tracking-wide"
-          style={{ left: "7.82%", top: "2.32%", width: "22.96%", height: "8.39%", fontSize: "max(18px, 4.4cqw)" }}
-        >
-          Prizes
-        </h2>
+        <div className="absolute" style={{ left: "7.27%", top: "0%", width: "23.22%", height: "8.80%" }}>
+          <Image src="/images/prizes/title-box.png" alt="" fill unoptimized className="object-fill" />
+          <h2
+            id="prizes-heading"
+            className="absolute inset-0 flex items-center justify-center font-helvetica font-bold tracking-wide"
+            style={{ fontSize: "max(18px, 3.7cqw)" }}
+          >
+            Prizes
+          </h2>
+        </div>
 
         {DOODLES.map((d) => (
           <div key={d.src} aria-hidden className="pointer-events-none absolute" style={d.pos}>
@@ -71,10 +83,12 @@ export default function PrizesSection() {
                 <Image src={p.src} alt="" fill unoptimized className="object-contain" />
               </div>
               <p
-                className="absolute text-center font-helvetica leading-tight"
-                style={{ ...p.label, fontSize: "max(10px, 2.4cqw)" }}
+                className="absolute -translate-x-1/2 whitespace-nowrap text-center font-helvetica"
+                style={{ left: p.captionX, top: p.captionTop, fontSize: "max(10px, 2.05cqw)", lineHeight: 1.15 }}
               >
-                {p.name}
+                {p.lines[0]}
+                <br />
+                {p.lines[1]}
               </p>
             </li>
           ))}

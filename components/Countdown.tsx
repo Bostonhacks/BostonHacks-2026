@@ -35,6 +35,22 @@ export default function Countdown() {
       aria-label="Countdown"
       className="relative isolate w-full overflow-hidden bg-white px-8 py-16 font-akshar text-black"
     >
+      {/* Soft blue wash behind the grid, per the 2026 wireframe export "Rectangle 2208"
+          (1440 x 1868): a pure vertical linear gradient, #05AAE1 at 0% -> 20% -> 0%
+          opacity, starting at the top of this section. Drawn in CSS rather than shipping
+          the 1440x1868 PNG, and stretched to this section's own height instead of the
+          export's aspect ratio: the section is shorter (~1620px at 1440 wide, far shorter
+          on mobile), so a fixed-ratio wash got clipped mid-fade, leaving a visible seam
+          against Sponsors. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(5,170,225,0), rgba(5,170,225,0.2) 50%, rgba(5,170,225,0))",
+        }}
+      />
+
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — present throughout this
           area in the source but previously missing here entirely. */}
       <div
@@ -91,7 +107,7 @@ export default function Countdown() {
           phone-width viewport and blow up the countdown digits inside it. */}
       <div
         className="relative mx-auto w-full max-w-[290px] sm:mx-0 sm:ml-[59.17%] sm:w-[36.81%] sm:max-w-none"
-        style={{ aspectRatio: "868 / 2557" }}
+        style={{ aspectRatio: "868 / 2557", containerType: "inline-size" }}
       >
         <Image src="/images/countdown/sign.png" alt="" fill unoptimized className="object-contain" />
 
@@ -124,14 +140,16 @@ export default function Countdown() {
             that same 56px, per request — they were a tiny 10px caption before.
             Icon/gap scaled up to stay paired with "Now" at its new size, and the
             day number / "BostonHacks" line nudged down to give the now much-taller
-            labels room without overlapping. */}
+            labels room without overlapping. "Now"/"Hackathon" later scaled back down
+            to 7cqw (of the sign's width — ~35px on desktop, ~20px on the 290px mobile
+            sign), per request: at a fixed 56px, "HACKATHON" ran off the mobile sign. */}
         <p className="absolute font-inter text-[56px] font-extrabold leading-none" style={{ left: "30.6%", top: "23%" }} aria-live="polite">
           {mounted ? remaining.hours : "--"}
           <span className="font-medium">h</span>
         </p>
 
-        <div className="absolute flex items-center gap-2 text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "34%" }}>
-          <Image src="/images/countdown/track-icon.svg" alt="" width={40} height={40} aria-hidden />
+        <div className="absolute flex items-center gap-[0.2em] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "34%", fontSize: "7cqw" }}>
+          <Image src="/images/countdown/track-icon.svg" alt="" width={40} height={40} aria-hidden className="h-[0.75em] w-[0.75em]" />
           Now
         </div>
 
@@ -140,7 +158,7 @@ export default function Countdown() {
           <span className="font-medium">d</span>
         </p>
 
-        <p className="absolute text-[56px] font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "61%" }}>
+        <p className="absolute font-bold uppercase leading-none tracking-wide text-black/60" style={{ left: "26.1%", top: "61%", fontSize: "7cqw" }}>
           Hackathon
         </p>
         <p className="absolute text-base font-bold" style={{ left: "15.5%", top: "69%" }}>
