@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bostonhacks.org"),
-  title: "BostonHacks 2025 - Boston Bound",
+  title: "BostonHacks 2026 - Boston Bound",
   description:
     "BostonHacks 2025 Hackathon, Boston University’s largest, annual student-run hackathon and various beginner friendly workshops!",
   keywords: [
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "hackathon",
     "boston university",
     "boston hackathon",
-    "boston hackathons 2025",
+    "boston hackathons 2026",
     "bu hackathon",
     "student hackathon",
     "coding competition",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   creator: "BostonHacks",
   openGraph: {
-    title: "BostonHacks 2026 - MBTA + Boston",
+    title: "BostonHacks 2026 - Boston Bound",
     description: "BostonHacks 2026 Hackathon landing page",
     url: "https://bostonhacks.org",
     siteName: "BostonHacks 2026",
