@@ -1,4 +1,4 @@
-# BostonHacks 2025
+# BostonHacks 2026
 
 Bostonhacks 2026 official landing page.
 

@@ -3,15 +3,15 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bostonhacks.org"),
-  title: "BostonHacks 2025 - Boston Bound",
+  title: "BostonHacks 2026 - Boston Bound",
   description:
-    "BostonHacks 2025 Hackathon, Boston University’s largest, annual student-run hackathon and various beginner friendly workshops!",
+    "BostonHacks 2026 Hackathon, Boston University’s largest, annual student-run hackathon and various beginner friendly workshops!",
   keywords: [
     "bostonhacks",
     "hackathon",
     "boston university",
     "boston hackathon",
-    "boston hackathons 2025",
+    "boston hackathons 2026",
     "bu hackathon",
     "student hackathon",
     "coding competition",
