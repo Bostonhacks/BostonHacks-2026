@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   creator: "BostonHacks",
   openGraph: {
-    title: "BostonHacks 2026 - MBTA + Boston",
+    title: "BostonHacks 2026 - Boston Bound",
     description: "BostonHacks 2026 Hackathon landing page",
     url: "https://bostonhacks.org",
     siteName: "BostonHacks 2026",
