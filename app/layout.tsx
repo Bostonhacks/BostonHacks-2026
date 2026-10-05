@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bostonhacks.org"),
-  title: "BostonHacks 2025 - Retro Remix",
+  title: "BostonHacks 2025 - Boston Bound",
   description:
     "BostonHacks 2025 Hackathon, Boston University’s largest, annual student-run hackathon and various beginner friendly workshops!",
   keywords: [
@@ -17,8 +17,9 @@ export const metadata: Metadata = {
     "coding competition",
     "tech event",
     "programming",
-    "retro remix",
-    "2025",
+    "boston",
+    "boston bound",
+    "2026",
   ],
   authors: [
     {
