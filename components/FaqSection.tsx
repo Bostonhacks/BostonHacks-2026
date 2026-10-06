@@ -28,6 +28,13 @@ import Link from "next/link";
 // exact aspect ratio and given viewport-width-relative sizing (same principle as
 // TracksSection's red hook line), just anchored near the list rather than
 // percentage-locked to it.
+//
+// Both belong in the empty side gutter beside the centered (max-w-3xl) list, which
+// only exists on wide screens. Narrower, they landed on the questions themselves —
+// the dashed line struck through whichever question sat at 38%, the cloud covered
+// the last one or two. So the dashed line is capped at the gutter's width (gone when
+// there's no gutter), and below xl the cloud drops beneath the list, with the
+// section's bottom padding growing to make room for it.
 const FAQS = [
   {
     question: "What is BostonHacks?",
@@ -128,7 +135,7 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="relative isolate scroll-mt-[64px] overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black lg:scroll-mt-[215px]"
+      className="relative isolate scroll-mt-[64px] overflow-hidden bg-white px-8 pb-[max(4rem,calc(min(26vw,16rem)*0.774+1.5rem))] pt-10 font-akshar text-black lg:scroll-mt-[215px] xl:pb-16"
     >
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — was missing entirely. */}
       <div
@@ -201,7 +208,7 @@ export default function FaqSection() {
           see file header for why these aren't part of the canvas above */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-10 bottom-8 w-[26vw] max-w-64"
+        className="pointer-events-none absolute -left-10 bottom-4 w-[26vw] max-w-64 xl:bottom-8"
         style={{ aspectRatio: "513 / 397" }}
       >
         <Image
@@ -214,8 +221,8 @@ export default function FaqSection() {
       </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute left-0 top-[38%] w-[19vw] max-w-48 -translate-y-1/2"
-        style={{ aspectRatio: "367.667 / 53.333" }}
+        className="pointer-events-none absolute left-0 top-[38%] -translate-y-1/2"
+        style={{ aspectRatio: "367.667 / 53.333", width: "min(19vw, 12rem, max(0px, calc(50vw - 24rem - 3rem)))" }}
       >
         <Image
           src="/images/faq/dashed-h.svg"
