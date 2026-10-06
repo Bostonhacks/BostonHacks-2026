@@ -128,7 +128,7 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="relative isolate scroll-mt-[140px] overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black md:scroll-mt-[215px]"
+      className="relative isolate scroll-mt-[64px] overflow-hidden bg-white px-8 pb-16 pt-10 font-akshar text-black lg:scroll-mt-[215px]"
     >
       {/* Blueprint grid, per Figma nodes 462:396/462:420 — was missing entirely. */}
       <div

@@ -44,7 +44,7 @@ export default function ThemeGraphics({ text }: { text: string }) {
       >
         {/* Theme badge, per 462:537/462:536/462:538 */}
         <div
-          className="absolute flex items-center justify-center rounded-md px-[2%] text-center font-bold shadow-md"
+          className="absolute flex items-center justify-center whitespace-nowrap rounded-md px-[2%] text-center font-bold shadow-md"
           style={{
             left: "20.41%",
             top: "2.53%",
@@ -53,7 +53,9 @@ export default function ThemeGraphics({ text }: { text: string }) {
             backgroundColor: "#D6D6D6",
             // 36px in Figma (462:538) / 2322.95px canvas width, scaled by the canvas's
             // own 161.32vw render width — reaches exactly 36px at a 1440px viewport.
-            fontSize: "clamp(12px, 2.5vw, 36px)",
+            // On phones it floors at 12px but never past 3.1vw, which is what still
+            // fits the shrinking badge (a flat 12px floor wrapped out of it at 320px).
+            fontSize: "max(min(3.1vw, 12px), min(2.5vw, 36px))",
           }}
         >
           {text}

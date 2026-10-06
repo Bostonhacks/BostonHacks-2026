@@ -26,18 +26,19 @@ const DAYS: ScheduleEvent["day"][] = [1, 2];
 function ScheduleRow({ row, color }: { row: ScheduleEvent; color: string }) {
   return (
     <div
-      className={`flex items-center gap-4 rounded-lg px-3 text-xl leading-[2] text-black sm:text-2xl ${
+      className={`flex items-center gap-3 rounded-lg px-3 py-1.5 text-base leading-snug text-black sm:gap-4 sm:py-0 sm:text-2xl sm:leading-[2] ${
         row.now ? "font-semibold" : ""
       }`}
       style={row.now ? { backgroundColor: "var(--faq-highlight)", color: "white" } : undefined}
     >
-      <span className="w-28 shrink-0 whitespace-nowrap sm:w-32">{row.time}</span>
-      <span aria-hidden className="h-0 min-w-6 flex-1 border-b-[3px] border-dotted" style={{ borderColor: row.now ? "rgba(255,255,255,.6)" : "rgba(0,0,0,.35)" }} />
+      <span className="w-[4.5rem] shrink-0 whitespace-nowrap sm:w-32">{row.time}</span>
+      <span aria-hidden className="h-0 min-w-4 flex-1 border-b-[3px] border-dotted sm:min-w-6" style={{ borderColor: row.now ? "rgba(255,255,255,.6)" : "rgba(0,0,0,.35)" }} />
       {/* Was a fixed w-40/w-52 — fine for the old short placeholder titles
           ("Breakfast", "Yay"), too narrow for real ones ("Find Your Dream
           Team", "Submissions Due, Judging Begins"), wrapping them onto a
-          second line. Sizes to content + whitespace-nowrap instead. */}
-      <span className="flex shrink-0 items-center gap-2 whitespace-nowrap">
+          second line. Sizes to content + whitespace-nowrap from `sm` up; on
+          phones long titles may wrap instead (nowrap ran them off-screen). */}
+      <span className="flex min-w-0 items-center gap-2 sm:shrink-0 sm:whitespace-nowrap">
         <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: row.now ? "#fff" : color }} />
         {row.title}
         {row.now && <span className="ml-auto text-xs font-bold uppercase tracking-wider">now</span>}
@@ -95,7 +96,7 @@ export default function ScheduleGrid() {
         ))}
       </div>
 
-      <div className="relative mx-auto max-w-4xl pb-24 pl-12 pr-6 sm:pl-[130px] sm:pr-6">
+      <div className="relative mx-auto max-w-4xl pb-24 pl-10 pr-3 sm:pl-[130px] sm:pr-6">
         {/* Marker-highlight, per Figma: a solid #206DDF band cutting through the
             lower half of the letters (same schedule-specific blue as the route
             line, not --track-blue) — was a thin translucent strip below the
@@ -123,7 +124,7 @@ export default function ScheduleGrid() {
           units. The black-ring "now" dot's white fill sits inside a black ring —
           a CSS border-box border stays fully inside its own box, matching that. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-16 flex h-8 items-center" style={{ backgroundColor: "var(--track-red)" }} aria-hidden>
-        <span className="absolute left-[46px] h-8 w-8 rounded-full border-[5px] border-black bg-white" />
+        <span className="absolute left-[10px] h-8 w-8 rounded-full border-[5px] border-black bg-white sm:left-[46px]" />
         <span className="absolute h-[18px] w-[18px] rounded-full bg-white" style={{ left: "42.4%" }} />
         <span className="absolute h-[18px] w-[18px] rounded-full bg-white" style={{ left: "69%" }} />
       </div>

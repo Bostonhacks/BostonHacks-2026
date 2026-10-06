@@ -25,7 +25,7 @@ export default function SponsorsSection() {
     <section
       id="sponsors"
       aria-label="Sponsors"
-      className="relative isolate w-full scroll-mt-[140px] overflow-hidden bg-white px-8 py-20 font-akshar text-black md:scroll-mt-[215px]"
+      className="relative isolate w-full scroll-mt-[64px] overflow-hidden bg-white px-8 py-20 font-akshar text-black lg:scroll-mt-[215px]"
     >
       <div
         aria-hidden
