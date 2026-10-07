@@ -105,30 +105,22 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/citgo.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Yellow MBTA box, per 462:479/462:480. A flat CSS rect can never cleanly fill a
-            hand-drawn wavy outline — no matter how the rect is sized/positioned, the wave
-            dips inside the rect's straight edge in some spots (yellow overshoots past the
-            border) and bulges outside it in others (a white gap shows), and that's exactly
-            what earlier attempts here showed. Fixed at the asset level instead: the border
-            PNG's own transparent interior was flood-filled with the fill color (after first
-            stripping a baked-in gray anti-aliasing halo the source export had — a straight
-            alpha-based fill left a visible light ring around the stroke), producing one
-            combined image where the fill and outline are pixel-identical to the same shape. */}
+        {/* Theme box, per the updated mockup: a hand-drawn black outline over a
+            separate flat yellow rectangle shifted down-right of it (white gap inside
+            the top-left, yellow poking out bottom-right) — the same offset-fill style
+            as the hero's Apply/Directions buttons. Previously one image with the
+            yellow filled inside the outline; the outline-only PNG is that image with
+            its yellow (#F7DD04) keyed out. All offsets below are percentages of the
+            outline box, measured off the mockup (outline 339x235px there):
+              yellow    5.0 /  9.8 / 98.2 / 100.4
+              lettering 8.3 / 10.5 / 86.8 / 85.0  (the PNG's frame; its drawn
+                        letters span 82% of the box width, starting 10% in) */}
         <div className="pointer-events-none absolute" style={{ left: "27.29%", top: "11.23%", width: "29.53%", height: "17.04%" }}>
-          <Image
-            src="/images/theme/mbta-box-filled.png"
-            alt=""
-            fill
-            unoptimized
-            className="pointer-events-none object-fill"
-          />
-          {/* Theme name "BOSTON BOUND" (replaced the "MBTA" + "+ BOSTON" lettering).
-              The artwork (public/images/theme/boston-bound.png, 594x403) arrives
-              already tilted and outlined, with transparent letter counters so the
-              yellow shows through. It's ~74% of the box's width, centered (box is
-              686x472 at the canvas's native size). The heading text stays in the DOM
-              for screen readers. */}
-          <div className="absolute" style={{ left: "13%", top: "13.5%", width: "74%", height: "73%" }}>
+          <div className="absolute" style={{ left: "5%", top: "9.8%", width: "98.2%", height: "100.4%", backgroundColor: "#F7DD04" }} />
+          <Image src="/images/theme/theme-box-outline.png" alt="" fill unoptimized className="object-fill" />
+          {/* Theme name artwork (594x403, already tilted and outlined, transparent
+              letter counters); the heading text stays in the DOM for screen readers. */}
+          <div className="absolute" style={{ left: "8.3%", top: "10.5%", width: "86.8%", height: "85%" }}>
             <Image src="/images/theme/boston-bound.png" alt="" fill unoptimized className="object-contain" />
           </div>
           <h2 className="sr-only">Boston Bound</h2>
