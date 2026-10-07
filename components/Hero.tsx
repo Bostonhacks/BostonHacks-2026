@@ -269,7 +269,7 @@ export default function Hero() {
         <div
           id="signup"
           aria-hidden
-          className="absolute inset-x-0 scroll-mt-[140px] md:scroll-mt-[215px]"
+          className="absolute inset-x-0 scroll-mt-[64px] lg:scroll-mt-[215px]"
           style={{ top: "30%" }}
         />
         {LINES.map((line, i) => (
@@ -336,11 +336,11 @@ export default function Hero() {
         }}
       >
         <p
-          className="absolute whitespace-nowrap font-helvetica font-bold"
+          className="absolute whitespace-nowrap font-helvetica font-bold leading-none"
           style={{
             left: "52.15%",
             top: "25.35%",
-            fontSize: "clamp(24px, 2.5vw, 36px)",
+            fontSize: "clamp(13px, 2.5vw, 36px)",
           }}
         >
           2026
@@ -369,7 +369,7 @@ export default function Hero() {
           style={{
             left: "60.01%",
             top: "37.95%",
-            fontSize: "clamp(24px, 2.5vw, 36px)",
+            fontSize: "clamp(15px, 2.5vw, 36px)",
             ...HIGHLIGHT,
           }}
         >
@@ -381,7 +381,7 @@ export default function Hero() {
           style={{
             left: "71.14%",
             top: "37.95%",
-            fontSize: "clamp(24px, 2.5vw, 36px)",
+            fontSize: "clamp(15px, 2.5vw, 36px)",
             ...HIGHLIGHT,
           }}
         >
@@ -409,65 +409,73 @@ export default function Hero() {
             className="object-contain"
           />
         </div>
-        {BUTTONS.map((b) =>
-          b.label === "Apply" ? (
-            <ApplyButton
-              key={b.label}
-              top={b.top}
-              fill={b.fill}
-              text={b.text}
-              textX={b.textX}
-            />
-          ) : (
-            <a
-              key={b.label}
-              href={b.href}
-              {...(b.external && {
-                target: "_blank",
-                rel: "noopener noreferrer",
-              })}
-              className="absolute block"
-              style={{
-                left: "53.52%",
-                top: b.top,
-                width: "14.01%",
-                height: "3.99%",
-              }}
-            >
-              <span
-                aria-hidden
-                className="absolute"
+        {/* Apply / Directions / "!" scale up together on small screens. Everything in
+            this canvas shrinks with the viewport, which left these at ~78x23px with
+            ~10px text on a phone — too small to read or tap. Scaling from Apply's own
+            top-left corner keeps the group anchored where the design puts it next to
+            the yellow line. The wrapper spans the canvas, so it's click-through and
+            only the buttons themselves take pointer events. */}
+        <div className="pointer-events-none absolute inset-0 origin-[53.52%_60.01%] scale-[1.8] sm:scale-[1.35] md:scale-100 [&>a]:pointer-events-auto [&>button]:pointer-events-auto">
+          {BUTTONS.map((b) =>
+            b.label === "Apply" ? (
+              <ApplyButton
+                key={b.label}
+                top={b.top}
+                fill={b.fill}
+                text={b.text}
+                textX={b.textX}
+              />
+            ) : (
+              <a
+                key={b.label}
+                href={b.href}
+                {...(b.external && {
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                })}
+                className="absolute block"
                 style={{
-                  left: "3.14%",
-                  top: "22.62%",
-                  width: "98.61%",
-                  height: "77.38%",
+                  left: "53.52%",
+                  top: b.top,
+                  width: "14.01%",
+                  height: "3.99%",
                 }}
               >
-                <Image src={b.fill} alt="" fill unoptimized />
-              </span>
-              <Image
-                src="/images/hero/button-outline.png"
-                alt=""
-                fill
-                unoptimized
-              />
-              <span
-                className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${b.text}`}
-                style={{ left: `${b.textX}%`, fontSize: "2.5vw" }}
-              >
-                {b.label}
-              </span>
-            </a>
-          ),
-        )}
+                <span
+                  aria-hidden
+                  className="absolute"
+                  style={{
+                    left: "3.14%",
+                    top: "22.62%",
+                    width: "98.61%",
+                    height: "77.38%",
+                  }}
+                >
+                  <Image src={b.fill} alt="" fill unoptimized />
+                </span>
+                <Image
+                  src="/images/hero/button-outline.png"
+                  alt=""
+                  fill
+                  unoptimized
+                />
+                <span
+                  className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${b.text}`}
+                  style={{ left: `${b.textX}%`, fontSize: "2.5vw" }}
+                >
+                  {b.label}
+                </span>
+              </a>
+            ),
+          )}
 
-        {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline.
-            (Was accidentally swapped for a second <GridBackground /> in e3e5a4f; that duplicate
-            sat inside this wider, offset canvas so its lines didn't align with the section's
-            grid. The single grid is now the section's first child, above.) */}
-        <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "60.2%", width: "4.88%", height: "7.66%" }}>
-          <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
+          {/* Hand-drawn "!" leaning on the Apply box — after the buttons so it paints over the outline.
+              (Was accidentally swapped for a second <GridBackground /> in e3e5a4f; that duplicate
+              sat inside this wider, offset canvas so its lines didn't align with the section's
+              grid. The single grid is now the section's first child, above.) */}
+          <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "60.2%", width: "4.88%", height: "7.66%" }}>
+            <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
+          </div>
         </div>
       </div>
     </section>

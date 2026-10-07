@@ -33,8 +33,8 @@ const STATIONS: Station[] = [
 const TRAIN_WIDTH = 120;
 const PARKED_LEFT = 150;
 
-// Sections line up under the sticky nav via their own `scroll-mt-*` (140px mobile /
-// 215px desktop), so both the click target and scroll-spy read it from the element
+// Sections line up under the sticky nav via their own `scroll-mt-*` (64px below lg /
+// 215px from lg up), so both the click target and scroll-spy read it from the element
 // rather than hard-coding one offset for every breakpoint.
 const scrollMargin = (el: HTMLElement) => parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
 
@@ -92,6 +92,8 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
   const stationRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const mobileListRef = useRef<HTMLUListElement>(null);
+  const mobileItemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const [spyActive, setSpyActive] = useState(-1);
   const [trainLeft, setTrainLeft] = useState(PARKED_LEFT);
 
@@ -116,6 +118,15 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [active, moveTrain]);
+
+  // Mobile: keep the active pill centered in the horizontally scrolling list.
+  // Scrolls only the list itself (not scrollIntoView, which can also move the page).
+  useEffect(() => {
+    const list = mobileListRef.current;
+    const item = mobileItemRefs.current[active];
+    if (!list || !item || list.scrollWidth <= list.clientWidth) return;
+    list.scrollTo({ left: item.offsetLeft - list.clientWidth / 2 + item.offsetWidth / 2, behavior: "smooth" });
+  }, [active]);
 
   // ---------- Scroll-spy (hash mode) ----------
   // Active = the last section whose top has reached its own scroll-margin line.
@@ -189,7 +200,7 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
   return (
     <nav aria-label="Primary" className="sticky top-0 z-50 w-full overflow-hidden bg-white shadow-sm">
       {/* ---------- Desktop ---------- */}
-      <div ref={navRef} className="relative mx-auto hidden h-[210px] max-w-[1440px] px-8 md:block">
+      <div ref={navRef} className="relative mx-auto hidden h-[210px] max-w-[1440px] px-8 lg:block">
         {/* Thick grey track band with dark rails — rounded ends */}
         <div className="pointer-events-none absolute inset-x-8 top-[40px] h-[46px] overflow-hidden rounded-full" aria-hidden>
           <div className="absolute inset-0 bg-ms-gray" />
@@ -224,7 +235,9 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
           <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={51} height={90} unoptimized />
         </a>
 
-        <ul className="absolute right-8 top-[18px] grid w-[76%] grid-cols-6 justify-items-center">
+        {/* Stations start after the logo/MLH cluster (which ends at x=261) on narrower
+            desktops; from xl up the original 76%-wide track fits without reaching it. */}
+        <ul className="absolute left-[290px] right-8 top-[18px] grid grid-cols-6 justify-items-center xl:left-auto xl:w-[76%]">
           {STATIONS.map((s, i) => (
             <li key={s.slug} ref={(el) => { stationRefs.current[i] = el; }} className="flex flex-col items-center">
               {stationLink(
@@ -252,25 +265,33 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
         </ul>
       </div>
 
-      {/* ---------- Mobile ---------- */}
-      <div className="md:hidden">
-        <div className="flex items-center gap-3 border-b-4 border-ms-gray px-4 py-3">
-          <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={44} height={38} priority unoptimized />
-          <a href="https://mlh.io" target="_blank" rel="noopener noreferrer" aria-label="Major League Hacking" className="shrink-0">
-            <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={22} height={39} unoptimized />
-          </a>
-          <div className="relative h-[14px] flex-1" aria-hidden>
-            <div className="absolute inset-x-0 top-0 h-[14px] rounded bg-ms-gray" />
-            <div className="absolute inset-x-0 top-[5px] h-[4px] bg-ms-gray-darker" />
-          </div>
-        </div>
-        <ul className="flex flex-wrap items-center gap-2 px-4 py-3">
+      {/* ---------- Mobile ----------
+          One compact row (logo, MLH badge, horizontally scrolling station pills)
+          instead of a logo/track row plus wrapped pills: that version was 191px
+          tall — nearly a quarter of a phone screen, sticky — and taller than the
+          sections' mobile scroll-margin, so jumped-to headings landed under it.
+          The grey rail survives as the bottom border; the active pill is kept
+          scrolled into view (effect above). Height must stay in sync with the
+          sections' mobile `scroll-mt-[64px]`. Used below `lg`: between 768 and 1024px
+          the full desktop track has no room — its tilted labels ran into the logo. */}
+      <div className="flex h-[60px] items-center gap-3 border-b-4 border-ms-gray pl-4 lg:hidden">
+        <a href={routed ? routeBase : "#top"} aria-label="BostonHacks home" className="shrink-0">
+          <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={36} height={31} priority unoptimized />
+        </a>
+        <a href="https://mlh.io" target="_blank" rel="noopener noreferrer" aria-label="Major League Hacking" className="shrink-0">
+          <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={18} height={32} unoptimized />
+        </a>
+        <ul
+          ref={mobileListRef}
+          className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2 pr-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ maskImage: "linear-gradient(to right, black 85%, transparent)", WebkitMaskImage: "linear-gradient(to right, black 85%, transparent)" }}
+        >
           {STATIONS.map((s, i) => (
-            <li key={s.slug}>
+            <li key={s.slug} ref={(el) => { mobileItemRefs.current[i] = el; }} className="shrink-0">
               {stationLink(
                 s,
                 i,
-                `inline-block rounded-full border-[3px] bg-white px-4 py-1.5 font-helvetica text-lg font-bold transition-colors ${
+                `inline-block whitespace-nowrap rounded-full border-[3px] bg-white px-3 py-1 font-helvetica text-sm font-bold transition-colors ${
                   active === i ? "border-track-blue text-track-blue" : "border-ms-gray text-black"
                 }`,
                 s.label,
