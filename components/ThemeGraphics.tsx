@@ -17,8 +17,6 @@ import Image from "next/image";
 //   cloud A       7.10 /  7.37 / 30.26 / 10.47   (462:460)
 //   cloud B      48.69 /  0.00 / 19.80 / 12.85   (462:461)
 //   yellow box   27.29 / 11.23 / 29.53 / 17.04   (462:479/462:480)
-//   MBTA         32.60 / 15.09 / 23.16 /  8.54   (462:491)
-//   + BOSTON     36.07 / 22.27 /  9.22 /  2.66   (462:498)
 //   CITGO        55.85 /  5.71 / 13.80 / 10.79   (462:481)
 //   ant          18.33 / 24.93 / 16.47 /  9.50   (462:506)
 //   blocks       48.67 / 21.96 / 18.94 / 12.64   (462:525)
@@ -26,7 +24,7 @@ import Image from "next/image";
 //   train scene   0.00 / 42.93 / 83.46 / 57.07   (462:225)
 export default function ThemeGraphics({ text }: { text: string }) {
   return (
-    <section aria-hidden className="relative isolate w-full overflow-hidden bg-white">
+    <section aria-label="Theme" className="relative isolate w-full overflow-hidden bg-white">
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-40"
         style={{
@@ -124,27 +122,16 @@ export default function ThemeGraphics({ text }: { text: string }) {
             unoptimized
             className="pointer-events-none object-fill"
           />
-        </div>
-        {/* MBTA/+BOSTON now use the actual source SVGs (with proper compound-path
-            letter holes — B's two counters, A's triangle, BOSTON's O's) instead of
-            flattened PNG exports. The PNG-then-flood-fill-from-edges approach used
-            everywhere else in this file correctly clears the *outer* background but
-            can never reach fully enclosed holes like these (they're not connected to
-            the image border), so they stayed solid white/black instead of letting
-            the yellow box show through — confirmed by rendering the raw SVGs over a
-            yellow test background and comparing to Figma's reference. Height
-            percentages recomputed from each SVG's own true aspect ratio rather than
-            the frame's nominal box, same reasoning as the route-line fixes above.
-            Rotation: measured directly off a Figma reference screenshot (candidate
-            angle lines overlaid and compared against the letters' top edge) since
-            the Figma MCP session dropped mid-audit — MBTA tilts ~14deg clockwise
-            (previous -rotate-2 was both the wrong direction and far too subtle) and
-            +BOSTON carries its own, shallower ~9deg tilt rather than sitting flat. */}
-        <div className="pointer-events-none absolute" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "8.54%", transform: "rotate(14deg)" }}>
-          <Image src="/images/theme/mbta.svg" alt="" fill unoptimized className="object-contain" />
-        </div>
-        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "2.66%", transform: "rotate(9deg)" }}>
-          <Image src="/images/theme/plus-boston.svg" alt="" fill unoptimized className="object-contain" />
+          {/* Theme name "BOSTON BOUND" (replaced the "MBTA" + "+ BOSTON" lettering).
+              The artwork (public/images/theme/boston-bound.png, 594x403) arrives
+              already tilted and outlined, with transparent letter counters so the
+              yellow shows through. It's ~74% of the box's width, centered (box is
+              686x472 at the canvas's native size). The heading text stays in the DOM
+              for screen readers. */}
+          <div className="absolute" style={{ left: "13%", top: "13.5%", width: "74%", height: "73%" }}>
+            <Image src="/images/theme/boston-bound.png" alt="" fill unoptimized className="object-contain" />
+          </div>
+          <h2 className="sr-only">Boston Bound</h2>
         </div>
 
         {/* Ant/crab doodle, per 462:506 */}

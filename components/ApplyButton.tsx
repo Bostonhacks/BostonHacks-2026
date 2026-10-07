@@ -64,8 +64,8 @@ export default function ApplyButton({
   // wireframe (2026 Wireframes (5): 288x170 outline, 283x151 fill, "by 11/14").
   // Sizes are those native pixels over the hero canvas (2048 x 2103); the fill
   // keeps the original button's offset from the outline (9px right, 19px down).
-  // Text is centered left of the box's middle so "by 11/14" clears the "!" that
-  // leans on the box's right edge.
+  // The "!" (rendered by Hero) now pokes up above the box's top-right corner, per
+  // the mockup; text sits just left of center, clear of it.
   return (
     <button
       type="button"
@@ -90,7 +90,7 @@ export default function ApplyButton({
       <Image src="/images/hero/button-outline-tall.png" alt="" fill unoptimized />
       <span
         aria-hidden
-        className={`absolute top-[55%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center whitespace-nowrap font-helvetica font-bold leading-[1.15] ${text}`}
+        className={`absolute top-[53%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center whitespace-nowrap font-helvetica font-bold leading-[1.15] ${text}`}
         style={{ left: `${textX}%`, fontSize: "2.5vw" }}
       >
         <span>Apply</span>

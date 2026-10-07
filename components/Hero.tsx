@@ -46,7 +46,8 @@ import ApplyButton from "@/components/ApplyButton";
 //   chevron      60.89 / 44.55 /  4.64 /  6.89   (462:127)
 //   Apply        53.52 / 60.01 / 14.06 /  8.08   (taller, with deadline — see ApplyButton)
 //   Directions   53.52 / 72.52 / 14.01 /  3.99
-//   "!"          62.74 / 64.29 /  4.88 /  7.66
+//   "!"          62.73 / 57.09 /  4.52 /  7.11   (top-right of Apply, rising above it, per mockup;
+//                                                  sized from the drawing's own bbox, not the padded PNG)
 //
 // The three route lines each get a small extra size/position correction beyond
 // their nominal Figma frame box: get_design_context reports these frames with
@@ -93,7 +94,7 @@ const BUTTONS = [
     top: "60.01%",
     fill: "/images/hero/button-fill-yellow-tall.png",
     text: "text-black",
-    textX: 40,
+    textX: 47,
     external: false,
   },
   {
@@ -474,7 +475,7 @@ export default function Hero() {
               (Was accidentally swapped for a second <GridBackground /> in e3e5a4f; that duplicate
               sat inside this wider, offset canvas so its lines didn't align with the section's
               grid. The single grid is now the section's first child, above.) */}
-          <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.74%", top: "64.29%", width: "4.88%", height: "7.66%" }}>
+          <div aria-hidden className="pointer-events-none absolute" style={{ left: "62.73%", top: "57.09%", width: "4.52%", height: "7.11%" }}>
             <Image src="/images/hero/exclamation.png" alt="" fill unoptimized className="object-contain" />
           </div>
         </div>
