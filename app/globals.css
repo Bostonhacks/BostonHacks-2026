@@ -495,3 +495,13 @@ html {
 .title-shadow {
   filter: drop-shadow(5px 7px 13.4px #0000007b);
 }
+
+/* Tailwind v4's preflight no longer gives buttons a pointer cursor (it resets them
+   to `cursor: default`), so the Apply button, FAQ questions, and track cards all
+   showed a plain arrow. Restore the pointer for every enabled button site-wide. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
