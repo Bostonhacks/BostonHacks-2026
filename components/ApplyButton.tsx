@@ -8,8 +8,8 @@ import { Application, ShortUser } from "@/types/types";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 // Application deadline shown on the button.
-const DEADLINE_SHORT = "11/14";
-const DEADLINE_LONG = "November 14";
+const DEADLINE_SHORT = "10/28";
+const DEADLINE_LONG = "October 28";
 
 interface ApplyButtonProps {
   top: string;
@@ -61,7 +61,7 @@ export default function ApplyButton({
   };
 
   // Taller box with the application deadline as a second line, per the updated
-  // wireframe (2026 Wireframes (5): 288x170 outline, 283x151 fill, "by 11/14").
+  // wireframe (2026 Wireframes (5): 288x170 outline, 283x151 fill, deadline line).
   // Sizes are those native pixels over the hero canvas (2048 x 2103); the fill
   // keeps the original button's offset from the outline (9px right, 19px down).
   // The "!" (rendered by Hero) now pokes up above the box's top-right corner, per
