@@ -17,8 +17,6 @@ import Image from "next/image";
 //   cloud A       7.10 /  7.37 / 30.26 / 10.47   (462:460)
 //   cloud B      48.69 /  0.00 / 19.80 / 12.85   (462:461)
 //   yellow box   27.29 / 11.23 / 29.53 / 17.04   (462:479/462:480)
-//   MBTA         32.60 / 15.09 / 23.16 /  8.54   (462:491)
-//   + BOSTON     36.07 / 22.27 /  9.22 /  2.66   (462:498)
 //   CITGO        55.85 /  5.71 / 13.80 / 10.79   (462:481)
 //   ant          18.33 / 24.93 / 16.47 /  9.50   (462:506)
 //   blocks       48.67 / 21.96 / 18.94 / 12.64   (462:525)
@@ -26,7 +24,7 @@ import Image from "next/image";
 //   train scene   0.00 / 42.93 / 83.46 / 57.07   (462:225)
 export default function ThemeGraphics({ text }: { text: string }) {
   return (
-    <section aria-hidden className="relative isolate w-full overflow-hidden bg-white">
+    <section aria-label="Theme" className="relative isolate w-full overflow-hidden bg-white">
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-40"
         style={{
@@ -44,7 +42,7 @@ export default function ThemeGraphics({ text }: { text: string }) {
       >
         {/* Theme badge, per 462:537/462:536/462:538 */}
         <div
-          className="absolute flex items-center justify-center rounded-md px-[2%] text-center font-bold shadow-md"
+          className="absolute flex items-center justify-center whitespace-nowrap rounded-md px-[2%] text-center font-bold shadow-md"
           style={{
             left: "20.41%",
             top: "2.53%",
@@ -53,7 +51,9 @@ export default function ThemeGraphics({ text }: { text: string }) {
             backgroundColor: "#D6D6D6",
             // 36px in Figma (462:538) / 2322.95px canvas width, scaled by the canvas's
             // own 161.32vw render width — reaches exactly 36px at a 1440px viewport.
-            fontSize: "clamp(12px, 2.5vw, 36px)",
+            // On phones it floors at 12px but never past 3.1vw, which is what still
+            // fits the shrinking badge (a flat 12px floor wrapped out of it at 320px).
+            fontSize: "max(min(3.1vw, 12px), min(2.5vw, 36px))",
           }}
         >
           {text}
@@ -105,44 +105,25 @@ export default function ThemeGraphics({ text }: { text: string }) {
           <Image src="/images/theme/citgo.png" alt="" fill unoptimized className="object-contain" />
         </div>
 
-        {/* Yellow MBTA box, per 462:479/462:480. A flat CSS rect can never cleanly fill a
-            hand-drawn wavy outline — no matter how the rect is sized/positioned, the wave
-            dips inside the rect's straight edge in some spots (yellow overshoots past the
-            border) and bulges outside it in others (a white gap shows), and that's exactly
-            what earlier attempts here showed. Fixed at the asset level instead: the border
-            PNG's own transparent interior was flood-filled with the fill color (after first
-            stripping a baked-in gray anti-aliasing halo the source export had — a straight
-            alpha-based fill left a visible light ring around the stroke), producing one
-            combined image where the fill and outline are pixel-identical to the same shape. */}
+        {/* Theme box, per the updated mockup: a hand-drawn black outline over a
+            separate flat yellow rectangle shifted down-right of it (white gap inside
+            the top-left, yellow poking out bottom-right) — the same offset-fill style
+            as the hero's Apply/Directions buttons. Previously one image with the
+            yellow filled inside the outline; the outline-only PNG is that image with
+            its yellow (#F7DD04) keyed out. All offsets below are percentages of the
+            outline box, measured off the mockup (outline 339x235px there):
+              yellow    5.0 /  9.8 / 98.2 / 100.4
+              lettering 8.3 / 10.5 / 86.8 / 85.0  (the PNG's frame; its drawn
+                        letters span 82% of the box width, starting 10% in) */}
         <div className="pointer-events-none absolute" style={{ left: "27.29%", top: "11.23%", width: "29.53%", height: "17.04%" }}>
-          <Image
-            src="/images/theme/mbta-box-filled.png"
-            alt=""
-            fill
-            unoptimized
-            className="pointer-events-none object-fill"
-          />
-        </div>
-        {/* MBTA/+BOSTON now use the actual source SVGs (with proper compound-path
-            letter holes — B's two counters, A's triangle, BOSTON's O's) instead of
-            flattened PNG exports. The PNG-then-flood-fill-from-edges approach used
-            everywhere else in this file correctly clears the *outer* background but
-            can never reach fully enclosed holes like these (they're not connected to
-            the image border), so they stayed solid white/black instead of letting
-            the yellow box show through — confirmed by rendering the raw SVGs over a
-            yellow test background and comparing to Figma's reference. Height
-            percentages recomputed from each SVG's own true aspect ratio rather than
-            the frame's nominal box, same reasoning as the route-line fixes above.
-            Rotation: measured directly off a Figma reference screenshot (candidate
-            angle lines overlaid and compared against the letters' top edge) since
-            the Figma MCP session dropped mid-audit — MBTA tilts ~14deg clockwise
-            (previous -rotate-2 was both the wrong direction and far too subtle) and
-            +BOSTON carries its own, shallower ~9deg tilt rather than sitting flat. */}
-        <div className="pointer-events-none absolute" style={{ left: "32.60%", top: "15.09%", width: "23.16%", height: "8.54%", transform: "rotate(14deg)" }}>
-          <Image src="/images/theme/mbta.svg" alt="" fill unoptimized className="object-contain" />
-        </div>
-        <div className="pointer-events-none absolute" style={{ left: "36.07%", top: "22.27%", width: "9.22%", height: "2.66%", transform: "rotate(9deg)" }}>
-          <Image src="/images/theme/plus-boston.svg" alt="" fill unoptimized className="object-contain" />
+          <div className="absolute" style={{ left: "5%", top: "9.8%", width: "98.2%", height: "100.4%", backgroundColor: "#F7DD04" }} />
+          <Image src="/images/theme/theme-box-outline.png" alt="" fill unoptimized className="object-fill" />
+          {/* Theme name artwork (594x403, already tilted and outlined, transparent
+              letter counters); the heading text stays in the DOM for screen readers. */}
+          <div className="absolute" style={{ left: "8.3%", top: "10.5%", width: "86.8%", height: "85%" }}>
+            <Image src="/images/theme/boston-bound.png" alt="" fill unoptimized className="object-contain" />
+          </div>
+          <h2 className="sr-only">Boston Bound</h2>
         </div>
 
         {/* Ant/crab doodle, per 462:506 */}

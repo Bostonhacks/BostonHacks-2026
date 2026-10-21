@@ -14,11 +14,11 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <div id="theme" className="scroll-mt-[140px] md:scroll-mt-[215px]">
+      <div id="theme" className="scroll-mt-[64px] lg:scroll-mt-[215px]">
         <ThemeGraphics text="This year's theme is..." />
       </div>
       <TracksSection />
-      <div id="schedule" className="scroll-mt-[140px] md:scroll-mt-[215px]">
+      <div id="schedule" className="scroll-mt-[64px] lg:scroll-mt-[215px]">
         <ScheduleGrid />
       </div>
       <FaqSection />

@@ -116,7 +116,7 @@ function LoginContent() {
     <section className="relative isolate flex min-h-screen w-full items-center justify-center bg-white px-6 py-12 font-akshar text-black">
       <GridBackground />
 
-      <div className="relative w-full max-w-sm scale-[1.4] rounded border-2 border-black/10 bg-white p-6">
+      <div className="relative w-full max-w-sm md:scale-[1.4] rounded border-2 border-black/10 bg-white p-6">
         <Link
           href="/"
           className="mb-6 inline-block font-helvetica text-sm font-bold underline"

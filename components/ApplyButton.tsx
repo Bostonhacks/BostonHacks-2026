@@ -7,6 +7,10 @@ import { Application, ShortUser } from "@/types/types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
+// Application deadline shown on the button.
+const DEADLINE_SHORT = "10/28";
+const DEADLINE_LONG = "October 28";
+
 interface ApplyButtonProps {
   top: string;
   fill: string;
@@ -56,32 +60,41 @@ export default function ApplyButton({
     }
   };
 
+  // Taller box with the application deadline as a second line, per the updated
+  // wireframe (2026 Wireframes (5): 288x170 outline, 283x151 fill, deadline line).
+  // Sizes are those native pixels over the hero canvas (2048 x 2103); the fill
+  // keeps the original button's offset from the outline (9px right, 19px down).
+  // The "!" (rendered by Hero) now pokes up above the box's top-right corner, per
+  // the mockup; text sits just left of center, clear of it.
   return (
     <button
       type="button"
       onClick={handleClick}
       disabled={loading}
+      aria-label={`Apply by ${DEADLINE_LONG}`}
       className="absolute block border-0 bg-transparent p-0 disabled:opacity-70"
-      style={{ left: "53.52%", top, width: "14.01%", height: "3.99%" }}
+      style={{ left: "53.52%", top, width: "14.06%", height: "8.08%" }}
     >
       <span
         aria-hidden
         className="absolute"
         style={{
-          left: "3.14%",
-          top: "22.62%",
-          width: "98.61%",
-          height: "77.38%",
+          left: "3.13%",
+          top: "11.18%",
+          width: "98.26%",
+          height: "88.82%",
         }}
       >
         <Image src={fill} alt="" fill unoptimized />
       </span>
-      <Image src="/images/hero/button-outline.png" alt="" fill unoptimized />
+      <Image src="/images/hero/button-outline-tall.png" alt="" fill unoptimized />
       <span
-        className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-helvetica font-bold ${text}`}
+        aria-hidden
+        className={`absolute top-[53%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center whitespace-nowrap font-helvetica font-bold leading-[1.15] ${text}`}
         style={{ left: `${textX}%`, fontSize: "2.5vw" }}
       >
-        Apply
+        <span>Apply</span>
+        <span>by {DEADLINE_SHORT}</span>
       </span>
     </button>
   );

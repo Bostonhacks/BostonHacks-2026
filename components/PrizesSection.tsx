@@ -53,7 +53,7 @@ export default function PrizesSection() {
     <section
       id="prizes"
       aria-labelledby="prizes-heading"
-      className="relative w-full scroll-mt-[140px] overflow-hidden bg-white px-8 py-10 font-akshar text-black md:scroll-mt-[215px]"
+      className="relative w-full scroll-mt-[64px] overflow-hidden bg-white px-8 py-10 font-akshar text-black lg:scroll-mt-[215px]"
     >
       <div
         className="relative mx-auto max-w-3xl"

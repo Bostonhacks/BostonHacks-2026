@@ -76,7 +76,7 @@ const TRACKS: {
 
 export default function TracksSection() {
   return (
-    <section id="tracks" aria-label="Tracks" className="relative w-full scroll-mt-[140px] overflow-hidden bg-white px-8 py-20 font-akshar text-black md:scroll-mt-[215px]">
+    <section id="tracks" aria-label="Tracks" className="relative w-full scroll-mt-[64px] overflow-hidden bg-white px-8 py-20 font-akshar text-black lg:scroll-mt-[215px]">
       {/* Red route-line hook, per Figma node 462:334 — a large, prominent hook running
           down the left side past Track One, not a small corner accent. The source asset
           is a straight-ish diagonal that Figma's own reference code rotates/flips into

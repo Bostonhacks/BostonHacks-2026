@@ -78,7 +78,9 @@ const createApplicationData = (inputData: FormData) => {
 };
 
 const inputClass =
-  "w-full rounded border-2 border-black/20 bg-white px-3 py-2 text-sm font-akshar focus:border-black focus:outline-none";
+  "w-full rounded border-2 border-black/20 bg-white px-3 py-2 text-base font-akshar focus:border-black focus:outline-none sm:text-sm";
+// text-base below sm: iOS Safari auto-zooms the page into any focused field whose
+// text is under 16px (and leaves it zoomed), which made the form jump on phones.
 const selectClass = inputClass;
 const labelClass = "mb-1 block text-sm font-bold font-helvetica";
 const fieldsetClass = "mb-6 rounded border-2 border-black/10 p-4";
