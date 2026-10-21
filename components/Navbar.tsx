@@ -221,18 +221,18 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
           <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={78} height={67} priority unoptimized />
         </a>
 
-        {/* MLH official trust badge (public/images/navbar/mlh-badge.svg), natural
+        {/* MLH official trust badge (public/images/navbar/mlh-badge-2027.svg), natural
             aspect ratio 392.79:688 — no Figma frame for this exists in the
             wireframe file, so it's positioned/sized by eye next to the logo
             rather than against a spec. */}
         <a
-          href="https://mlh.io"
+          href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2027-season&utm_content=white"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Major League Hacking"
           className="absolute left-[210px] top-[100px] transition-transform hover:-translate-y-0.5"
         >
-          <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={51} height={90} unoptimized />
+          <Image src="/images/navbar/mlh-badge-2027.svg" alt="Major League Hacking 2027 Hackathon Season" width={51} height={90} unoptimized />
         </a>
 
         {/* Stations start after the logo/MLH cluster (which ends at x=261) on narrower
@@ -278,8 +278,8 @@ export default function Navbar({ routeBase }: { routeBase?: string }) {
         <a href={routed ? routeBase : "#top"} aria-label="BostonHacks home" className="shrink-0">
           <Image src="/images/navbar/logo.svg" alt="BostonHacks" width={36} height={31} priority unoptimized />
         </a>
-        <a href="https://mlh.io" target="_blank" rel="noopener noreferrer" aria-label="Major League Hacking" className="shrink-0">
-          <Image src="/images/navbar/mlh-badge.svg" alt="Major League Hacking" width={18} height={32} unoptimized />
+        <a href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2027-season&utm_content=white" target="_blank" rel="noopener noreferrer" aria-label="Major League Hacking" className="shrink-0">
+          <Image src="/images/navbar/mlh-badge-2027.svg" alt="Major League Hacking 2027 Hackathon Season" width={18} height={32} unoptimized />
         </a>
         <ul
           ref={mobileListRef}
