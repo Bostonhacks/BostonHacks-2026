@@ -6,6 +6,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GridBackground from "@/components/GridBackground";
+import SchoolSelect from "@/components/SchoolSelect";
 import { Application, ShortUser, User } from "@/types/types";
 import { ETHNICITY_OPTIONS, MAJORS_OPTIONS, STATE_OPTIONS } from "../const";
 
@@ -510,16 +511,16 @@ export default function ApplyPage() {
           <fieldset className={fieldsetClass}>
             <legend className={legendClass}>Education</legend>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
+              <div className="sm:col-span-2">
                 <label className={labelClass} htmlFor="school">
                   School
                 </label>
-                <input
+                <SchoolSelect
                   id="school"
-                  type="text"
-                  name="school"
                   value={formData.school}
-                  onChange={handleInputChange}
+                  onChange={(school) =>
+                    setFormData((prev) => ({ ...prev, school }))
+                  }
                   className={inputClass}
                   required
                 />
@@ -759,8 +760,19 @@ export default function ApplyPage() {
                   required
                 />
                 <span>
-                  I authorize sharing my application/registration info with
-                  Major League Hacking per the{" "}
+                  I authorize you to share my application/registration
+                  information with Major League Hacking for event
+                  administration, ranking, and administration (including the
+                  creation of linked accounts on MLH and DEV (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                    href="https://dev.to/"
+                  >
+                    dev.to
+                  </a>
+                  )) in line with the{" "}
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -768,15 +780,24 @@ export default function ApplyPage() {
                     href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                   >
                     MLH Privacy Policy
-                  </a>{" "}
-                  and agree to the{" "}
+                  </a>
+                  . I further agree to the terms of both the{" "}
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline"
                     href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
                   >
-                    MLH Contest Terms
+                    MLH Contest Terms and Conditions
+                  </a>{" "}
+                  and the{" "}
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                    href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                  >
+                    MLH Privacy Policy
                   </a>
                   .
                 </span>
@@ -790,8 +811,9 @@ export default function ApplyPage() {
                   className="mt-1 flex-shrink-0"
                 />
                 <span>
-                  (Optional) I consent to MLH processing my data for event
-                  communication.
+                  (Optional) I authorize MLH + DEV to send me occasional emails
+                  about relevant events, career opportunities, and community
+                  announcements.
                 </span>
               </label>
             </div>
