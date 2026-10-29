@@ -8,8 +8,8 @@ import { Application, ShortUser } from "@/types/types";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 // Application deadline shown on the button.
-const DEADLINE_SHORT = "10/28";
-const DEADLINE_LONG = "October 28";
+const DEADLINE_SHORT = "11/1";
+const DEADLINE_LONG = "November 1";
 
 interface ApplyButtonProps {
   top: string;
