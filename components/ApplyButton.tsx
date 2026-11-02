@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Application, ShortUser } from "@/types/types";
+import { APPLICATIONS_OPEN } from "@/app/const";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -71,7 +72,9 @@ export default function ApplyButton({
       type="button"
       onClick={handleClick}
       disabled={loading}
-      aria-label={`Apply by ${DEADLINE_LONG}`}
+      aria-label={
+        APPLICATIONS_OPEN ? `Apply by ${DEADLINE_LONG}` : "Applications closed"
+      }
       className="absolute block border-0 bg-transparent p-0 disabled:opacity-70"
       style={{ left: "53.52%", top, width: "14.06%", height: "8.08%" }}
     >
@@ -87,14 +90,19 @@ export default function ApplyButton({
       >
         <Image src={fill} alt="" fill unoptimized />
       </span>
-      <Image src="/images/hero/button-outline-tall.png" alt="" fill unoptimized />
+      <Image
+        src="/images/hero/button-outline-tall.png"
+        alt=""
+        fill
+        unoptimized
+      />
       <span
         aria-hidden
         className={`absolute top-[53%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center whitespace-nowrap font-helvetica font-bold leading-[1.15] ${text}`}
         style={{ left: `${textX}%`, fontSize: "2.5vw" }}
       >
-        <span>Apply</span>
-        <span>by {DEADLINE_SHORT}</span>
+        <span>{APPLICATIONS_OPEN ? "Apply" : "Apps"}</span>
+        <span>{APPLICATIONS_OPEN ? `by ${DEADLINE_SHORT}` : "closed"}</span>
       </span>
     </button>
   );

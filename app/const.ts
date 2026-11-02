@@ -1,3 +1,6 @@
+// Set to false to close applications. Set back to true to reopen.
+export const APPLICATIONS_OPEN = false;
+
 export const routes = [
 
   // { label: 'About', path: '#about', type: 'hash' as const },

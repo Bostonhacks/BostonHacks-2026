@@ -8,7 +8,12 @@ import Link from "next/link";
 import GridBackground from "@/components/GridBackground";
 import SchoolSelect from "@/components/SchoolSelect";
 import { Application, ShortUser, User } from "@/types/types";
-import { ETHNICITY_OPTIONS, MAJORS_OPTIONS, STATE_OPTIONS } from "../const";
+import {
+  APPLICATIONS_OPEN,
+  ETHNICITY_OPTIONS,
+  MAJORS_OPTIONS,
+  STATE_OPTIONS,
+} from "../const";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -137,6 +142,10 @@ export default function ApplyPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
+      if (!APPLICATIONS_OPEN) {
+        setPageLoading(false);
+        return;
+      }
       try {
         const response = await fetch(`${API_BASE}/user/me`, {
           credentials: "include",
@@ -256,7 +265,23 @@ export default function ApplyPage() {
       setLoading(false);
     }
   };
-
+  if (!APPLICATIONS_OPEN) {
+    return (
+      <CenteredCard>
+        <h1 className="mb-3 font-helvetica text-2xl font-bold">
+          Applications are closed
+        </h1>
+        <p className="mb-4 text-sm">
+          Thanks for your interest in BostonHacks! Applications for this year
+          are now closed. If you already applied, you can check your status
+          below.
+        </p>
+        <Link href="/apply/status" className={buttonClass}>
+          Check my status
+        </Link>
+      </CenteredCard>
+    );
+  }
   if (pageLoading) {
     return (
       <CenteredCard>
